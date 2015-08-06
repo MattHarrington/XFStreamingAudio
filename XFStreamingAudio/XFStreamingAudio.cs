@@ -8,8 +8,9 @@ namespace XFStreamingAudio
     public class App : Application
     {
         Button playStopBtn;
-        IAudioPlayer player;
+        IAudioPlayer audioPlayer;
         readonly Uri source = new Uri("http://live2.artoflogic.com:8190/kvmr");
+//        readonly Uri source = new Uri("http://misc.artoflogic.com/302");
 
         public App()
         {
@@ -37,13 +38,22 @@ namespace XFStreamingAudio
         protected override void OnStart()
         {
             // Handle when your app starts
-            player = DependencyService.Get<IAudioPlayer>();
+            audioPlayer = DependencyService.Get<IAudioPlayer>();
             playStopBtn.Clicked += OnPlayStopBtnClicked;
         }
 
         void OnPlayStopBtnClicked (object sender, EventArgs e)
         {
-            player.Play(source);
+            if (!audioPlayer.IsPlaying)
+            {
+                audioPlayer.Play(source);
+                playStopBtn.Text = "Stop";
+            }
+            else
+            {
+                audioPlayer.Stop();
+                playStopBtn.Text = "Play";
+            }
         }
 
         protected override void OnSleep()
