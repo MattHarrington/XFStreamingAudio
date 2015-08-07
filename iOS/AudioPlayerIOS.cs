@@ -30,7 +30,8 @@ namespace XFStreamingAudio.iOS
 
         void AudioSession_BeginInterruption(object sender, EventArgs e)
         {
-            // Use toggle UI event?
+            Page mp = Xamarin.Forms.Application.Current.MainPage;
+            MessagingCenter.Send<XFStreamingAudio.MainPage> ((XFStreamingAudio.MainPage)mp, "AudioInterrupted");
             avPlayer.Dispose();
         }
 
