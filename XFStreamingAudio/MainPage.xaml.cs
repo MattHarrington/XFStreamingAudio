@@ -37,13 +37,58 @@ namespace XFStreamingAudio
         {
             audioPlayer = DependencyService.Get<IAudioPlayer>();
             playStopBtn.Clicked += OnPlayStopBtnClicked;
-            MessagingCenter.Subscribe<MainPage> (this, "AudioInterrupted", (sender) => {
-                Debug.WriteLine("Audio was interrupted");
-                playStopBtn.Text = "Play";
-            });
+            MessagingCenter.Subscribe<MainPage>(this, "AudioInterrupted", (sender) =>
+                {
+                    Debug.WriteLine("Audio was interrupted");
+                    playStopBtn.Text = "Play";
+                });
+            MessagingCenter.Subscribe<MainPage>(this, "RemoteControlTogglePlayPause", 
+                OnRemoteControlTogglePlayPause);
+            MessagingCenter.Subscribe<MainPage>(this, "RemoteControlPauseOrStop", 
+                OnRemoteControlPauseOrStop);
+            MessagingCenter.Subscribe<MainPage>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack", 
+                OnRemoteControlPlayOrPreviousTrackOrNextTrack);
+            MessagingCenter.Subscribe<MainPage>(this, "HeadphonesUnplugged", 
+                OnHeadphonesUnplugged);
         }
 
-        void OnPlayStopBtnClicked (object sender, EventArgs e)
+        void OnHeadphonesUnplugged(object sender)
+        {
+            Debug.WriteLine("Headphones unplugged");
+            audioPlayer.Stop();
+            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = "Play");
+        }
+
+        void OnRemoteControlPlayOrPreviousTrackOrNextTrack(object sender)
+        {
+            if (!audioPlayer.IsPlaying)
+            {
+                audioPlayer.Play(source);
+                playStopBtn.Text = "Stop";
+            }
+        }
+
+        void OnRemoteControlPauseOrStop(object sender)
+        {
+            audioPlayer.Stop();
+            playStopBtn.Text = "Play";
+        }
+
+        void OnRemoteControlTogglePlayPause(object sender)
+        {
+            if (!audioPlayer.IsPlaying)
+            {
+                audioPlayer.Play(source);
+                playStopBtn.Text = "Stop";
+            }
+            else
+            {
+                audioPlayer.Stop();
+                playStopBtn.Text = "Play";
+            }
+        }
+
+        void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
             if (!audioPlayer.IsPlaying)
             {

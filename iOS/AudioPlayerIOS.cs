@@ -26,12 +26,30 @@ namespace XFStreamingAudio.iOS
             nowPlayingInfo.Artist = "Nevada City";
             nowPlayingInfo.Title = "KVMR";
             MPNowPlayingInfoCenter.DefaultCenter.NowPlaying = nowPlayingInfo;
+
+            // Not clear if these are necessary.  Commenting them out
+            // seems to have no effect.
+            MPRemoteCommandCenter rcc = MPRemoteCommandCenter.Shared;
+            rcc.SeekBackwardCommand.Enabled = false;
+            rcc.SeekForwardCommand.Enabled = false;
+            rcc.NextTrackCommand.Enabled = false;
+            rcc.PreviousTrackCommand.Enabled = false;
+            rcc.SkipBackwardCommand.Enabled = false;
+            rcc.SkipForwardCommand.Enabled = false;
+
+            // You must enable a command so that others can be disabled?
+            // See http://stackoverflow.com/a/28925369.
+            rcc.PlayCommand.Enabled = true;
+            rcc.PlayCommand.AddTarget((MPRemoteCommandEvent arg) =>
+                {
+                    return MPRemoteCommandHandlerStatus.Success;
+                });
         }
 
         void AudioSession_BeginInterruption(object sender, EventArgs e)
         {
             Page mp = Xamarin.Forms.Application.Current.MainPage;
-            MessagingCenter.Send<XFStreamingAudio.MainPage> ((XFStreamingAudio.MainPage)mp, "AudioInterrupted");
+            MessagingCenter.Send<XFStreamingAudio.MainPage>((XFStreamingAudio.MainPage)mp, "AudioInterrupted");
             avPlayer.Dispose();
         }
 
@@ -69,8 +87,8 @@ namespace XFStreamingAudio.iOS
         public void Stop()
         {
             Debug.WriteLine("Stop playing");
-            avPlayer.Pause();
-            avPlayer.Dispose();
+            avPlayer?.Pause();
+            avPlayer?.Dispose();
         }
 
         #endregion
