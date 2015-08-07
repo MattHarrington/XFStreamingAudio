@@ -1,13 +1,9 @@
-﻿using System;
-
-using Xamarin.Forms;
-using System.Diagnostics;
+﻿using Xamarin.Forms;
 
 namespace XFStreamingAudio
 {
     public class App : Application
     {
-
         public App()
         {
             // The root page of your application
@@ -16,9 +12,9 @@ namespace XFStreamingAudio
 
         protected override void OnStart()
         {
-
+            // Handle when your app starts
         }
-            
+
         protected override void OnSleep()
         {
             // Handle when your app sleeps
@@ -30,4 +26,3 @@ namespace XFStreamingAudio
         }
     }
 }
-
