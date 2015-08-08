@@ -9,13 +9,6 @@ namespace XFStreamingAudio
     {
         public SchedulePage()
         {
-            Title = "Schedule";
-            Content = new BoxView
-            {
-                Color = Color.Blue,
-                HeightRequest = 100f,
-                VerticalOptions = LayoutOptions.Center
-            };
             InitializeComponent();
         }
     }

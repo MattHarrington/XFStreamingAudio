@@ -108,6 +108,7 @@
     <BundleResource Include="Resources\PledgeIcon%402x.png" />
     <BundleResource Include="Resources\ContactIcon%402x.png" />
     <BundleResource Include="Resources\PlaylistIcon%402x.png" />
+    <BundleResource Include="Resources\ListenPage-image.jpg" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

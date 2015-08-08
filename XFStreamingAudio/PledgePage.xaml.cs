@@ -9,13 +9,6 @@ namespace XFStreamingAudio
     {
         public PledgePage()
         {
-            Title = "Support";
-            Content = new BoxView
-            {
-                Color = Color.Green,
-                HeightRequest = 100f,
-                VerticalOptions = LayoutOptions.Center
-            };
             InitializeComponent();
         }
     }

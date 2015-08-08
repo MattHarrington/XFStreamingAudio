@@ -8,13 +8,19 @@
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="5*" />
+				<RowDefinition Height="0.5*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
 				<RowDefinition Height="*" />
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 			</Grid.ColumnDefinitions>
-			<Label Text="KVMR" FontSize="48" XAlign="Center" YAlign="Center" Grid.Row="0" />
-			<Button x:Name="playStopBtn" Text="&#x25b6;&#xFE0E;" FontSize="32" VerticalOptions="Center" Grid.Row="1" />
+			<Image Source="ListenPage-image.jpg" Aspect="AspectFit" Grid.Row="0" />
+			<Label Grid.Row="2" Text="KVMR" FontSize="32" XAlign="Center" />
+			<Label Grid.Row="3" Text="Nevada City, California" FontSize="24" XAlign="Center" />
+			<Button x:Name="playStopBtn" Text="&#x25b6;&#xFE0E;" FontSize="32" VerticalOptions="Center" 
+			    Grid.Row="4" />
 		</Grid>
 	</ContentPage.Content>
 </ContentPage>

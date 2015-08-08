@@ -9,13 +9,6 @@ namespace XFStreamingAudio
     {
         public PlaylistPage()
         {
-            Title = "Playlist";
-            Content = new BoxView
-            {
-                Color = Color.Red,
-                HeightRequest = 100f,
-                VerticalOptions = LayoutOptions.Center
-            };
             InitializeComponent();
         }
     }
