@@ -8,7 +8,6 @@ namespace XFStreamingAudio
         public TabbedMainPage()
         {
             Title = "KVMR Streaming";
-       
             Children.Add(new ListenPage());
             Children.Add(new SchedulePage());
             Children.Add(new PlaylistPage());

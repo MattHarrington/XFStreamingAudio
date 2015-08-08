@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using Xamarin.Forms;
 using System.Diagnostics;
+using Xamarin.Forms;
 
 namespace XFStreamingAudio
 {
@@ -92,4 +91,3 @@ namespace XFStreamingAudio
         }
     }
 }
-
