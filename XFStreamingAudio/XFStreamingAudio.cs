@@ -7,19 +7,8 @@ namespace XFStreamingAudio
         public App()
         {
             // The root page of your application
-            MainPage = new XFStreamingAudio.MainPage();
-//            MainPage = new TabbedPage
-//            {
-//                Title = "TabbedPage",
-//                Children =
-//                {
-//                    new ListenPage(),
-//                    new SchedulePage(),
-//                    new PlaylistPage(),
-//                    new PledgePage(),
-//                    new ContactPage()
-//                }
-//            };
+//            MainPage = new XFStreamingAudio.MainPage();
+            MainPage = new TabbedMainPage();
         }
 
         protected override void OnStart()

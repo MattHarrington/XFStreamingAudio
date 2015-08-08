@@ -103,6 +103,11 @@
     <BundleResource Include="Resources\Icon-Small-40.png" />
     <BundleResource Include="Resources\Icon-Small-40%402x.png" />
     <BundleResource Include="Resources\Icon-Small-40%403x.png" />
+    <BundleResource Include="Resources\ListenIcon%402x.png" />
+    <BundleResource Include="Resources\ScheduleIcon%402x.png" />
+    <BundleResource Include="Resources\PledgeIcon%402x.png" />
+    <BundleResource Include="Resources\ContactIcon%402x.png" />
+    <BundleResource Include="Resources\PlaylistIcon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -116,7 +121,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="AudioPlayerIOS.cs" />
-    <Compile Include="MainPageRenderer.cs" />
+    <Compile Include="TabbedMainPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="ITunesArtwork" />

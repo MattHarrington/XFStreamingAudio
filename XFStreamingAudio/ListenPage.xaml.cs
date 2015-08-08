@@ -38,30 +38,31 @@ namespace XFStreamingAudio
         {
             audioPlayer = DependencyService.Get<IAudioPlayer>();
             playStopBtn.Clicked += OnPlayStopBtnClicked;
-            MessagingCenter.Subscribe<MainPage>(this, "AudioInterrupted", (sender) =>
+            MessagingCenter.Subscribe<Page>(this, "AudioInterrupted", (sender) =>
                 {
                     Debug.WriteLine("Audio was interrupted");
                     playStopBtn.Text = "Play";
                 });
-            MessagingCenter.Subscribe<MainPage>(this, "RemoteControlTogglePlayPause", 
+            MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause", 
                 OnRemoteControlTogglePlayPause);
-            MessagingCenter.Subscribe<MainPage>(this, "RemoteControlPauseOrStop", 
+            MessagingCenter.Subscribe<Page>(this, "RemoteControlPauseOrStop", 
                 OnRemoteControlPauseOrStop);
-            MessagingCenter.Subscribe<MainPage>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack", 
+            MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack", 
                 OnRemoteControlPlayOrPreviousTrackOrNextTrack);
-            MessagingCenter.Subscribe<MainPage>(this, "HeadphonesUnplugged", 
+            MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged", 
                 OnHeadphonesUnplugged);
         }
 
         void OnHeadphonesUnplugged(object sender)
         {
-            Debug.WriteLine("Headphones unplugged");
+            Debug.WriteLine("OnHeadphonesUnplugged()");
             audioPlayer.Stop();
             Device.BeginInvokeOnMainThread(() => playStopBtn.Text = "Play");
         }
 
         void OnRemoteControlPlayOrPreviousTrackOrNextTrack(object sender)
         {
+            Debug.WriteLine("OnRemoteControlPlayOrPreviousTrackOrNextTrack()");
             if (!audioPlayer.IsPlaying)
             {
                 audioPlayer.Play(source);
@@ -71,12 +72,14 @@ namespace XFStreamingAudio
 
         void OnRemoteControlPauseOrStop(object sender)
         {
+            Debug.WriteLine("OnRemoteControlPauseOrStop()");
             audioPlayer.Stop();
             playStopBtn.Text = "Play";
         }
 
         void OnRemoteControlTogglePlayPause(object sender)
         {
+            Debug.WriteLine("OnRemoteControlTogglePlayPause()");
             if (!audioPlayer.IsPlaying)
             {
                 audioPlayer.Play(source);
@@ -91,6 +94,7 @@ namespace XFStreamingAudio
 
         void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
+            Debug.WriteLine("OnPlayStopBtnClicked");
             if (!audioPlayer.IsPlaying)
             {
                 audioPlayer.Play(source);

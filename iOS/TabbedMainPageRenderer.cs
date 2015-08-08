@@ -1,17 +1,19 @@
 ﻿using System;
-using Xamarin.Forms.Platform.iOS;
 using System.Diagnostics;
+using AVFoundation;
+using Foundation;
 using UIKit;
 using Xamarin.Forms;
-using Foundation;
-using AVFoundation;
+using Xamarin.Forms.Platform.iOS;
+using XFStreamingAudio;
+using XFStreamingAudio.iOS;
 
-[assembly:ExportRenderer(typeof(XFStreamingAudio.MainPage), typeof(XFStreamingAudio.iOS.MainPageRenderer))]
+[assembly:ExportRenderer(typeof(TabbedMainPage), typeof(TabbedMainPageRenderer))]
 namespace XFStreamingAudio.iOS
 {
-    public class MainPageRenderer : PageRenderer
+    public class TabbedMainPageRenderer : TabbedRenderer
     {
-        public MainPageRenderer()
+        public TabbedMainPageRenderer()
         {
             NSNotificationCenter notificationCenter = NSNotificationCenter.DefaultCenter;
             notificationCenter.AddObserver(this, new ObjCRuntime.Selector("routeChanged:"), 
@@ -26,8 +28,8 @@ namespace XFStreamingAudio.iOS
             {
                 // player will be null if user has not hit play
                 Page mp = Xamarin.Forms.Application.Current.MainPage;
-                MessagingCenter.Send<XFStreamingAudio.MainPage>((XFStreamingAudio.MainPage)mp, 
-                    "HeadphonesUnplugged");
+                var currentPage = ((TabbedPage)mp).CurrentPage;
+                MessagingCenter.Send<Page>((Page)currentPage, "HeadphonesUnplugged");
             }
         }
 
@@ -57,23 +59,21 @@ namespace XFStreamingAudio.iOS
             Debug.WriteLine("Received remote control event: " + theEvent.Subtype);
 
             Page mp = Xamarin.Forms.Application.Current.MainPage;
+            var currentPage = ((TabbedPage)mp).CurrentPage;
 
             switch (theEvent.Subtype)
             {
                 case UIEventSubtype.RemoteControlTogglePlayPause:
-                    MessagingCenter.Send<XFStreamingAudio.MainPage>((XFStreamingAudio.MainPage)mp, 
-                        "RemoteControlTogglePlayPause");
+                    MessagingCenter.Send<Page>((Page)currentPage, "RemoteControlTogglePlayPause");
                     break;
                 case UIEventSubtype.RemoteControlPause:
                 case UIEventSubtype.RemoteControlStop:
-                    MessagingCenter.Send<XFStreamingAudio.MainPage>((XFStreamingAudio.MainPage)mp, 
-                        "RemoteControlPauseOrStop");
+                    MessagingCenter.Send<Page>((Page)currentPage, "RemoteControlPauseOrStop");
                     break;
                 case UIEventSubtype.RemoteControlPlay:
                 case UIEventSubtype.RemoteControlPreviousTrack:
                 case UIEventSubtype.RemoteControlNextTrack:
-                    MessagingCenter.Send<XFStreamingAudio.MainPage>((XFStreamingAudio.MainPage)mp, 
-                        "RemoteControlPlayOrPreviousTrackOrNextTrack");
+                    MessagingCenter.Send<Page>((Page)currentPage, "RemoteControlPlayOrPreviousTrackOrNextTrack");
                     break;
             }
         }
