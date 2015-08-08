@@ -11,4 +11,3 @@ namespace XFStreamingAudio
         void Stop();
     }
 }
-

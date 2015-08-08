@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Xamarin.Forms;
 
 namespace XFStreamingAudio
@@ -8,7 +7,7 @@ namespace XFStreamingAudio
     {
         public TabbedMainPage()
         {
-            Title = "TabbedPage";
+            Title = "KVMR Streaming";
        
             Children.Add(new ListenPage());
             Children.Add(new SchedulePage());

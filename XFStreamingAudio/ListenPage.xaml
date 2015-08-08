@@ -3,7 +3,21 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	x:Class="XFStreamingAudio.ListenPage"
-	Icon="ListenIcon.png">
+	Icon="ListenIcon.png"
+	Title="Listen">
 	<ContentPage.Content>
+		<StackLayout
+			VerticalOptions="Center">
+			<Label
+				Text="KVMR"
+				FontSize="48"
+				XAlign="Center">
+			</Label>
+			<Button
+				x:Name="playStopBtn"
+				Text="Play"
+				FontSize="32">
+			</Button>
+		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

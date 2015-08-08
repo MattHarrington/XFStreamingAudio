@@ -40,7 +40,7 @@ namespace XFStreamingAudio.iOS
             // You must enable a command so that others can be disabled?
             // See http://stackoverflow.com/a/28925369.
             rcc.PlayCommand.Enabled = true;
-            rcc.PlayCommand.AddTarget((MPRemoteCommandEvent arg) =>
+            rcc.PlayCommand.AddTarget(arg =>
                 {
                     return MPRemoteCommandHandlerStatus.Success;
                 });
