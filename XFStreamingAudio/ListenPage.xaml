@@ -14,7 +14,7 @@
 			<Grid.ColumnDefinitions>
 			</Grid.ColumnDefinitions>
 			<Label Text="KVMR" FontSize="48" XAlign="Center" YAlign="Center" Grid.Row="0" />
-			<Button x:Name="playStopBtn" Text="Play" FontSize="32" VerticalOptions="Center" Grid.Row="1" />
+			<Button x:Name="playStopBtn" Text="&#x25b6;&#xFE0E;" FontSize="32" VerticalOptions="Center" Grid.Row="1" />
 		</Grid>
 	</ContentPage.Content>
 </ContentPage>

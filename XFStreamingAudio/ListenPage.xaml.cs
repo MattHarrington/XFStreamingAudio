@@ -10,6 +10,8 @@ namespace XFStreamingAudio
         IAudioPlayer audioPlayer;
         readonly Uri source = new Uri("http://live2.artoflogic.com:8190/kvmr");
         //        readonly Uri source = new Uri("http://misc.artoflogic.com/302");
+        const string playIcon = "\u25b6\uFE0E";
+        const string stopIcon = "\u25a0";
 
         public ListenPage()
         {
@@ -19,7 +21,7 @@ namespace XFStreamingAudio
             MessagingCenter.Subscribe<Page>(this, "AudioInterrupted", (sender) =>
                 {
                     Debug.WriteLine("Audio was interrupted");
-                    playStopBtn.Text = "Play";
+                    playStopBtn.Text = playIcon;
                 });
             MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause", 
                 OnRemoteControlTogglePlayPause);
@@ -40,7 +42,7 @@ namespace XFStreamingAudio
         {
             Debug.WriteLine("OnHeadphonesUnplugged()");
             audioPlayer.Stop();
-            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = "Play");
+            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
         }
 
         void OnRemoteControlPlayOrPreviousTrackOrNextTrack(object sender)
@@ -49,7 +51,7 @@ namespace XFStreamingAudio
             if (!audioPlayer.IsPlaying)
             {
                 audioPlayer.Play(source);
-                playStopBtn.Text = "Stop";
+                playStopBtn.Text = stopIcon;
             }
         }
 
@@ -57,7 +59,7 @@ namespace XFStreamingAudio
         {
             Debug.WriteLine("OnRemoteControlPauseOrStop()");
             audioPlayer.Stop();
-            playStopBtn.Text = "Play";
+            playStopBtn.Text = playIcon;
         }
 
         void OnRemoteControlTogglePlayPause(object sender)
@@ -66,12 +68,12 @@ namespace XFStreamingAudio
             if (!audioPlayer.IsPlaying)
             {
                 audioPlayer.Play(source);
-                playStopBtn.Text = "Stop";
+                playStopBtn.Text = stopIcon;
             }
             else
             {
                 audioPlayer.Stop();
-                playStopBtn.Text = "Play";
+                playStopBtn.Text = playIcon;
             }
         }
 
@@ -81,12 +83,12 @@ namespace XFStreamingAudio
             if (!audioPlayer.IsPlaying)
             {
                 audioPlayer.Play(source);
-                playStopBtn.Text = "Stop";
+                playStopBtn.Text = stopIcon;
             }
             else
             {
                 audioPlayer.Stop();
-                playStopBtn.Text = "Play";
+                playStopBtn.Text = playIcon;
             }
         }
     }

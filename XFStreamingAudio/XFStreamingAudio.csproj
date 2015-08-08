@@ -33,9 +33,6 @@
     <Compile Include="XFStreamingAudio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IAudioPlayer.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ListenPage.xaml.cs">
       <DependentUpon>ListenPage.xaml</DependentUpon>
     </Compile>
@@ -70,9 +67,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="ListenPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
