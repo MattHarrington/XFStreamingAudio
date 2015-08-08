@@ -7,7 +7,6 @@ namespace XFStreamingAudio
         public App()
         {
             // The root page of your application
-//            MainPage = new XFStreamingAudio.MainPage();
             MainPage = new TabbedMainPage();
         }
 

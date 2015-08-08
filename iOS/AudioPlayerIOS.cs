@@ -51,7 +51,7 @@ namespace XFStreamingAudio.iOS
             Page mp = Xamarin.Forms.Application.Current.MainPage;
             var currentPage = ((TabbedPage)mp).CurrentPage;
             MessagingCenter.Send<Page>((Page)currentPage, "AudioInterrupted");
-            avPlayer.Dispose();
+            avPlayer?.Dispose();  // will be null if other audio source starts before user has hit play
         }
 
         void AudioSession_EndInterruption(object sender, EventArgs e)
