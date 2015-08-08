@@ -57,6 +57,7 @@ namespace XFStreamingAudio.iOS
         void AudioSession_EndInterruption(object sender, EventArgs e)
         {
             Debug.WriteLine("End interruption");
+//            Play(source);
         }
 
         #region IAudioPlayer implementation

@@ -14,7 +14,56 @@
 	</ContentPage.Padding>
 	<ContentPage.Content>
 		<StackLayout
-			BackgroundColor="Purple">
+			Padding="15,50,0,0">
+			<StackLayout>
+				<Label
+					Text="Radio stations:"
+					FontSize="24"
+					FontAttributes="Bold" />
+				<Label
+					Text="KVMR 89.5 FM Nevada City, California" />
+				<Label
+					Text="KCPC 88.3 FM Camino, California" />
+				<Label
+					Text="K284AG 104.7 FM Woodland, California" />
+				<Label
+					Text="K286AN 105.1 FM Truckee, California" />
+			</StackLayout>
+			<StackLayout
+				Padding="0,30,0,0">
+				<Label
+					Text="Studio location:"
+					FontSize="24"
+					FontAttributes="Bold" />
+				<Label
+					Text="120 Bridge Street" />
+				<Label
+					Text="Nevada City, CA 95959" />
+			</StackLayout>
+			<StackLayout
+				Padding="0,30,0,0">
+				<Label
+					Text="Keep in touch:"
+					FontSize="24"
+					FontAttributes="Bold" />
+				<Label
+					Text="office@kvmr.org" />
+				<Label
+					Text="Office: (530) 265-9073" />
+				<Label
+					Text="Studio: (530) 265-9555" />
+			</StackLayout>
+			<StackLayout
+				Padding="0,20,0,0">
+				<Button
+					x:Name="emailOfficeBtn"
+					Text="Email Office"
+					FontSize="18" />
+				<Button
+					x:Name="callStudioBtn"
+					Text="Call Studio"
+					FontSize="18" />
+			</StackLayout>
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>
