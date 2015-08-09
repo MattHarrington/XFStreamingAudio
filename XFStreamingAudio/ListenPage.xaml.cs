@@ -18,11 +18,10 @@ namespace XFStreamingAudio
             InitializeComponent();
             playStopBtn.Clicked += OnPlayStopBtnClicked;
             audioPlayer = DependencyService.Get<IAudioPlayer>();
-            MessagingCenter.Subscribe<Page>(this, "AudioInterrupted", (sender) =>
-                {
-                    Debug.WriteLine("Audio was interrupted");
-                    playStopBtn.Text = playIcon;
-                });
+            MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption", 
+                OnAudioBeginInterruption);
+            MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption", 
+                OnAudioEndInterruption);
             MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause", 
                 OnRemoteControlTogglePlayPause);
             MessagingCenter.Subscribe<Page>(this, "RemoteControlPauseOrStop", 
@@ -31,6 +30,19 @@ namespace XFStreamingAudio
                 OnRemoteControlPlayOrPreviousTrackOrNextTrack);
             MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged", 
                 OnHeadphonesUnplugged);
+        }
+
+        void OnAudioBeginInterruption(object sender)
+        {
+            Debug.WriteLine("Begin audio interruption");
+            playStopBtn.Text = playIcon;
+        }
+
+        void OnAudioEndInterruption(object sender)
+        {
+            Debug.WriteLine("End audio interruption");
+            audioPlayer.Play(source);
+            playStopBtn.Text = stopIcon;
         }
 
         protected override void OnAppearing()
