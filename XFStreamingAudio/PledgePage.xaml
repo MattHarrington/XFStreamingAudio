@@ -13,8 +13,35 @@
 			WinPhone="0" />
 	</ContentPage.Padding>
 	<ContentPage.Content>
-		<StackLayout
-			BackgroundColor="Green">
+		<StackLayout Padding="0,100,0,0" Spacing="20">
+			<Button
+				x:Name="donateBtn"
+				Text="Donate"
+				FontSize="18" />
+			<Button
+				x:Name="buildingCampaignBtn"
+				Text="Building Campaign"
+				FontSize="18" />
+			<Button
+				x:Name="volunteerBtn"
+				Text="Volunteer"
+				FontSize="18" />
+			<Button
+				x:Name="membershipBtn"
+				Text="Membership"
+				FontSize="18" />
+			<Button
+				x:Name="vehicleDonationBtn"
+				Text="Vehicle Donation"
+				FontSize="18" />
+			<Button
+				x:Name="plannedGiftsBtn"
+				Text="Planned Gifts"
+				FontSize="18" />
+			<Button
+				x:Name="underwriterBtn"
+				Text="Become an Underwriter"
+				FontSize="18" />
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>
