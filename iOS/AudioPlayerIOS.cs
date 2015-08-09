@@ -83,7 +83,9 @@ namespace XFStreamingAudio.iOS
         public void Play(Uri source)
         {
             Debug.WriteLine("Start playing");
-            avPlayer = new AVPlayer(source);
+            AVAsset asset = AVAsset.FromUrl(source);
+            AVPlayerItem playerItem = new AVPlayerItem(asset);
+            avPlayer = new AVPlayer(playerItem);
             avPlayer.Play();
         }
 
@@ -98,4 +100,3 @@ namespace XFStreamingAudio.iOS
 
     }
 }
-

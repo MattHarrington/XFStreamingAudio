@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Xamarin.Forms;
 using Connectivity.Plugin;
-using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace XFStreamingAudio
 {
@@ -32,6 +31,14 @@ namespace XFStreamingAudio
                 OnRemoteControlPlayOrPreviousTrackOrNextTrack);
             MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
                 OnHeadphonesUnplugged);
+            CrossConnectivity.Current.ConnectivityChanged += (sender, args) =>
+            {
+                Debug.WriteLine("IsConnected: {0}", args.IsConnected);
+                foreach (var connection in CrossConnectivity.Current.ConnectionTypes)
+                {
+                    Debug.WriteLine("ConnectionType: {0}", connection);
+                }
+            };
         }
 
         void OnAudioBeginInterruption(object sender)
@@ -42,14 +49,14 @@ namespace XFStreamingAudio
 
         void OnAudioEndInterruption(object sender)
         {
-            if (!CrossConnectivity.Current.IsConnected)
-            {
-                DisplayAlert("Network Unreachable", "Check your network connection", "OK");
-                return;
-            }
+//            if (!CrossConnectivity.Current.IsConnected)
+//            {
+//                DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+//                return;
+//            }
             Debug.WriteLine("End audio interruption");
-            audioPlayer.Play(source);
-            playStopBtn.Text = stopIcon;
+//            audioPlayer.Play(source);
+//            playStopBtn.Text = stopIcon;
         }
 
         protected override void OnAppearing()
