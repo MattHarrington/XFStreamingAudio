@@ -21,6 +21,8 @@
 			<Label Grid.Row="3" Text="Nevada City, California" FontSize="24" XAlign="Center" />
 			<Button x:Name="playStopBtn" Text="&#x25b6;&#xFE0E;" FontSize="32" VerticalOptions="Center" 
 			    Grid.Row="4" />
+			    <Button Grid.Row="5" x:Name="diagnosticsBtn" Text="Diagnostics" HorizontalOptions="End"
+			    VerticalOptions="Center" />
 		</Grid>
 	</ContentPage.Content>
 </ContentPage>

@@ -5,6 +5,7 @@ using XFStreamingAudio.iOS;
 using AVFoundation;
 using MediaPlayer;
 using Foundation;
+using System.Collections.Generic;
 
 [assembly: Dependency(typeof(AudioPlayerIOS))]
 namespace XFStreamingAudio.iOS
@@ -96,7 +97,38 @@ namespace XFStreamingAudio.iOS
             avPlayer?.Dispose();
         }
 
-        #endregion
 
+        public double DurationLoaded
+        {
+            get
+            {
+                NSValue[] ranges = avPlayer?.CurrentItem.LoadedTimeRanges;
+                double start = ranges[0].CMTimeRangeValue.Start.Seconds;
+                double duration = ranges[0].CMTimeRangeValue.Duration.Seconds;
+                double currentTime = avPlayer.CurrentItem.CurrentTime.Seconds;
+                Debug.WriteLine("start = {0}, duration = {1}, currentTime = {2}",
+                    start, duration, currentTime);
+                return Math.Round(start + duration - currentTime, 2);
+            }
+        }
+
+        public bool PlaybackLikelyToKeepUp
+        {
+            get
+            {
+                return avPlayer.CurrentItem.PlaybackLikelyToKeepUp;
+            }
+        }
+
+        public bool PlaybackBufferFull
+        {
+            get
+            {
+                return avPlayer.CurrentItem.PlaybackBufferFull;
+            }
+        }
+
+        #endregion
+    
     }
 }

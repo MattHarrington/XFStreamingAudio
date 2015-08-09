@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Connectivity.Plugin;
 using Xamarin.Forms;
+using System.Text;
 
 namespace XFStreamingAudio
 {
@@ -18,6 +20,7 @@ namespace XFStreamingAudio
         {
             InitializeComponent();
             playStopBtn.Clicked += OnPlayStopBtnClicked;
+            diagnosticsBtn.Clicked += DiagnosticsBtn_Clicked;
             audioPlayer = DependencyService.Get<IAudioPlayer>();
             MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption",
                 OnAudioBeginInterruption);
@@ -31,14 +34,45 @@ namespace XFStreamingAudio
                 OnRemoteControlPlayOrPreviousTrackOrNextTrack);
             MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
                 OnHeadphonesUnplugged);
-            CrossConnectivity.Current.ConnectivityChanged += (sender, args) =>
+            CrossConnectivity.Current.ConnectivityChanged += ConnectivityChanged;
+        }
+
+        void ConnectivityChanged(object sender, Connectivity.Plugin.Abstractions.ConnectivityChangedEventArgs e)
+        {
+            Debug.WriteLine("IsConnected: {0}", e.IsConnected);
+            foreach (var connection in CrossConnectivity.Current.ConnectionTypes)
             {
-                Debug.WriteLine("IsConnected: {0}", args.IsConnected);
-                foreach (var connection in CrossConnectivity.Current.ConnectionTypes)
-                {
-                    Debug.WriteLine("ConnectionType: {0}", connection);
-                }
-            };
+                Debug.WriteLine("ConnectionType: {0}", connection);
+            }
+//            DisplayAlert("Connectivity Changed", "Please restart stream", "OK");
+            if (!e.IsConnected)
+            {
+                audioPlayer.Stop();
+                playStopBtn.Text = playIcon;   
+            }
+        }
+
+        void DiagnosticsBtn_Clicked(object sender, EventArgs e)
+        {
+            if (!audioPlayer.IsPlaying)
+            {
+                // Avoid null reference exceptions if not playing
+                DisplayAlert("Diagnostics", "Stream not playing", "OK");
+                return;
+            }
+            StringBuilder alertMessage = new StringBuilder();
+            alertMessage.AppendLine(String.Format("Buffer: {0} sec", audioPlayer.DurationLoaded));
+            alertMessage.AppendLine(String.Format("ConnectionType: {0}", 
+                CrossConnectivity.Current.ConnectionTypes.FirstOrDefault()));
+            alertMessage.AppendLine(String.Format("PlaybackLikelyToKeepUp: {0}", audioPlayer.PlaybackLikelyToKeepUp));
+            DisplayAlert("Diagnostics", alertMessage.ToString(), "OK");
+            Debug.WriteLine("AVPlayerItem.PlaybackBufferFull = {0}", audioPlayer.PlaybackBufferFull);
+            Debug.WriteLine("AVPlayerItem.PlaybackLikelyToKeepUp = {0}", audioPlayer.PlaybackLikelyToKeepUp);
+            Debug.WriteLine("AVPlayerItem loaded duration = {0}", audioPlayer.DurationLoaded);
+            foreach (var connection in CrossConnectivity.Current.ConnectionTypes)
+            {
+                Debug.WriteLine("ConnectionType: {0}", connection);
+            }
         }
 
         void OnAudioBeginInterruption(object sender)
@@ -49,14 +83,7 @@ namespace XFStreamingAudio
 
         void OnAudioEndInterruption(object sender)
         {
-//            if (!CrossConnectivity.Current.IsConnected)
-//            {
-//                DisplayAlert("Network Unreachable", "Check your network connection", "OK");
-//                return;
-//            }
             Debug.WriteLine("End audio interruption");
-//            audioPlayer.Play(source);
-//            playStopBtn.Text = stopIcon;
         }
 
         protected override void OnAppearing()
