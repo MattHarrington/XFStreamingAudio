@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Xamarin.Forms;
+using Connectivity.Plugin;
+using System.Threading.Tasks;
 
 namespace XFStreamingAudio
 {
@@ -18,17 +20,17 @@ namespace XFStreamingAudio
             InitializeComponent();
             playStopBtn.Clicked += OnPlayStopBtnClicked;
             audioPlayer = DependencyService.Get<IAudioPlayer>();
-            MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption", 
+            MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption",
                 OnAudioBeginInterruption);
-            MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption", 
+            MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption",
                 OnAudioEndInterruption);
-            MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause", 
+            MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause",
                 OnRemoteControlTogglePlayPause);
-            MessagingCenter.Subscribe<Page>(this, "RemoteControlPauseOrStop", 
+            MessagingCenter.Subscribe<Page>(this, "RemoteControlPauseOrStop",
                 OnRemoteControlPauseOrStop);
-            MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack", 
+            MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack",
                 OnRemoteControlPlayOrPreviousTrackOrNextTrack);
-            MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged", 
+            MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
                 OnHeadphonesUnplugged);
         }
 
@@ -40,6 +42,11 @@ namespace XFStreamingAudio
 
         void OnAudioEndInterruption(object sender)
         {
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+                return;
+            }
             Debug.WriteLine("End audio interruption");
             audioPlayer.Play(source);
             playStopBtn.Text = stopIcon;
@@ -62,6 +69,11 @@ namespace XFStreamingAudio
             Debug.WriteLine("OnRemoteControlPlayOrPreviousTrackOrNextTrack()");
             if (!audioPlayer.IsPlaying)
             {
+                if (!CrossConnectivity.Current.IsConnected)
+                {
+                    DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+                    return;
+                }
                 audioPlayer.Play(source);
                 playStopBtn.Text = stopIcon;
             }
@@ -79,6 +91,11 @@ namespace XFStreamingAudio
             Debug.WriteLine("OnRemoteControlTogglePlayPause()");
             if (!audioPlayer.IsPlaying)
             {
+                if (!CrossConnectivity.Current.IsConnected)
+                {
+                    DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+                    return;
+                }
                 audioPlayer.Play(source);
                 playStopBtn.Text = stopIcon;
             }
@@ -94,6 +111,11 @@ namespace XFStreamingAudio
             Debug.WriteLine("OnPlayStopBtnClicked");
             if (!audioPlayer.IsPlaying)
             {
+                if (!CrossConnectivity.Current.IsConnected)
+                {
+                    DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+                    return;
+                }
                 audioPlayer.Play(source);
                 playStopBtn.Text = stopIcon;
             }
