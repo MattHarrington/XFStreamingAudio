@@ -13,8 +13,7 @@
 			WinPhone="0" />
 	</ContentPage.Padding>
 	<ContentPage.Content>
-		<StackLayout
-			BackgroundColor="Blue">
-		</StackLayout>
+		<ListView x:Name="scheduleListView" Header="Week of August 9, 2015">
+		</ListView>
 	</ContentPage.Content>
 </ContentPage>
