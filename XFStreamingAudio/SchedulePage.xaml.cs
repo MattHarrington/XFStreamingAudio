@@ -1,18 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace XFStreamingAudio
 {
     public partial class SchedulePage : ContentPage
     {
+        const string height = "500";
+        const string url = 
+            "https://www.google.com/calendar/embed" +
+            "?showNav=0&showTitle=0&showPrint=0&showTabs=0&showCalendars=0" +
+            "&mode=AGENDA&height=" + height + "&wkst=1&bgcolor=%23FFFFFF" +
+            "&src=p8smcuo4jo50sthdad6cfq3cko%40group.calendar.google.com" +
+            "&color=%235229A3&ctz=America%2FLos_Angeles";
+
         public SchedulePage()
         {
             InitializeComponent();
-            scheduleListView.ItemsSource = new string[]
-            {"Monday", "Tuesday", "Wednesday", "Thursday",
-                "Friday", "Saturday", "Sunday"
-            };
+            browser.Navigated += OnBrowserNavigated;
+            backBtn.Clicked += backClicked;
+            browser.Source = url;
+        }
+
+        void OnBrowserNavigated(object sender, WebNavigatedEventArgs e)
+        {
+            Debug.WriteLine("OnBrowserNavigated(). CanGoBack = {0}", browser.CanGoBack);
+            // Hide and display the Back button by comparing current location vs. initial URL because
+            // using CanGoBack was not working as expected.
+            var currentSource = browser.Source as UrlWebViewSource;
+            if (currentSource.Url != url)
+            {
+                backBtn.IsEnabled = true;
+            }
+            else
+            {
+                backBtn.IsEnabled = false;
+            }
+        }
+
+        private void backClicked(object sender, EventArgs e)
+        {
+            if (browser.CanGoBack)
+            {
+                browser.GoBack();
+            }
         }
     }
 }
