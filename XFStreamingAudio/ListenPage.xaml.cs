@@ -11,14 +11,28 @@ namespace XFStreamingAudio
     public partial class ListenPage : ContentPage
     {
         IAudioPlayer audioPlayer;
-        readonly Uri source = new Uri("http://live2.artoflogic.com:8190/kvmr");
-        //        readonly Uri source = new Uri("http://misc.artoflogic.com/302");
+        Uri source;
+        readonly Uri source64 = new Uri("http://live2.artoflogic.com:8190/kvmr");
+        readonly Uri source32 = new Uri("http://live.kvmr.org:8000/dial");
         const string playIcon = "\u25b6\uFE0E";
         const string stopIcon = "\u25a0";
 
         public ListenPage()
         {
             InitializeComponent();
+            if (Application.Current.Properties.ContainsKey("bandwidthSwitchState"))
+            {
+                bandwidthSwitch.IsToggled = (bool)Application.Current.Properties["bandwidthSwitchState"];
+            }
+            if (bandwidthSwitch.IsToggled)
+            {
+                source = source64;
+            }
+            else
+            {
+                source = source32;
+            }
+            bandwidthSwitch.Toggled += OnBandwidthSwitchToggled;
             playStopBtn.Clicked += OnPlayStopBtnClicked;
             diagnosticsBtn.Clicked += DiagnosticsBtn_Clicked;
             audioPlayer = DependencyService.Get<IAudioPlayer>();
@@ -35,6 +49,24 @@ namespace XFStreamingAudio
             MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
                 OnHeadphonesUnplugged);
             CrossConnectivity.Current.ConnectivityChanged += ConnectivityChanged;
+        }
+
+        void OnBandwidthSwitchToggled (object sender, ToggledEventArgs e)
+        {
+            Application.Current.Properties["bandwidthSwitchState"] = bandwidthSwitch.IsToggled;
+            if (bandwidthSwitch.IsToggled)
+            {
+                source = source64;
+            }
+            else
+            {
+                source = source32;
+            }
+            if (audioPlayer.IsPlaying)
+            {
+                audioPlayer.Stop();
+                audioPlayer.Play(source);
+            }
         }
 
         void ConnectivityChanged(object sender, Connectivity.Plugin.Abstractions.ConnectivityChangedEventArgs e)
@@ -63,7 +95,7 @@ namespace XFStreamingAudio
             StringBuilder alertMessage = new StringBuilder();
             alertMessage.AppendLine(String.Format("Buffer: {0} sec", audioPlayer.DurationLoaded));
             alertMessage.AppendLine(String.Format("ConnectionType: {0}", 
-                CrossConnectivity.Current.ConnectionTypes.FirstOrDefault()));
+                    CrossConnectivity.Current.ConnectionTypes.FirstOrDefault()));
             alertMessage.AppendLine(String.Format("PlaybackLikelyToKeepUp: {0}", audioPlayer.PlaybackLikelyToKeepUp));
             DisplayAlert("Diagnostics", alertMessage.ToString(), "OK");
             Debug.WriteLine("AVPlayerItem.PlaybackBufferFull = {0}", audioPlayer.PlaybackBufferFull);

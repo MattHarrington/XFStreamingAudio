@@ -109,12 +109,12 @@
     <BundleResource Include="Resources\Icon-Small-40.png" />
     <BundleResource Include="Resources\Icon-Small-40%402x.png" />
     <BundleResource Include="Resources\Icon-Small-40%403x.png" />
-    <BundleResource Include="Resources\ListenIcon%402x.png" />
     <BundleResource Include="Resources\ScheduleIcon%402x.png" />
     <BundleResource Include="Resources\PledgeIcon%402x.png" />
     <BundleResource Include="Resources\ContactIcon%402x.png" />
     <BundleResource Include="Resources\PlaylistIcon%402x.png" />
     <BundleResource Include="Resources\ListenPage-image.jpg" />
+    <BundleResource Include="Resources\ListenIcon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
