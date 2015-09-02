@@ -12,8 +12,8 @@ namespace XFStreamingAudio
     {
         IAudioPlayer audioPlayer;
         Uri source;
-        readonly Uri source64 = new Uri("http://live2.artoflogic.com:8190/kvmr");
-        readonly Uri source32 = new Uri("http://live.kvmr.org:8000/dial");
+        readonly Uri source96 = new Uri("http://67.172.163.192:8000/aac-96");
+        readonly Uri source32 = new Uri("http://67.172.163.192:8000/aac-32");
         const string playIcon = "\u25b6\uFE0E";
         const string stopIcon = "\u25a0";
 
@@ -26,7 +26,7 @@ namespace XFStreamingAudio
             }
             if (bandwidthSwitch.IsToggled)
             {
-                source = source64;
+                source = source96;
             }
             else
             {
@@ -56,7 +56,7 @@ namespace XFStreamingAudio
             Application.Current.Properties["bandwidthSwitchState"] = bandwidthSwitch.IsToggled;
             if (bandwidthSwitch.IsToggled)
             {
-                source = source64;
+                source = source96;
             }
             else
             {
