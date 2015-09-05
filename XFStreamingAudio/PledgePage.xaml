@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	x:Class="XFStreamingAudio.PledgePage"
 	Icon="PledgeIcon.png"
-	Title="Support">
+	Title="Pledge">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
