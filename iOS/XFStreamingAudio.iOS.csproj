@@ -132,6 +132,9 @@
     <BundleResource Include="Resources\ic_feedback_48pt.png" />
     <BundleResource Include="Resources\ic_feedback_48pt%402x.png" />
     <BundleResource Include="Resources\ic_feedback_48pt%403x.png" />
+    <BundleResource Include="Resources\ic_settings_2x.png" />
+    <BundleResource Include="Resources\ic_settings_3x.png" />
+    <BundleResource Include="Resources\ic_settings.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

@@ -37,7 +37,7 @@
 			</Grid.RowDefinitions>
 			<Button
 				x:Name="backBtn"
-				Text="Back"
+				Text=" &lt; Back"
 				HorizontalOptions="Start"
 				IsEnabled="false"
 				Grid.Row="0" />

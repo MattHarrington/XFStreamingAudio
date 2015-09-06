@@ -59,13 +59,6 @@
 					HorizontalOptions="End"
 					VerticalOptions="Center"
 					IsVisible="false" />
-				<Label
-					Text="High quality?"
-					HorizontalOptions="EndAndExpand" />
-				<Switch
-					x:Name="bandwidthSwitch"
-					HorizontalOptions="Center">
-				</Switch>
 			</StackLayout>
 		</Grid>
 	</ContentPage.Content>
