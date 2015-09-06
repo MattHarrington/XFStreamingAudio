@@ -123,6 +123,15 @@
     <BundleResource Include="Resources\PledgeIcon.png" />
     <BundleResource Include="Resources\PledgeIcon%402x.png" />
     <BundleResource Include="Resources\PledgeIcon%403x.png" />
+    <BundleResource Include="Resources\ic_email_48pt.png" />
+    <BundleResource Include="Resources\ic_email_48pt%402x.png" />
+    <BundleResource Include="Resources\ic_email_48pt%403x.png" />
+    <BundleResource Include="Resources\ic_call_48pt.png" />
+    <BundleResource Include="Resources\ic_call_48pt%402x.png" />
+    <BundleResource Include="Resources\ic_call_48pt%403x.png" />
+    <BundleResource Include="Resources\ic_feedback_48pt.png" />
+    <BundleResource Include="Resources\ic_feedback_48pt%402x.png" />
+    <BundleResource Include="Resources\ic_feedback_48pt%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
