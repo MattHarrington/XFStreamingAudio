@@ -138,6 +138,12 @@
     <BundleResource Include="Resources\ListenIcon.png" />
     <BundleResource Include="Resources\ListenIcon%402x.png" />
     <BundleResource Include="Resources\ListenIcon%403x.png" />
+    <BundleResource Include="Resources\BackCaret.png" />
+    <BundleResource Include="Resources\BackCaret%402x.png" />
+    <BundleResource Include="Resources\BackCaret%403x.png" />
+    <BundleResource Include="Resources\RefreshIcon.png" />
+    <BundleResource Include="Resources\RefreshIcon%402x.png" />
+    <BundleResource Include="Resources\RefreshIcon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

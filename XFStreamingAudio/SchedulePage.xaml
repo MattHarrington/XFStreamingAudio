@@ -13,21 +13,6 @@
 			WinPhone="0" />
 	</ContentPage.Padding>
 	<ContentPage.Content>
-		<!--		<StackLayout>
-			<StackLayout
-				Orientation="Horizontal"
-				Padding="10,10">
-				<Button
-					x:Name="backBtn"
-					Text="Back"
-					HorizontalOptions="StartAndExpand"
-					IsVisible="true" />
-			</StackLayout>
-			<WebView
-				x:Name="browser"
-				WidthRequest="1000"
-				HeightRequest="1000" />
-		</StackLayout>-->
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition
@@ -35,12 +20,21 @@
 				<RowDefinition
 					Height="*" />
 			</Grid.RowDefinitions>
-			<Button
-				x:Name="backBtn"
-				Text=" &lt; Back"
-				HorizontalOptions="Start"
-				IsEnabled="false"
-				Grid.Row="0" />
+			<StackLayout
+				Orientation="Horizontal"
+				Padding="10,0,10,0">
+				<Button
+					x:Name="backBtn"
+					Text="&lt; Back"
+					FontSize="17"
+					HorizontalOptions="Start"
+					IsEnabled="false"
+					Grid.Row="0" />
+				<Image
+					x:Name="refreshIcon"
+					Source="RefreshIcon.png"
+					HorizontalOptions="EndAndExpand" />
+			</StackLayout>
 			<WebView
 				x:Name="browser"
 				Grid.Row="1" />

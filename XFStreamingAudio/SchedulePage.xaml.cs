@@ -20,6 +20,15 @@ namespace XFStreamingAudio
             browser.Navigated += OnBrowserNavigated;
             backBtn.Clicked += backClicked;
             browser.Source = url;
+
+            TapGestureRecognizer refreshIconTGR = new TapGestureRecognizer();
+            refreshIconTGR.Tapped += OnRefresh;
+            refreshIcon.GestureRecognizers.Add(refreshIconTGR);
+        }
+
+        void OnRefresh(object sender, EventArgs e)
+        {
+            browser.Source = url;
         }
 
         void OnBrowserNavigated(object sender, WebNavigatedEventArgs e)
