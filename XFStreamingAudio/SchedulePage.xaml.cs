@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Xamarin.Forms;
+using Connectivity.Plugin;
 
 namespace XFStreamingAudio
 {
@@ -28,6 +29,11 @@ namespace XFStreamingAudio
 
         void OnRefresh(object sender, EventArgs e)
         {
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+                return;
+            }
             browser.Source = url;
         }
 
