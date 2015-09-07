@@ -3,7 +3,7 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	x:Class="XFStreamingAudio.SettingsPage"
-	Icon="ic_settings.png"
+	Icon="SettingsIcon.png"
 	Title="Settings">
 	<ContentPage.Padding>
 		<OnPlatform
@@ -16,7 +16,8 @@
 		<TableView
 			Intent="Settings">
 			<TableRoot>
-				<TableSection>
+				<TableSection
+					Title="Audio">
 					<SwitchCell
 						x:Name="bandwidthSwitch"
 						Text="High quality" />
