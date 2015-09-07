@@ -144,6 +144,12 @@
     <BundleResource Include="Resources\RefreshIcon.png" />
     <BundleResource Include="Resources\RefreshIcon%402x.png" />
     <BundleResource Include="Resources\RefreshIcon%403x.png" />
+    <BundleResource Include="Resources\WebsiteIcon.png" />
+    <BundleResource Include="Resources\WebsiteIcon%402x.png" />
+    <BundleResource Include="Resources\FacebookIcon.png" />
+    <BundleResource Include="Resources\FacebookIcon%402x.png" />
+    <BundleResource Include="Resources\TwitterIcon.png" />
+    <BundleResource Include="Resources\TwitterIcon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -159,6 +165,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="AudioPlayerIOS.cs" />
     <Compile Include="TabbedMainPageRenderer.cs" />
+    <Compile Include="DeviceExtensionIOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="ITunesArtwork" />

@@ -13,9 +13,9 @@
 			WinPhone="0" />
 	</ContentPage.Padding>
 	<ContentPage.Content>
-		<StackLayout>
+		<StackLayout
+			Padding="5,50,0,0">
 			<StackLayout
-				Padding="5,50,0,0"
 				Orientation="Horizontal">
 				<StackLayout
 					HorizontalOptions="CenterAndExpand">
@@ -39,25 +39,50 @@
 				</StackLayout>
 			</StackLayout>
 			<StackLayout
-				HorizontalOptions="CenterAndExpand">
-				<Image
-					x:Name="emailIcon"
-					Source="EmailIcon.png" />
-				<Button
-					x:Name="emailOfficeBtn"
-					Text="Email Office"
-					FontSize="18" />
+				Orientation="Horizontal">
+				<StackLayout
+					HorizontalOptions="CenterAndExpand">
+					<Image
+						x:Name="emailIcon"
+						Source="EmailIcon.png" />
+					<Button
+						x:Name="emailOfficeBtn"
+						Text="Email Office"
+						FontSize="18" />
+				</StackLayout>
+				<StackLayout
+					HorizontalOptions="CenterAndExpand">
+					<Image
+						x:Name="websiteIcon"
+						Source="WebsiteIcon.png" />
+					<Button
+						x:Name="websiteBtn"
+						Text="Website"
+						FontSize="18" />
+				</StackLayout>
 			</StackLayout>
 			<StackLayout
-				Padding="20,30,0,0">
-				<Label
-					Text="Studio location:"
-					FontSize="24"
-					FontAttributes="Bold" />
-				<Label
-					Text="120 Bridge Street" />
-				<Label
-					Text="Nevada City, California 95959" />
+				Orientation="Horizontal">
+				<StackLayout
+					HorizontalOptions="CenterAndExpand">
+					<Image
+						x:Name="facebookIcon"
+						Source="FacebookIcon.png" />
+					<Button
+						x:Name="facebookBtn"
+						Text="Facebook"
+						FontSize="18" />
+				</StackLayout>
+				<StackLayout
+					HorizontalOptions="CenterAndExpand">
+					<Image
+						x:Name="twitterIcon"
+						Source="TwitterIcon.png" />
+					<Button
+						x:Name="twitterBtn"
+						Text="Twitter"
+						FontSize="18" />
+				</StackLayout>
 			</StackLayout>
 		</StackLayout>
 	</ContentPage.Content>

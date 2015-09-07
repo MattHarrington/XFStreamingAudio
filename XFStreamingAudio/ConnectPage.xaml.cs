@@ -24,8 +24,58 @@ namespace XFStreamingAudio
             feedbackIconTGR.Tapped += OnEmailFeedback;
             feedbackIcon.GestureRecognizers.Add(feedbackIconTGR);
             feedbackBtn.Clicked += OnEmailFeedback;
+
+            TapGestureRecognizer websiteIconTGR = new TapGestureRecognizer();
+            websiteIconTGR.Tapped += OnVisitWebsite;
+            websiteIcon.GestureRecognizers.Add(websiteIconTGR);
+            websiteBtn.Clicked += OnVisitWebsite;
+
+            TapGestureRecognizer facebookIconTGR = new TapGestureRecognizer();
+            facebookIconTGR.Tapped += OnLaunchFacebook;
+            facebookIcon.GestureRecognizers.Add(facebookIconTGR);
+            facebookBtn.Clicked += OnLaunchFacebook;
+
+            TapGestureRecognizer twitterIconTGR = new TapGestureRecognizer();
+            twitterIconTGR.Tapped += OnLaunchTwitter;
+            twitterIcon.GestureRecognizers.Add(twitterIconTGR);
+            twitterBtn.Clicked += OnLaunchTwitter;
         }
-            
+
+        void OnLaunchTwitter(object sender, EventArgs e)
+        {
+            Uri twitterUrlScheme = new Uri("twitter://user?id=2844822804");
+            IDeviceExtension deviceExtension = DependencyService.Get<IDeviceExtension>();
+            bool canOpenUrl = deviceExtension.CanOpenUrl(twitterUrlScheme);
+            if (canOpenUrl)
+            {
+                Device.OpenUri(twitterUrlScheme);
+            }
+            else
+            {
+                Device.OpenUri(new Uri("https://twitter.com/RadioKVMR"));
+            }
+        }
+
+        void OnLaunchFacebook(object sender, EventArgs e)
+        {
+            Uri facebookUrlScheme = new Uri("fb://profile/265131946900409");
+            IDeviceExtension deviceExtension = DependencyService.Get<IDeviceExtension>();
+            bool canOpenUrl = deviceExtension.CanOpenUrl(facebookUrlScheme);
+            if (canOpenUrl)
+            {
+                Device.OpenUri(facebookUrlScheme);
+            }
+            else
+            {
+                Device.OpenUri(new Uri("https://www.facebook.com/KVMRFM"));
+            }
+        }
+
+        void OnVisitWebsite(object sender, EventArgs e)
+        {
+            Device.OpenUri(new Uri("https://www.kvmr.org/"));
+        }
+
         async void OnCallStudio(object sender, System.EventArgs e)
         {
             if (await DisplayAlert(
