@@ -117,7 +117,6 @@
     <BundleResource Include="Resources\ScheduleIcon%402x.png" />
     <BundleResource Include="Resources\PlaylistIcon%402x.png" />
     <BundleResource Include="Resources\ListenPage-image.jpg" />
-    <BundleResource Include="Resources\ListenIcon%402x.png" />
     <BundleResource Include="Resources\Icon-60%402x.png" />
     <BundleResource Include="Resources\PledgeIcon.png" />
     <BundleResource Include="Resources\PledgeIcon%402x.png" />
@@ -134,6 +133,9 @@
     <BundleResource Include="Resources\SettingsIcon.png" />
     <BundleResource Include="Resources\SettingsIcon%402x.png" />
     <BundleResource Include="Resources\SettingsIcon%403x.png" />
+    <BundleResource Include="Resources\ListenIcon.png" />
+    <BundleResource Include="Resources\ListenIcon%402x.png" />
+    <BundleResource Include="Resources\ListenIcon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
