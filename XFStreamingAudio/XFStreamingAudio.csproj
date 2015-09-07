@@ -45,12 +45,12 @@
     <Compile Include="PledgePage.xaml.cs">
       <DependentUpon>PledgePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ContactPage.xaml.cs">
-      <DependentUpon>ContactPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TabbedMainPage.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectPage.xaml.cs">
+      <DependentUpon>ConnectPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -89,10 +89,10 @@
     <EmbeddedResource Include="PledgePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="ContactPage.xaml">
+    <EmbeddedResource Include="SettingsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPage.xaml">
+    <EmbeddedResource Include="ConnectPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

@@ -4,9 +4,9 @@ using Xamarin.Forms;
 
 namespace XFStreamingAudio
 {
-    public partial class ContactPage : ContentPage
+    public partial class ConnectPage : ContentPage
     {
-        public ContactPage()
+        public ConnectPage()
         {
             InitializeComponent();
 

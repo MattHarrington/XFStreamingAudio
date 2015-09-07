@@ -117,9 +117,6 @@
     <BundleResource Include="Resources\PlaylistIcon%402x.png" />
     <BundleResource Include="Resources\ListenPage-image.jpg" />
     <BundleResource Include="Resources\Icon-60%402x.png" />
-    <BundleResource Include="Resources\ConnectIcon.png" />
-    <BundleResource Include="Resources\ConnectIcon%402x.png" />
-    <BundleResource Include="Resources\ConnectIcon%403x.png" />
     <BundleResource Include="Resources\EmailIcon.png" />
     <BundleResource Include="Resources\EmailIcon%402x.png" />
     <BundleResource Include="Resources\FeedbackIcon.png" />
@@ -138,6 +135,9 @@
     <BundleResource Include="Resources\ScheduleIcon.png" />
     <BundleResource Include="Resources\ScheduleIcon%402x.png" />
     <BundleResource Include="Resources\ScheduleIcon%403x.png" />
+    <BundleResource Include="Resources\ConnectIcon.png" />
+    <BundleResource Include="Resources\ConnectIcon%402x.png" />
+    <BundleResource Include="Resources\ConnectIcon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

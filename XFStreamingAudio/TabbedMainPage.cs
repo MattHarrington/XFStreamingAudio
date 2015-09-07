@@ -12,7 +12,7 @@ namespace XFStreamingAudio
             Children.Add(new SchedulePage());
             //Children.Add(new PlaylistPage());
             Children.Add(new PledgePage());
-            Children.Add(new ContactPage());
+            Children.Add(new ConnectPage());
             Children.Add(new SettingsPage());
         }
     }
