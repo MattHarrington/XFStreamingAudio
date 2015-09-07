@@ -3,8 +3,8 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	x:Class="XFStreamingAudio.ContactPage"
-	Icon="ContactIcon.png"
-	Title="Contact">
+	Icon="ConnectIcon.png"
+	Title="Connect">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -20,18 +20,18 @@
 				<StackLayout
 					HorizontalOptions="CenterAndExpand">
 					<Image
-						x:Name="emailIcon"
-						Source="ic_email_48pt.png" />
+						x:Name="feedbackIcon"
+						Source="FeedbackIcon.png" />
 					<Button
-						x:Name="emailOfficeBtn"
-						Text="Email Office"
+						x:Name="feedbackBtn"
+						Text="App Feedback"
 						FontSize="18" />
 				</StackLayout>
 				<StackLayout
 					HorizontalOptions="CenterAndExpand">
 					<Image
 						x:Name="callIcon"
-						Source="ic_call_48pt.png" />
+						Source="CallStudioIcon.png" />
 					<Button
 						x:Name="callStudioBtn"
 						Text="Call Studio"
@@ -41,11 +41,11 @@
 			<StackLayout
 				HorizontalOptions="CenterAndExpand">
 				<Image
-					x:Name="feedbackIcon"
-					Source="ic_feedback_48pt.png" />
+					x:Name="emailIcon"
+					Source="EmailIcon.png" />
 				<Button
-					x:Name="feedbackBtn"
-					Text="App Feedback"
+					x:Name="emailOfficeBtn"
+					Text="Email Office"
 					FontSize="18" />
 			</StackLayout>
 			<StackLayout
