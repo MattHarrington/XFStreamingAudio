@@ -23,8 +23,8 @@ namespace XFStreamingAudio
             {
                 if (await DisplayAlert(
                         "Warning",
-                        "High quality stream uses 43.2 Megabytes/hour. " +
-                        "Low quality stream uses 14.4 Megabytes/hour.\n\n" +
+                        "High quality uses 43.2 Megabytes/hour. " +
+                        "Low quality uses 14.4 Megabytes/hour.\n\n" +
                         "Are you sure you want to switch?",
                         "Yes",
                         "No"))
