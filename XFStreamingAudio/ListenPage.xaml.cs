@@ -15,8 +15,8 @@ namespace XFStreamingAudio
         bool useHighBandwidth;
         readonly Uri source96 = new Uri("http://live2.artoflogic.com:8190/kvmr");
         readonly Uri source32 = new Uri("http://live.kvmr.org:8000/dial");
-//        readonly Uri source96 = new Uri("http://67.172.163.192:8000/aac-96");
-//        readonly Uri source32 = new Uri("http://67.172.163.192:8000/aac-32");
+        //        readonly Uri source96 = new Uri("http:www.kvmr.org/aac96.m3u");
+        //        readonly Uri source32 = new Uri("http://www.kvmr.org/aac32.m3u");
         const string playIcon = "\u25b6\uFE0E";
         const string stopIcon = "\u25a0";
 

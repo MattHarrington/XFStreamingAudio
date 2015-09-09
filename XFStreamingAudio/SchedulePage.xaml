@@ -27,6 +27,7 @@
 					x:Name="backBtn"
 					Text="❬ Back"
 					HorizontalOptions="Start"
+					FontSize="18"
 					IsEnabled="false"
 					Grid.Row="0" />
 				<Image
