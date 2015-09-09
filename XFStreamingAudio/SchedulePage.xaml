@@ -25,8 +25,7 @@
 				Padding="10,0,10,0">
 				<Button
 					x:Name="backBtn"
-					Text="&lt; Back"
-					FontSize="17"
+					Text="❬ Back"
 					HorizontalOptions="Start"
 					IsEnabled="false"
 					Grid.Row="0" />
