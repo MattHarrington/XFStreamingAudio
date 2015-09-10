@@ -29,7 +29,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>KVMR</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.kvmr.kvmrapp</string>
+	<string>org.kvmr.player</string>
 	<key>XSAppIconAssets</key>
 	<string>Resources/Images.xcassets/AppIcon.appiconset</string>
 	<key>XSLaunchImageAssets</key>
