@@ -100,6 +100,12 @@
     <Reference Include="Calabash">
       <HintPath>..\packages\Xamarin.TestCloud.Agent.0.14.3\lib\Xamarin.iOS10\Calabash.dll</HintPath>
     </Reference>
+    <Reference Include="AI.XamarinSDK.Abstractions">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Xamarin.1.0.0-alpha2\lib\Xamarin.iOS10\AI.XamarinSDK.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="AI.XamarinSDK.iOS">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Xamarin.1.0.0-alpha2\lib\Xamarin.iOS10\AI.XamarinSDK.IOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XFStreamingAudio\XFStreamingAudio.csproj">
