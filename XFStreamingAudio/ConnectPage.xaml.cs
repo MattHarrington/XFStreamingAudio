@@ -10,10 +10,15 @@ namespace XFStreamingAudio
         {
             InitializeComponent();
 
-            TapGestureRecognizer callIconTGR = new TapGestureRecognizer();
-            callIconTGR.Tapped += OnCallStudio;
-            callIcon.GestureRecognizers.Add(callIconTGR);
+            TapGestureRecognizer callStudioIconTGR = new TapGestureRecognizer();
+            callStudioIconTGR.Tapped += OnCallStudio;
+            callStudioIcon.GestureRecognizers.Add(callStudioIconTGR);
             callStudioBtn.Clicked += OnCallStudio;
+
+            TapGestureRecognizer callOfficeIconTGR = new TapGestureRecognizer();
+            callOfficeIconTGR.Tapped += OnCallOffice;
+            callOfficeIcon.GestureRecognizers.Add(callOfficeIconTGR);
+            callOfficeBtn.Clicked += OnCallOffice;
 
             TapGestureRecognizer emailIconTGR = new TapGestureRecognizer();
             emailIconTGR.Tapped += OnEmailOffice;
@@ -86,6 +91,19 @@ namespace XFStreamingAudio
             {
                 // Dial the phone
                 Device.OpenUri(new Uri("tel:+1 (530) 265-9555"));
+            }
+        }
+
+        async void OnCallOffice(object sender, EventArgs e)
+        {
+            if (await DisplayAlert(
+                "Call Office",
+                "Call KVMR office at\n +1 (530) 265-9073?",
+                "Yes",
+                "No"))
+            {
+                // Dial the phone
+                Device.OpenUri(new Uri("tel:+1 (530) 265-9073"));
             }
         }
 

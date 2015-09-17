@@ -193,6 +193,9 @@
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\image1.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\image2.png" />
+    <ImageAsset Include="Resources\Images.xcassets\CallOfficeIcon.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\CallOfficeIcon.imageset\CallOfficeIcon.png" />
+    <ImageAsset Include="Resources\Images.xcassets\CallOfficeIcon.imageset\CallOfficeIcon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Images.xcassets\AppIcon.appiconset\" />

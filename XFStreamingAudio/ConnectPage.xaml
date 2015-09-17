@@ -13,77 +13,92 @@
 			WinPhone="0" />
 	</ContentPage.Padding>
 	<ContentPage.Content>
-		<StackLayout
-			Padding="5,50,0,0">
+		<ScrollView>
 			<StackLayout
-				Orientation="Horizontal">
+				Padding="5,50,0,0">
 				<StackLayout
-					HorizontalOptions="CenterAndExpand">
-					<Image
-						x:Name="feedbackIcon"
-						Source="FeedbackIcon.png" />
-					<Button
-						x:Name="feedbackBtn"
-						Text="App Feedback"
-						FontSize="18" />
+					Orientation="Horizontal">
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
+						<Image
+							x:Name="feedbackIcon"
+							Source="FeedbackIcon.png" />
+						<Button
+							x:Name="feedbackBtn"
+							Text="App Feedback"
+							FontSize="18" />
+					</StackLayout>
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
+						<Image
+							x:Name="callStudioIcon"
+							Source="CallStudioIcon.png" />
+						<Button
+							x:Name="callStudioBtn"
+							Text="Call Studio"
+							FontSize="18" />
+					</StackLayout>
 				</StackLayout>
 				<StackLayout
-					HorizontalOptions="CenterAndExpand">
-					<Image
-						x:Name="callIcon"
-						Source="CallStudioIcon.png" />
-					<Button
-						x:Name="callStudioBtn"
-						Text="Call Studio"
-						FontSize="18" />
+					Orientation="Horizontal">
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
+						<Image
+							x:Name="emailIcon"
+							Source="EmailIcon.png" />
+						<Button
+							x:Name="emailOfficeBtn"
+							Text="Email Office"
+							FontSize="18" />
+					</StackLayout>
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
+						<Image
+							x:Name="callOfficeIcon"
+							Source="CallOfficeIcon" />
+						<Button
+							x:Name="callOfficeBtn"
+							Text="Call Office"
+							FontSize="18" />
+					</StackLayout>
+				</StackLayout>
+				<StackLayout
+					Orientation="Horizontal">
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
+						<Image
+							x:Name="facebookIcon"
+							Source="FacebookIcon.png" />
+						<Button
+							x:Name="facebookBtn"
+							Text="Facebook"
+							FontSize="18" />
+					</StackLayout>
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
+						<Image
+							x:Name="twitterIcon"
+							Source="TwitterIcon.png" />
+						<Button
+							x:Name="twitterBtn"
+							Text="Twitter"
+							FontSize="18" />
+					</StackLayout>
+				</StackLayout>
+				<StackLayout
+					Orientation="Horizontal">
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
+						<Image
+							x:Name="websiteIcon"
+							Source="WebsiteIcon.png" />
+						<Button
+							x:Name="websiteBtn"
+							Text="Website"
+							FontSize="18" />
+					</StackLayout>
 				</StackLayout>
 			</StackLayout>
-			<StackLayout
-				Orientation="Horizontal">
-				<StackLayout
-					HorizontalOptions="CenterAndExpand">
-					<Image
-						x:Name="emailIcon"
-						Source="EmailIcon.png" />
-					<Button
-						x:Name="emailOfficeBtn"
-						Text="Email Office"
-						FontSize="18" />
-				</StackLayout>
-				<StackLayout
-					HorizontalOptions="CenterAndExpand">
-					<Image
-						x:Name="websiteIcon"
-						Source="WebsiteIcon.png" />
-					<Button
-						x:Name="websiteBtn"
-						Text="Website"
-						FontSize="18" />
-				</StackLayout>
-			</StackLayout>
-			<StackLayout
-				Orientation="Horizontal">
-				<StackLayout
-					HorizontalOptions="CenterAndExpand">
-					<Image
-						x:Name="facebookIcon"
-						Source="FacebookIcon.png" />
-					<Button
-						x:Name="facebookBtn"
-						Text="Facebook"
-						FontSize="18" />
-				</StackLayout>
-				<StackLayout
-					HorizontalOptions="CenterAndExpand">
-					<Image
-						x:Name="twitterIcon"
-						Source="TwitterIcon.png" />
-					<Button
-						x:Name="twitterBtn"
-						Text="Twitter"
-						FontSize="18" />
-				</StackLayout>
-			</StackLayout>
-		</StackLayout>
+		</ScrollView>
 	</ContentPage.Content>
 </ContentPage>
