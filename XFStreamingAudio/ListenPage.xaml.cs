@@ -13,8 +13,8 @@ namespace XFStreamingAudio
         IAudioPlayer audioPlayer;
         Uri source;
         bool useHighBandwidth;
-        readonly Uri source96 = new Uri("http://www.kvmr.org/aac96.m3u");
-        readonly Uri source32 = new Uri("http://www.kvmr.org/aac32.m3u");
+        readonly Uri source96 = new Uri("https://www.kvmr.org/aac96.m3u");
+        readonly Uri source32 = new Uri("https://www.kvmr.org/aac32.m3u");
         const string playIcon = "\u25b6\uFE0E";
         const string stopIcon = "\u25a0";
 
