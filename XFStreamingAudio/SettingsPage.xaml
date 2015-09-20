@@ -24,7 +24,8 @@
 				</TableSection>
 				<TableSection
 					Title="App Info">
-					<ViewCell>
+					<ViewCell
+						IsEnabled="false">
 						<StackLayout
 							Orientation="Horizontal"
 							Padding="20,0,20,0">
@@ -32,7 +33,7 @@
 								Text="Version"
 								VerticalOptions="CenterAndExpand" />
 							<Label
-								Text="1.0.1 beta"
+								Text="1.0.1 beta 2"
 								HorizontalOptions="EndAndExpand"
 								VerticalOptions="CenterAndExpand" />
 						</StackLayout>
