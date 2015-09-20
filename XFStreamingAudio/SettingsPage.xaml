@@ -22,6 +22,22 @@
 						x:Name="bandwidthSwitch"
 						Text="High quality" />
 				</TableSection>
+				<TableSection
+					Title="App Info">
+					<ViewCell>
+						<StackLayout
+							Orientation="Horizontal"
+							Padding="20,0,20,0">
+							<Label
+								Text="Version"
+								VerticalOptions="CenterAndExpand" />
+							<Label
+								Text="1.0.1 beta"
+								HorizontalOptions="EndAndExpand"
+								VerticalOptions="CenterAndExpand" />
+						</StackLayout>
+					</ViewCell>
+				</TableSection>
 			</TableRoot>
 		</TableView>
 	</ContentPage.Content>
