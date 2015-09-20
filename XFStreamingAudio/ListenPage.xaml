@@ -13,46 +13,34 @@
 			WinPhone="0" />
 	</ContentPage.Padding>
 	<ContentPage.Content>
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition
-					Height="5*" />
-				<RowDefinition
-					Height="0.5*" />
-				<RowDefinition
-					Height="*" />
-				<RowDefinition
-					Height="*" />
-				<RowDefinition
-					Height="*" />
-				<RowDefinition
-					Height="*" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-			</Grid.ColumnDefinitions>
+		<StackLayout
+			Orientation="Horizontal"
+			Padding="20,0,0,0">
 			<Image
-				Source="ListenPage-image.jpg"
-				Aspect="AspectFit"
-				Grid.Row="0" />
-			<Label
-				Grid.Row="2"
-				Text="KVMR"
-				FontSize="32"
-				XAlign="Center" />
-			<Label
-				Grid.Row="3"
-				Text="Nevada City, California"
-				FontSize="24"
-				XAlign="Center" />
-			<Button
-				x:Name="playStopBtn"
-				Text="▶︎"
-				FontSize="32"
-				VerticalOptions="Center"
-				Grid.Row="4" />
+				Source="WhiteTower" />
 			<StackLayout
-				Grid.Row="5"
-				Orientation="Horizontal">
+				Orientation="Vertical"
+				VerticalOptions="Center">
+				<Label
+					Text="KVMR"
+					FontSize="60"
+					FontFamily="Futura-Medium"
+					TextColor="#7AC143" />
+				<Label
+					Text="Nevada City"
+					TextColor="Purple"
+					FontSize="24"
+					FontFamily="Futura-Medium"
+					HorizontalOptions="Center" />
+				<Frame
+					Padding="0,75,0,0"
+					HasShadow="false">
+					<Button
+						x:Name="playStopBtn"
+						Text="▶︎"
+						FontSize="48"
+						VerticalOptions="Center" />
+				</Frame>
 				<Button
 					x:Name="diagnosticsBtn"
 					Text="Diagnostics"
@@ -60,6 +48,6 @@
 					VerticalOptions="Center"
 					IsVisible="false" />
 			</StackLayout>
-		</Grid>
+		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

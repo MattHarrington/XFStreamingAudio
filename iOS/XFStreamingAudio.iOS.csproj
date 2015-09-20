@@ -196,6 +196,10 @@
     <ImageAsset Include="Resources\Images.xcassets\CallOfficeIcon.imageset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\CallOfficeIcon.imageset\CallOfficeIcon.png" />
     <ImageAsset Include="Resources\Images.xcassets\CallOfficeIcon.imageset\CallOfficeIcon%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\WhiteTower.png" />
+    <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\WhiteTower%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\WhiteTower%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Images.xcassets\AppIcon.appiconset\" />
