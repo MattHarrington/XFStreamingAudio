@@ -17,7 +17,8 @@
 			Orientation="Horizontal"
 			Padding="20,0,0,0">
 			<Image
-				Source="WhiteTower" />
+				Source="WhiteTower"
+				Aspect="AspectFill" />
 			<StackLayout
 				Orientation="Vertical"
 				VerticalOptions="Center">

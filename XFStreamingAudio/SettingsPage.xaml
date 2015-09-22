@@ -23,7 +23,7 @@
 						Text="High quality" />
 				</TableSection>
 				<TableSection
-					Title="App Info">
+					Title="About">
 					<ViewCell
 						IsEnabled="false">
 						<StackLayout
