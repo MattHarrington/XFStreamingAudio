@@ -146,6 +146,8 @@
     <BundleResource Include="Resources\FacebookIcon%402x.png" />
     <BundleResource Include="Resources\TwitterIcon.png" />
     <BundleResource Include="Resources\TwitterIcon%402x.png" />
+    <BundleResource Include="Settings.bundle\Root.plist" />
+    <BundleResource Include="Settings.bundle\en.lproj\Root.strings" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -203,5 +205,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Images.xcassets\AppIcon.appiconset\" />
+    <Folder Include="Settings.bundle\" />
   </ItemGroup>
 </Project>
