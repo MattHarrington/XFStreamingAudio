@@ -35,7 +35,6 @@ namespace XFStreamingAudio.iOS
 
         public override void ViewDidAppear(bool animated)
         {
-            Debug.WriteLine("ViewDidAppear()");
             base.ViewDidAppear(animated);
             UIApplication.SharedApplication.BeginReceivingRemoteControlEvents();
             this.BecomeFirstResponder();
@@ -43,7 +42,6 @@ namespace XFStreamingAudio.iOS
 
         public override void ViewDidDisappear(bool animated)
         {
-            Debug.WriteLine("ViewDidDisappear()");
             base.ViewDidDisappear(animated);
             UIApplication.SharedApplication.EndReceivingRemoteControlEvents();
             this.ResignFirstResponder();

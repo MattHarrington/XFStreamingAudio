@@ -39,7 +39,6 @@ namespace XFStreamingAudio
 
         void OnBrowserNavigated(object sender, WebNavigatedEventArgs e)
         {
-            Debug.WriteLine("OnBrowserNavigated(). CanGoBack = {0}", browser.CanGoBack);
             // Hide and display the Back button by comparing current location vs. initial URL because
             // using CanGoBack was not working as expected.
             var currentSource = browser.Source as UrlWebViewSource;

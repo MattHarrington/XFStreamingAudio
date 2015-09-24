@@ -120,11 +120,6 @@ namespace XFStreamingAudio
             Debug.WriteLine("End audio interruption");
         }
 
-        protected override void OnAppearing()
-        {
-            Debug.WriteLine("ListenPage.OnAppearing()");
-        }
-
         void OnHeadphonesUnplugged(object sender)
         {
             Debug.WriteLine("OnHeadphonesUnplugged()");
