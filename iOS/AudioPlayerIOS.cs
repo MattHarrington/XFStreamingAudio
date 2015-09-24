@@ -140,8 +140,7 @@ namespace XFStreamingAudio.iOS
             avPlayer?.Pause();
             avPlayer?.Dispose();
         }
-
-
+            
         public double DurationLoaded
         {
             get
