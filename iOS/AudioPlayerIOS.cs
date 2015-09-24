@@ -6,17 +6,20 @@ using AVFoundation;
 using MediaPlayer;
 using Foundation;
 using System.Collections.Generic;
+using AI.XamarinSDK.Abstractions;
 
 [assembly: Dependency(typeof(AudioPlayerIOS))]
 namespace XFStreamingAudio.iOS
 {
-    public class AudioPlayerIOS : IAudioPlayer
+    public class AudioPlayerIOS : NSObject, IAudioPlayer
     {
         AVPlayer avPlayer;
+//        NSError error;
 
         public AudioPlayerIOS()
         {
             AVAudioSession audioSession = AVAudioSession.SharedInstance();
+//            audioSession.SetPreferredIOBufferDuration(0.1f, out error);
             audioSession.SetCategory(AVAudioSessionCategory.Playback);
             audioSession.BeginInterruption += AudioSession_BeginInterruption;
             audioSession.EndInterruption += AudioSession_EndInterruption;
@@ -86,8 +89,47 @@ namespace XFStreamingAudio.iOS
             Debug.WriteLine("Start playing");
             AVAsset asset = AVAsset.FromUrl(source);
             AVPlayerItem playerItem = new AVPlayerItem(asset);
+            playerItem.AddObserver(observer: this,
+                keyPath: new NSString("playbackBufferEmpty"),
+                options: NSKeyValueObservingOptions.New,
+                context: IntPtr.Zero);
+            playerItem.AddObserver(observer: this,
+                keyPath: new NSString("playbackLikelyToKeepUp"),
+                options: NSKeyValueObservingOptions.New,
+                context: IntPtr.Zero);
             avPlayer = new AVPlayer(playerItem);
             avPlayer.Play();
+
+            AVAudioSession audioSession = AVAudioSession.SharedInstance();
+            Debug.WriteLine("IOBufferDuration = {0}", audioSession.IOBufferDuration);
+            Debug.WriteLine("preferredIOBufferDuration = {0}", audioSession.PreferredIOBufferDuration);
+        }
+
+        public override void ObserveValue (NSString keyPath, NSObject ofObject, 
+            NSDictionary change, IntPtr context)
+        {
+//            var str = String.Format ("The {0} property on {1}, the change is: {2}", 
+//                keyPath, ofObject, change.Description);
+//            Debug.WriteLine (str);
+            switch (keyPath)
+            {
+                case "playbackBufferEmpty":
+                    if (change.ValueForKeyPath(new NSString("new")).Description == "1")
+                    {
+                        Debug.WriteLine("playbackBufferEmpty == {0}", true);
+                        TelemetryManager.TrackEvent("playbackBufferEmpty");
+                    }
+                    break;
+                case "playbackLikelyToKeepUp":
+                    if (change.ValueForKeyPath(new NSString("new")).Description == "0")
+                    {
+                        Debug.WriteLine("playbackLikelyToKeepUp == {0}", false);
+                        TelemetryManager.TrackEvent("playbackNotLikelyToKeepUp");
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void Stop()
