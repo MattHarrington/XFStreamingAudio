@@ -33,7 +33,7 @@
 								Text="Version"
 								VerticalOptions="CenterAndExpand" />
 							<Label
-								Text="1.0.1 beta 2"
+								Text="1.0.1 beta 3"
 								HorizontalOptions="EndAndExpand"
 								VerticalOptions="CenterAndExpand" />
 						</StackLayout>

@@ -14,7 +14,7 @@ namespace XFStreamingAudio.iOS
     public class AudioPlayerIOS : NSObject, IAudioPlayer
     {
         AVPlayer avPlayer;
-//        NSError error;
+        //        NSError error;
 
         public AudioPlayerIOS()
         {
@@ -105,8 +105,8 @@ namespace XFStreamingAudio.iOS
             Debug.WriteLine("preferredIOBufferDuration = {0}", audioSession.PreferredIOBufferDuration);
         }
 
-        public override void ObserveValue (NSString keyPath, NSObject ofObject, 
-            NSDictionary change, IntPtr context)
+        public override void ObserveValue(NSString keyPath, NSObject ofObject, 
+                                          NSDictionary change, IntPtr context)
         {
 //            var str = String.Format ("The {0} property on {1}, the change is: {2}", 
 //                keyPath, ofObject, change.Description);
@@ -135,6 +135,8 @@ namespace XFStreamingAudio.iOS
         public void Stop()
         {
             Debug.WriteLine("Stop playing");
+            avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("playbackBufferEmpty"));
+            avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("playbackLikelyToKeepUp"));
             avPlayer?.Pause();
             avPlayer?.Dispose();
         }
