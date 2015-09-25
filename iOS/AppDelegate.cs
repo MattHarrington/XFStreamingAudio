@@ -34,7 +34,7 @@ namespace XFStreamingAudio.iOS
             return base.FinishedLaunching(app, options);
         }
 
-        private void DefaultsChanged( NSNotification obj )
+        public void DefaultsChanged(NSNotification obj)
         {   
             Debug.WriteLine("DefaultsChanged()");
 //            Page mp = Xamarin.Forms.Application.Current.MainPage;
