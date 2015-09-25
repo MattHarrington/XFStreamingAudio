@@ -11,8 +11,6 @@ namespace XFStreamingAudio.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-        NSObject observer;
-
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
@@ -28,27 +26,17 @@ namespace XFStreamingAudio.iOS
 
             LoadApplication(new App());
 
-            observer = NSNotificationCenter.DefaultCenter
-                .AddObserver((NSString)"NSUserDefaultsDidChangeNotification", DefaultsChanged);
-
             return base.FinishedLaunching(app, options);
         }
 
-        public void DefaultsChanged(NSNotification obj)
-        {   
-            Debug.WriteLine("DefaultsChanged()");
-//            Page mp = Xamarin.Forms.Application.Current.MainPage;
-//            var currentPage = ((TabbedPage)mp).CurrentPage;
-//            MessagingCenter.Send<Page>((Page)currentPage, "BandwidthSwitchToggled");
-        }
-
-        public override void WillTerminate (UIApplication application)
-        {
-            if (observer != null) {
-                NSNotificationCenter.DefaultCenter.RemoveObserver (observer);
-                observer = null;
-            }
-        }
+//        public override void WillTerminate(UIApplication application)
+//        {
+//            if (observer != null)
+//            {
+//                NSNotificationCenter.DefaultCenter.RemoveObserver(observer);
+//                observer = null;
+//            }
+//        }
 
         public override void ReceiveMemoryWarning(UIApplication application)
         {

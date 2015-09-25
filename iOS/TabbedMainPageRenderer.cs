@@ -13,11 +13,23 @@ namespace XFStreamingAudio.iOS
 {
     public class TabbedMainPageRenderer : TabbedRenderer
     {
+        NSObject observer;
+
         public TabbedMainPageRenderer()
         {
             NSNotificationCenter notificationCenter = NSNotificationCenter.DefaultCenter;
             notificationCenter.AddObserver(this, new ObjCRuntime.Selector("routeChanged:"), 
                 AVAudioSession.RouteChangeNotification, null);
+            observer = NSNotificationCenter.DefaultCenter
+                .AddObserver((NSString)"NSUserDefaultsDidChangeNotification", DefaultsChanged);
+        }
+
+        public void DefaultsChanged(NSNotification obj)
+        {   
+            Debug.WriteLine("DefaultsChanged()");
+            //            Page mp = Xamarin.Forms.Application.Current.MainPage;
+            //            var currentPage = ((TabbedPage)mp).CurrentPage;
+            //            MessagingCenter.Send<Page>((Page)currentPage, "BandwidthSwitchToggled");
         }
 
         [Export("routeChanged:")]
