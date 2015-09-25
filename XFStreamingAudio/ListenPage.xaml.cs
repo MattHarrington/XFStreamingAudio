@@ -13,9 +13,7 @@ namespace XFStreamingAudio
         IAudioPlayer audioPlayer;
         Uri source;
         bool useHighBandwidth;
-//        readonly Uri source96 = new Uri("https://www.kvmr.org/aac96.m3u");
-//        readonly Uri source32 = new Uri("https://www.kvmr.org/aac32.m3u");
-        readonly Uri source96 = new Uri("http://ice.somafm.com/defcon-64.aac");
+        readonly Uri source96 = new Uri("https://www.kvmr.org/aac96.m3u");
         readonly Uri source32 = new Uri("https://www.kvmr.org/aac32.m3u");
         const string playIcon = "\u25b6\uFE0E";
         const string stopIcon = "\u25a0";
@@ -34,6 +32,11 @@ namespace XFStreamingAudio
             }
             playStopBtn.Clicked += OnPlayStopBtnClicked;
             diagnosticsBtn.Clicked += DiagnosticsBtn_Clicked;
+
+            TapGestureRecognizer launchSettingsImageTGR = new TapGestureRecognizer();
+            launchSettingsImageTGR.Tapped += LaunchSystemSettings;
+            launchSettingsImage.GestureRecognizers.Add(launchSettingsImageTGR);
+
             audioPlayer = DependencyService.Get<IAudioPlayer>();
             MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption",
                 OnAudioBeginInterruption);
@@ -50,6 +53,11 @@ namespace XFStreamingAudio
             MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
                 OnBandwidthSwitchToggled);
             CrossConnectivity.Current.ConnectivityChanged += ConnectivityChanged;
+        }
+
+        void LaunchSystemSettings(object sender, EventArgs e)
+        {
+            Device.OpenUri(new Uri("app-settings:"));
         }
 
         void OnBandwidthSwitchToggled(object sender)

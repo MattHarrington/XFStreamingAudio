@@ -14,9 +14,11 @@ namespace XFStreamingAudio.iOS
     public class TabbedMainPageRenderer : TabbedRenderer
     {
         NSObject observer;
+        bool bandwidthSwitchState;
 
         public TabbedMainPageRenderer()
         {
+            bandwidthSwitchState = Helpers.Settings.BandwidthSwitchState;
             NSNotificationCenter notificationCenter = NSNotificationCenter.DefaultCenter;
             notificationCenter.AddObserver(this, new ObjCRuntime.Selector("routeChanged:"), 
                 AVAudioSession.RouteChangeNotification, null);
@@ -27,9 +29,15 @@ namespace XFStreamingAudio.iOS
         public void DefaultsChanged(NSNotification obj)
         {   
             Debug.WriteLine("DefaultsChanged()");
-            //            Page mp = Xamarin.Forms.Application.Current.MainPage;
-            //            var currentPage = ((TabbedPage)mp).CurrentPage;
-            //            MessagingCenter.Send<Page>((Page)currentPage, "BandwidthSwitchToggled");
+            if (bandwidthSwitchState == Helpers.Settings.BandwidthSwitchState)
+            {
+                Debug.WriteLine("DefaultsUnchanged");
+                return;
+            }
+            bandwidthSwitchState = Helpers.Settings.BandwidthSwitchState;
+            Page mp = Xamarin.Forms.Application.Current.MainPage;
+            var currentPage = ((TabbedPage)mp).CurrentPage;
+            MessagingCenter.Send<Page>((Page)currentPage, "BandwidthSwitchToggled");
         }
 
         [Export("routeChanged:")]

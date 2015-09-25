@@ -20,13 +20,18 @@
 				Source="WhiteTower"
 				Aspect="AspectFill" />
 			<StackLayout
-				Orientation="Vertical"
-				VerticalOptions="Center">
+				Orientation="Vertical">
+				<Image
+					Source="SettingsIcon"
+					x:Name="launchSettingsImage"
+					HorizontalOptions="End" />
 				<Label
 					Text="KVMR"
 					FontSize="60"
 					FontFamily="Futura-Medium"
-					TextColor="#7AC143" />
+					TextColor="#7AC143"
+					VerticalOptions="EndAndExpand"
+					HorizontalOptions="Center" />
 				<Label
 					Text="Nevada City"
 					TextColor="Purple"
@@ -34,18 +39,17 @@
 					FontFamily="Futura-Medium"
 					HorizontalOptions="Center" />
 				<Frame
-					Padding="0,75,0,0"
+					Padding="0,100,0,100"
 					HasShadow="false">
 					<Button
 						x:Name="playStopBtn"
 						Text="▶︎"
-						FontSize="48"
-						VerticalOptions="Center" />
+						FontSize="48" />
 				</Frame>
 				<Button
 					x:Name="diagnosticsBtn"
 					Text="Diagnostics"
-					HorizontalOptions="End"
+					HorizontalOptions="EndAndExpand"
 					VerticalOptions="Center"
 					IsVisible="false" />
 			</StackLayout>
