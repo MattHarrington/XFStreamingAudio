@@ -10,10 +10,8 @@ namespace XFStreamingAudio
         public SettingsPage()
         {
             InitializeComponent();
-            if (Application.Current.Properties.ContainsKey("bandwidthSwitchState"))
-            {
-                bandwidthSwitch.On = (bool)Application.Current.Properties["bandwidthSwitchState"];
-            }
+
+            bandwidthSwitch.On = Helpers.Settings.BandwidthSwitchState;
             bandwidthSwitch.OnChanged += OnBandwidthSwitchToggled;
         }
 
@@ -29,26 +27,19 @@ namespace XFStreamingAudio
                         "Yes",
                         "No"))
                 {
-                    Application.Current.Properties["bandwidthSwitchState"] = bandwidthSwitch.On;
+                    Helpers.Settings.BandwidthSwitchState = bandwidthSwitch.On;
                     Page mp = Xamarin.Forms.Application.Current.MainPage;
                     var currentPage = ((TabbedPage)mp).CurrentPage;
                     MessagingCenter.Send<Page>((Page)currentPage, "BandwidthSwitchToggled");
                 }
                 else
                 {
-                    if (Application.Current.Properties.ContainsKey("bandwidthSwitchState"))
-                    {
-                        bandwidthSwitch.On = (bool)Application.Current.Properties["bandwidthSwitchState"];
-                    }
-                    else
-                    {
-                        bandwidthSwitch.On = false;
-                    }
+                    bandwidthSwitch.On = false;
                 }
             }
             else
             {
-                Application.Current.Properties["bandwidthSwitchState"] = bandwidthSwitch.On;
+                Helpers.Settings.BandwidthSwitchState = bandwidthSwitch.On;
                 Page mp = Xamarin.Forms.Application.Current.MainPage;
                 var currentPage = ((TabbedPage)mp).CurrentPage;
                 MessagingCenter.Send<Page>((Page)currentPage, "BandwidthSwitchToggled");

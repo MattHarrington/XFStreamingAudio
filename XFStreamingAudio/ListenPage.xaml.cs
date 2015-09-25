@@ -13,7 +13,9 @@ namespace XFStreamingAudio
         IAudioPlayer audioPlayer;
         Uri source;
         bool useHighBandwidth;
-        readonly Uri source96 = new Uri("https://www.kvmr.org/aac96.m3u");
+//        readonly Uri source96 = new Uri("https://www.kvmr.org/aac96.m3u");
+//        readonly Uri source32 = new Uri("https://www.kvmr.org/aac32.m3u");
+        readonly Uri source96 = new Uri("http://ice.somafm.com/defcon-64.aac");
         readonly Uri source32 = new Uri("https://www.kvmr.org/aac32.m3u");
         const string playIcon = "\u25b6\uFE0E";
         const string stopIcon = "\u25a0";
@@ -21,10 +23,7 @@ namespace XFStreamingAudio
         public ListenPage()
         {
             InitializeComponent();
-            if (Application.Current.Properties.ContainsKey("bandwidthSwitchState"))
-            {
-                useHighBandwidth = (bool)Application.Current.Properties["bandwidthSwitchState"];
-            }
+            useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
             if (useHighBandwidth)
             {
                 source = source96;
@@ -55,7 +54,7 @@ namespace XFStreamingAudio
 
         void OnBandwidthSwitchToggled(object sender)
         {
-            useHighBandwidth = (bool)Application.Current.Properties["bandwidthSwitchState"];
+            useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
             if (useHighBandwidth)
             {
                 source = source96;
