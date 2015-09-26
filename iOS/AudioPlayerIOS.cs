@@ -6,7 +6,7 @@ using AVFoundation;
 using MediaPlayer;
 using Foundation;
 using System.Collections.Generic;
-using AI.XamarinSDK.Abstractions;
+using Xamarin;
 
 [assembly: Dependency(typeof(AudioPlayerIOS))]
 namespace XFStreamingAudio.iOS
@@ -117,14 +117,18 @@ namespace XFStreamingAudio.iOS
                     if (change.ValueForKeyPath(new NSString("new")).Description == "1")
                     {
                         Debug.WriteLine("playbackBufferEmpty == {0}", true);
-                        TelemetryManager.TrackEvent("playbackBufferEmpty");
+                        Insights.Track("PlaybackBufferEmpty", new Dictionary <string, string> { 
+                            {"track-local-time", DateTime.Now.ToString()}
+                        });
                     }
                     break;
                 case "playbackLikelyToKeepUp":
                     if (change.ValueForKeyPath(new NSString("new")).Description == "0")
                     {
                         Debug.WriteLine("playbackLikelyToKeepUp == {0}", false);
-                        TelemetryManager.TrackEvent("playbackNotLikelyToKeepUp");
+                        Insights.Track("PlaybackNotLikelyToKeepUp", new Dictionary <string, string> { 
+                            {"track-local-time", DateTime.Now.ToString()}
+                        });
                     }
                     break;
                 default:
