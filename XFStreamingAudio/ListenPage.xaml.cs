@@ -86,7 +86,7 @@ namespace XFStreamingAudio
                 Debug.WriteLine("ConnectionType: {0}", connection);
             }
 //            DisplayAlert("Connectivity Changed", "Please restart stream", "OK");
-            if (!e.IsConnected)
+            if (!e.IsConnected && audioPlayer.IsPlaying)
             {
                 audioPlayer.Stop();
                 playStopBtn.Text = playIcon;   
