@@ -130,8 +130,11 @@ namespace XFStreamingAudio
         void OnHeadphonesUnplugged(object sender)
         {
             Debug.WriteLine("OnHeadphonesUnplugged()");
-            audioPlayer.Stop();
-            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
+            if (audioPlayer.IsPlaying)
+            {
+                audioPlayer.Stop();
+                Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
+            }
         }
 
         void OnRemoteControlPlayOrPreviousTrackOrNextTrack(object sender)

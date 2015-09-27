@@ -89,6 +89,7 @@ namespace XFStreamingAudio.iOS
             Debug.WriteLine("Start playing");
             AVAsset asset = AVAsset.FromUrl(source);
             AVPlayerItem playerItem = new AVPlayerItem(asset);
+            #if DEBUG
             playerItem.AddObserver(observer: this,
                 keyPath: new NSString("playbackBufferEmpty"),
                 options: NSKeyValueObservingOptions.New,
@@ -97,6 +98,7 @@ namespace XFStreamingAudio.iOS
                 keyPath: new NSString("playbackLikelyToKeepUp"),
                 options: NSKeyValueObservingOptions.New,
                 context: IntPtr.Zero);
+            #endif
             avPlayer = new AVPlayer(playerItem);
             avPlayer.Play();
 
@@ -139,8 +141,10 @@ namespace XFStreamingAudio.iOS
         public void Stop()
         {
             Debug.WriteLine("Stop playing");
+            #if DEBUG
             avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("playbackBufferEmpty"));
             avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("playbackLikelyToKeepUp"));
+            #endif
             avPlayer?.Pause();
             avPlayer?.Dispose();
         }

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.2</string>
+	<string>1.0.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -40,6 +40,6 @@
 		<true/>
 	</dict>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>5</string>
 </dict>
 </plist>
