@@ -52,7 +52,6 @@ namespace XFStreamingAudio
                 OnHeadphonesUnplugged);
             MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
                 OnBandwidthSwitchToggled);
-            CrossConnectivity.Current.ConnectivityChanged += ConnectivityChanged;
         }
 
         void LaunchSystemSettings(object sender, EventArgs e)
@@ -75,21 +74,6 @@ namespace XFStreamingAudio
             {
                 audioPlayer.Stop();
                 audioPlayer.Play(source);
-            }
-        }
-
-        void ConnectivityChanged(object sender, Connectivity.Plugin.Abstractions.ConnectivityChangedEventArgs e)
-        {
-            Debug.WriteLine("IsConnected: {0}", e.IsConnected);
-            foreach (var connection in CrossConnectivity.Current.ConnectionTypes)
-            {
-                Debug.WriteLine("ConnectionType: {0}", connection);
-            }
-//            DisplayAlert("Connectivity Changed", "Please restart stream", "OK");
-            if (!e.IsConnected && audioPlayer.IsPlaying)
-            {
-                audioPlayer.Stop();
-                playStopBtn.Text = playIcon;   
             }
         }
 
