@@ -60,6 +60,12 @@
     <Reference Include="Xamarin.Forms.Platform">
       <HintPath>..\packages\Xamarin.Forms.1.5.0.6447\lib\MonoAndroid10\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="Refractored.Xam.Settings">
+      <HintPath>..\packages\Xam.Plugins.Settings.1.5.2\lib\MonoAndroid10\Refractored.Xam.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="Refractored.Xam.Settings.Abstractions">
+      <HintPath>..\packages\Xam.Plugins.Settings.1.5.2\lib\MonoAndroid10\Refractored.Xam.Settings.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XFStreamingAudio\XFStreamingAudio.csproj">
@@ -71,12 +77,14 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AudioPlayerAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="packages.config" />
+    <None Include="PluginsHelp\SettingsReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\layout\" />
@@ -87,6 +95,21 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\CallStudioIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\CallStudioIcon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\CallStudioIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\FeedbackIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\FeedbackIcon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\FeedbackIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\EmailIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\EmailIcon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\EmailIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\WebsiteIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\WebsiteIcon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\WebsiteIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\RefreshIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\RefreshIcon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\RefreshIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.1.5.0.6447\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.5.0.6447\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

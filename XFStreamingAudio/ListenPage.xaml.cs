@@ -38,20 +38,20 @@ namespace XFStreamingAudio
             launchSettingsImage.GestureRecognizers.Add(launchSettingsImageTGR);
 
             audioPlayer = DependencyService.Get<IAudioPlayer>();
-            MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption",
-                OnAudioBeginInterruption);
-            MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption",
-                OnAudioEndInterruption);
-            MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause",
-                OnRemoteControlTogglePlayPause);
-            MessagingCenter.Subscribe<Page>(this, "RemoteControlPauseOrStop",
-                OnRemoteControlPauseOrStop);
-            MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack",
-                OnRemoteControlPlayOrPreviousTrackOrNextTrack);
-            MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
-                OnHeadphonesUnplugged);
-            MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
-                OnBandwidthSwitchToggled);
+//            MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption",
+//                OnAudioBeginInterruption);
+//            MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption",
+//                OnAudioEndInterruption);
+//            MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause",
+//                OnRemoteControlTogglePlayPause);
+//            MessagingCenter.Subscribe<Page>(this, "RemoteControlPauseOrStop",
+//                OnRemoteControlPauseOrStop);
+//            MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack",
+//                OnRemoteControlPlayOrPreviousTrackOrNextTrack);
+//            MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
+//                OnHeadphonesUnplugged);
+//            MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
+//                OnBandwidthSwitchToggled);
         }
 
         void LaunchSystemSettings(object sender, EventArgs e)
