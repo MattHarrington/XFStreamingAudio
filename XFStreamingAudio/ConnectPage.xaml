@@ -26,7 +26,8 @@
 						<Button
 							x:Name="feedbackBtn"
 							Text="App Feedback"
-							FontSize="18" />
+							FontSize="18"
+							BackgroundColor="Transparent" />
 					</StackLayout>
 					<StackLayout
 						HorizontalOptions="CenterAndExpand">
@@ -36,7 +37,8 @@
 						<Button
 							x:Name="callStudioBtn"
 							Text="Call Studio"
-							FontSize="18" />
+							FontSize="18"
+							BackgroundColor="Transparent" />
 					</StackLayout>
 				</StackLayout>
 				<StackLayout
@@ -49,7 +51,8 @@
 						<Button
 							x:Name="emailOfficeBtn"
 							Text="Email Office"
-							FontSize="18" />
+							FontSize="18"
+							BackgroundColor="Transparent" />
 					</StackLayout>
 					<StackLayout
 						HorizontalOptions="CenterAndExpand">
@@ -59,7 +62,8 @@
 						<Button
 							x:Name="callOfficeBtn"
 							Text="Call Office"
-							FontSize="18" />
+							FontSize="18"
+							BackgroundColor="Transparent" />
 					</StackLayout>
 				</StackLayout>
 				<StackLayout
@@ -72,7 +76,8 @@
 						<Button
 							x:Name="facebookBtn"
 							Text="Facebook"
-							FontSize="18" />
+							FontSize="18"
+							BackgroundColor="Transparent" />
 					</StackLayout>
 					<StackLayout
 						HorizontalOptions="CenterAndExpand">
@@ -82,7 +87,8 @@
 						<Button
 							x:Name="twitterBtn"
 							Text="Twitter"
-							FontSize="18" />
+							FontSize="18"
+							BackgroundColor="Transparent" />
 					</StackLayout>
 				</StackLayout>
 				<StackLayout
@@ -95,7 +101,8 @@
 						<Button
 							x:Name="websiteBtn"
 							Text="Website"
-							FontSize="18" />
+							FontSize="18"
+							BackgroundColor="Transparent" />
 					</StackLayout>
 				</StackLayout>
 			</StackLayout>

@@ -28,6 +28,7 @@
 					Text="❬ Back"
 					HorizontalOptions="Start"
 					FontSize="18"
+					BackgroundColor="Transparent"
 					IsEnabled="false"
 					Grid.Row="0" />
 				<Image

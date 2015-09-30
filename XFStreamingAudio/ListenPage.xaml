@@ -44,10 +44,13 @@
 					<Button
 						x:Name="playStopBtn"
 						Text="▶︎"
-						FontSize="48" />
+						TextColor="#007AFF"
+						FontSize="48"
+						BackgroundColor="Transparent" />
 				</Frame>
 				<Button
 					x:Name="diagnosticsBtn"
+					BackgroundColor="Transparent"
 					Text="Diagnostics"
 					HorizontalOptions="EndAndExpand"
 					VerticalOptions="Center"

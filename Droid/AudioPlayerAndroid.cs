@@ -1,21 +1,32 @@
 ﻿using System;
+using System.Diagnostics;
 using Xamarin.Forms;
 using XFStreamingAudio.Droid;
+using Android.Media;
 
 [assembly: Dependency(typeof(AudioPlayerAndroid))]
 namespace XFStreamingAudio.Droid
 {
     public class AudioPlayerAndroid : IAudioPlayer
     {
+        MediaPlayer mediaPlayer;
+
         public AudioPlayerAndroid()
         {
         }
 
         #region IAudioPlayer implementation
 
-        public void Play(Uri source)
+        public async void Play(Uri source)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("AudioPlayerAndroid.Play()");
+            mediaPlayer = new MediaPlayer();
+//            mediaPlayer = MediaPlayer.Create(Android.App.Application.Context, 
+//                Android.Net.Uri.Parse("http://live2.artoflogic.com:8190/kvmr"));
+            await mediaPlayer.SetDataSourceAsync(Android.App.Application.Context, 
+                Android.Net.Uri.Parse("http://live2.artoflogic.com:8190/kvmr"));
+            mediaPlayer.Prepare();
+            mediaPlayer.Start();
         }
 
         public void Stop()
@@ -27,7 +38,7 @@ namespace XFStreamingAudio.Droid
         {
             get
             {
-                throw new NotImplementedException();
+                return false;
             }
         }
 

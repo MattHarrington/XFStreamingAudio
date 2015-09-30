@@ -163,6 +163,8 @@ namespace XFStreamingAudio
         void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
             Debug.WriteLine("OnPlayStopBtnClicked");
+            audioPlayer.Play(source);
+            return;
             if (!audioPlayer.IsPlaying)
             {
                 if (!CrossConnectivity.Current.IsConnected)
