@@ -21,6 +21,13 @@
 				Aspect="AspectFill" />
 			<StackLayout
 				Orientation="Vertical">
+				<StackLayout.Padding>
+					<OnPlatform
+						x:TypeArguments="Thickness"
+						iOS="0"
+						Android="0,20,0,0"
+						WinPhone="0" />
+				</StackLayout.Padding>
 				<Image
 					Source="SettingsIcon"
 					x:Name="launchSettingsImage"
@@ -34,10 +41,17 @@
 					HorizontalOptions="Center" />
 				<Label
 					Text="Nevada City"
-					TextColor="Purple"
 					FontSize="24"
 					FontFamily="Futura-Medium"
-					HorizontalOptions="Center" />
+					HorizontalOptions="Center">
+					<Label.TextColor>
+						<OnPlatform
+							x:TypeArguments="Color"
+							iOS="Purple"
+							Android="#FEE000"
+							WinPhone="#FEE000" />
+					</Label.TextColor>
+				</Label>
 				<Frame
 					Padding="0,100,0,100"
 					HasShadow="false">

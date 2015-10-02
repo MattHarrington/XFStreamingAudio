@@ -19,26 +19,32 @@ namespace XFStreamingAudio.Droid
 
         public async void Play(Uri source)
         {
-            Debug.WriteLine("AudioPlayerAndroid.Play()");
             mediaPlayer = new MediaPlayer();
-//            mediaPlayer = MediaPlayer.Create(Android.App.Application.Context, 
-//                Android.Net.Uri.Parse("http://live2.artoflogic.com:8190/kvmr"));
             await mediaPlayer.SetDataSourceAsync(Android.App.Application.Context, 
-                Android.Net.Uri.Parse("http://live2.artoflogic.com:8190/kvmr"));
+                Android.Net.Uri.Parse(source.AbsoluteUri));
             mediaPlayer.Prepare();
             mediaPlayer.Start();
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            mediaPlayer.Stop();
+            mediaPlayer.Release();
+            mediaPlayer = null;
         }
 
         public bool IsPlaying
         {
             get
             {
-                return false;
+                if (mediaPlayer != null)
+                {
+                    return mediaPlayer.IsPlaying;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 

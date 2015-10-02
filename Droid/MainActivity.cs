@@ -11,7 +11,7 @@ using Xamarin;
 
 namespace XFStreamingAudio.Droid
 {
-    [Activity(Label = "XFStreamingAudio.Droid", Icon = "@drawable/icon", MainLauncher = true, 
+    [Activity(Label = "KVMR", Icon = "@drawable/icon", MainLauncher = true, 
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
     {

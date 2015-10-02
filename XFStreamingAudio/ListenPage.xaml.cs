@@ -13,50 +13,106 @@ namespace XFStreamingAudio
         IAudioPlayer audioPlayer;
         Uri source;
         bool useHighBandwidth;
-        readonly Uri source96 = new Uri("https://www.kvmr.org/aac96.m3u");
-        readonly Uri source32 = new Uri("https://www.kvmr.org/aac32.m3u");
+        readonly Uri sourceHighBandwidth;
+        readonly Uri sourceLowBandwidth;
         const string playIcon = "\u25b6\uFE0E";
         const string stopIcon = "\u25a0";
 
         public ListenPage()
         {
             InitializeComponent();
+
+            if (Device.OS == TargetPlatform.iOS)
+            {
+                sourceHighBandwidth = new Uri("https://www.kvmr.org/aac96.m3u");
+                sourceLowBandwidth = new Uri("https://www.kvmr.org/aac32.m3u");
+            }
+            else if (Device.OS == TargetPlatform.Android)
+            {
+                sourceHighBandwidth = new Uri("http://live2.artoflogic.com:8190/kvmr");
+                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/dial");
+            }
+
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
             if (useHighBandwidth)
             {
-                source = source96;
+                source = sourceHighBandwidth;
             }
             else
             {
-                source = source32;
+                source = sourceLowBandwidth;
             }
             playStopBtn.Clicked += OnPlayStopBtnClicked;
             diagnosticsBtn.Clicked += DiagnosticsBtn_Clicked;
 
             TapGestureRecognizer launchSettingsImageTGR = new TapGestureRecognizer();
-            launchSettingsImageTGR.Tapped += LaunchSystemSettings;
+            launchSettingsImageTGR.Tapped += DisplaySettings;
             launchSettingsImage.GestureRecognizers.Add(launchSettingsImageTGR);
 
             audioPlayer = DependencyService.Get<IAudioPlayer>();
-//            MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption",
-//                OnAudioBeginInterruption);
-//            MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption",
-//                OnAudioEndInterruption);
-//            MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause",
-//                OnRemoteControlTogglePlayPause);
-//            MessagingCenter.Subscribe<Page>(this, "RemoteControlPauseOrStop",
-//                OnRemoteControlPauseOrStop);
-//            MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack",
-//                OnRemoteControlPlayOrPreviousTrackOrNextTrack);
-//            MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
-//                OnHeadphonesUnplugged);
-//            MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
-//                OnBandwidthSwitchToggled);
+            if (Device.OS == TargetPlatform.iOS)
+            {
+                MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption",
+                    OnAudioBeginInterruption);
+                MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption",
+                    OnAudioEndInterruption);
+                MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause",
+                    OnRemoteControlTogglePlayPause);
+                MessagingCenter.Subscribe<Page>(this, "RemoteControlPauseOrStop",
+                    OnRemoteControlPauseOrStop);
+                MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack",
+                    OnRemoteControlPlayOrPreviousTrackOrNextTrack);
+                MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
+                    OnHeadphonesUnplugged);
+                MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
+                    OnBandwidthSwitchToggled);
+            }
         }
 
-        void LaunchSystemSettings(object sender, EventArgs e)
+        async void DisplaySettings(object sender, EventArgs e)
         {
-            Device.OpenUri(new Uri("app-settings:"));
+            if (Device.OS == TargetPlatform.iOS)
+            {
+                Device.OpenUri(new Uri("app-settings:"));
+            }
+            else if (Device.OS == TargetPlatform.Android)
+            {
+                string highBandwidthChoice;
+                string lowBandwidthChoice;
+                if (source == sourceHighBandwidth)
+                {
+                    highBandwidthChoice = "Yes (currently selected)";
+                    lowBandwidthChoice = "No";
+                }
+                else
+                {
+                    highBandwidthChoice = "Yes";
+                    lowBandwidthChoice = "No (currently selected)";
+                }
+
+                var action = await DisplayActionSheet("High quality stream?", "Cancel", null, 
+                    highBandwidthChoice, lowBandwidthChoice);
+                if (action == highBandwidthChoice && source == sourceLowBandwidth)
+                {
+                    Helpers.Settings.BandwidthSwitchState = true;
+                    source = sourceHighBandwidth;
+                    if (audioPlayer.IsPlaying)
+                    {
+                        audioPlayer.Stop();
+                        audioPlayer.Play(source);
+                    }
+                }
+                else if (action == lowBandwidthChoice && source == sourceHighBandwidth)
+                {
+                    Helpers.Settings.BandwidthSwitchState = false;
+                    source = sourceLowBandwidth;
+                    if (audioPlayer.IsPlaying)
+                    {
+                        audioPlayer.Stop();
+                        audioPlayer.Play(source);
+                    }
+                }
+            }
         }
 
         void OnBandwidthSwitchToggled(object sender)
@@ -64,11 +120,11 @@ namespace XFStreamingAudio
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
             if (useHighBandwidth)
             {
-                source = source96;
+                source = sourceHighBandwidth;
             }
             else
             {
-                source = source32;
+                source = sourceLowBandwidth;
             }
             if (audioPlayer.IsPlaying)
             {
@@ -163,8 +219,6 @@ namespace XFStreamingAudio
         void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
             Debug.WriteLine("OnPlayStopBtnClicked");
-            audioPlayer.Play(source);
-            return;
             if (!audioPlayer.IsPlaying)
             {
                 if (!CrossConnectivity.Current.IsConnected)
