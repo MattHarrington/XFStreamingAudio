@@ -24,8 +24,13 @@ namespace XFStreamingAudio
 
             if (Device.OS == TargetPlatform.iOS)
             {
+                #if DEBUG
+                sourceHighBandwidth = new Uri("http://moonat.cloudapp.net:8000/kvmr-96.aac");
+                sourceLowBandwidth = new Uri("http://moonat.cloudapp.net:8000/kvmr-32.aac");
+                #else
                 sourceHighBandwidth = new Uri("https://www.kvmr.org/aac96.m3u");
                 sourceLowBandwidth = new Uri("https://www.kvmr.org/aac32.m3u");
+                #endif
             }
             else if (Device.OS == TargetPlatform.Android)
             {
@@ -91,7 +96,7 @@ namespace XFStreamingAudio
                 }
 
                 var action = await DisplayActionSheet("High quality stream?", "Cancel", null, 
-                    highBandwidthChoice, lowBandwidthChoice);
+                                 highBandwidthChoice, lowBandwidthChoice);
                 if (action == highBandwidthChoice && source == sourceLowBandwidth)
                 {
                     Helpers.Settings.BandwidthSwitchState = true;
@@ -174,14 +179,15 @@ namespace XFStreamingAudio
             Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
         }
 
-        void OnRemoteControlPlayOrPreviousTrackOrNextTrack(object sender)
+        async void OnRemoteControlPlayOrPreviousTrackOrNextTrack(object sender)
         {
             Debug.WriteLine("OnRemoteControlPlayOrPreviousTrackOrNextTrack()");
+            var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(source.Host, source.Port);
             if (!audioPlayer.IsPlaying)
             {
-                if (!CrossConnectivity.Current.IsConnected)
+                if (!sourceReachable)
                 {
-                    DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+                    await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
                     return;
                 }
                 audioPlayer.Play(source);
@@ -196,14 +202,15 @@ namespace XFStreamingAudio
             playStopBtn.Text = playIcon;
         }
 
-        void OnRemoteControlTogglePlayPause(object sender)
+        async void OnRemoteControlTogglePlayPause(object sender)
         {
             Debug.WriteLine("OnRemoteControlTogglePlayPause()");
             if (!audioPlayer.IsPlaying)
             {
-                if (!CrossConnectivity.Current.IsConnected)
+                var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(source.Host, source.Port);
+                if (!sourceReachable)
                 {
-                    DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+                    await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
                     return;
                 }
                 audioPlayer.Play(source);
@@ -216,14 +223,15 @@ namespace XFStreamingAudio
             }
         }
 
-        void OnPlayStopBtnClicked(object sender, EventArgs e)
+        async void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
             Debug.WriteLine("OnPlayStopBtnClicked");
             if (!audioPlayer.IsPlaying)
             {
-                if (!CrossConnectivity.Current.IsConnected)
+                var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(source.Host, source.Port);
+                if (!sourceReachable)
                 {
-                    DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+                    await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
                     return;
                 }
                 audioPlayer.Play(source);
