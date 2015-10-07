@@ -34,8 +34,8 @@ namespace XFStreamingAudio
             }
             else if (Device.OS == TargetPlatform.Android)
             {
-                sourceHighBandwidth = new Uri("http://live2.artoflogic.com:8190/kvmr");
-                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/dial");
+                sourceHighBandwidth = new Uri("http://173.195.185.6:8190/kvmr");
+                sourceLowBandwidth = new Uri("http://173.195.185.6:8000/dial");
             }
 
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
@@ -55,6 +55,15 @@ namespace XFStreamingAudio
             launchSettingsImage.GestureRecognizers.Add(launchSettingsImageTGR);
 
             audioPlayer = DependencyService.Get<IAudioPlayer>();
+            if (audioPlayer.IsPlaying)
+            {
+                playStopBtn.Text = stopIcon;
+            }
+            else
+            {
+                playStopBtn.Text = playIcon;
+            }
+
             if (Device.OS == TargetPlatform.iOS)
             {
                 MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption",
@@ -95,7 +104,7 @@ namespace XFStreamingAudio
                     lowBandwidthChoice = "No (currently selected)";
                 }
 
-                var action = await DisplayActionSheet("High quality stream?", "Cancel", null, 
+                var action = await DisplayActionSheet("High Fidelity", "Cancel", null, 
                                  highBandwidthChoice, lowBandwidthChoice);
                 if (action == highBandwidthChoice && source == sourceLowBandwidth)
                 {
@@ -225,9 +234,9 @@ namespace XFStreamingAudio
 
         async void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
-            Debug.WriteLine("OnPlayStopBtnClicked");
             if (!audioPlayer.IsPlaying)
             {
+                Debug.WriteLine("Start playing");
                 var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(source.Host, source.Port);
                 if (!sourceReachable)
                 {
@@ -239,6 +248,7 @@ namespace XFStreamingAudio
             }
             else
             {
+                Debug.WriteLine("Stop playing");
                 audioPlayer.Stop();
                 playStopBtn.Text = playIcon;
             }

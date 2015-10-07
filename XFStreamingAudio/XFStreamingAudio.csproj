@@ -39,9 +39,6 @@
     <Compile Include="SchedulePage.xaml.cs">
       <DependentUpon>SchedulePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlaylistPage.xaml.cs">
-      <DependentUpon>PlaylistPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PledgePage.xaml.cs">
       <DependentUpon>PledgePage.xaml</DependentUpon>
     </Compile>
@@ -90,9 +87,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="SchedulePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PlaylistPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="PledgePage.xaml">

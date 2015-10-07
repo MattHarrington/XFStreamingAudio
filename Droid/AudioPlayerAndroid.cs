@@ -3,6 +3,8 @@ using System.Diagnostics;
 using Xamarin.Forms;
 using XFStreamingAudio.Droid;
 using Android.Media;
+using Android.Content;
+using XFStreamingAudio.Droid.Services;
 
 [assembly: Dependency(typeof(AudioPlayerAndroid))]
 namespace XFStreamingAudio.Droid
@@ -17,34 +19,39 @@ namespace XFStreamingAudio.Droid
 
         #region IAudioPlayer implementation
 
-        public async void Play(Uri source)
+        public void Play(Uri source)
         {
-            mediaPlayer = new MediaPlayer();
-            await mediaPlayer.SetDataSourceAsync(Android.App.Application.Context, 
-                Android.Net.Uri.Parse(source.AbsoluteUri));
-            mediaPlayer.Prepare();
-            mediaPlayer.Start();
+            //MainActivity.SendAudioCommand(StreamingBackgroundService.ActionPlay);
+            var context = Forms.Context.ApplicationContext;
+            var intent = new Intent(context, typeof(StreamingBackgroundService));
+            intent.SetAction(StreamingBackgroundService.ActionPlay);
+            intent.PutExtra("source", source.AbsoluteUri);
+            Forms.Context.StartService(intent);
+            IsPlaying = true;
         }
 
         public void Stop()
         {
-            mediaPlayer.Stop();
-            mediaPlayer.Release();
-            mediaPlayer = null;
+            var context = Forms.Context.ApplicationContext;
+            var intent = new Intent(context, typeof(StreamingBackgroundService));
+            Forms.Context.StopService(intent);
+            IsPlaying = false;
         }
 
+        private bool _isPlaying;
+
         public bool IsPlaying
-        {
+        { 
             get
             {
-                if (mediaPlayer != null)
-                {
-                    return mediaPlayer.IsPlaying;
-                }
-                else
-                {
-                    return false;
-                }
+                Debug.WriteLine("IsPlaying = {0}", _isPlaying);
+                return _isPlaying;
+            }
+
+            set
+            {
+                _isPlaying = value;
+                Debug.WriteLine("Set IsPlaying = {0}", _isPlaying);
             }
         }
 
