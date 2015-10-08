@@ -11,8 +11,6 @@ namespace XFStreamingAudio.Droid
 {
     public class AudioPlayerAndroid : IAudioPlayer
     {
-        MediaPlayer mediaPlayer;
-
         public AudioPlayerAndroid()
         {
         }

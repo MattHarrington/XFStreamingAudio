@@ -134,12 +134,12 @@ namespace XFStreamingAudio.Droid.Services
 
             var notification = new Notification
                 {
-                    TickerText = new Java.Lang.String("Streaming started"),
-                    Icon = Resource.Drawable.icon
+                    TickerText = new Java.Lang.String("KVMR streaming started"),
+                    Icon = Resource.Drawable.AndroidNotificationIcon
                 };
             notification.Flags |= NotificationFlags.OngoingEvent;
             notification.SetLatestEventInfo(ApplicationContext, "KVMR",
-                "Music of the world, voice of the community", pendingIntent);
+                "Nevada City, California", pendingIntent);
             StartForeground(NotificationId, notification);
         }
 
