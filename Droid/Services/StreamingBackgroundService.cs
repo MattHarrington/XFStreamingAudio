@@ -18,6 +18,7 @@ namespace XFStreamingAudio.Droid.Services
         public const string ActionPause = "com.xamarin.action.PAUSE";
         public const string ActionStop = "com.xamarin.action.STOP";
 
+        private StreamingBackgroundServiceBinder binder;
         private MediaPlayer player;
         private AudioManager audioManager;
         private WifiManager wifiManager;
@@ -27,7 +28,7 @@ namespace XFStreamingAudio.Droid.Services
         private const int NotificationId = 1;
 
         /// <summary>
-        /// On create simply detect some of our managers
+        /// OnCreate() detects some of our managers
         /// </summary>
         public override void OnCreate()
         {
@@ -38,13 +39,20 @@ namespace XFStreamingAudio.Droid.Services
         }
 
         /// <summary>
-        /// Don't do anything on bind
+        /// Allows activities to bind to StreamingBackgroundService
         /// </summary>
-        /// <param name="intent"></param>
-        /// <returns></returns>
         public override IBinder OnBind(Intent intent)
         {
-            return null;
+            binder = new StreamingBackgroundServiceBinder(this);
+            return binder;
+        }
+
+        public bool IsPlaying
+        {
+            get
+            {
+                return player.IsPlaying;
+            }
         }
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)

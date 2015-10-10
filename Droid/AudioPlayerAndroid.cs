@@ -5,6 +5,7 @@ using XFStreamingAudio.Droid;
 using Android.Media;
 using Android.Content;
 using XFStreamingAudio.Droid.Services;
+using Android.OS;
 
 [assembly: Dependency(typeof(AudioPlayerAndroid))]
 namespace XFStreamingAudio.Droid
@@ -19,13 +20,11 @@ namespace XFStreamingAudio.Droid
 
         public void Play(Uri source)
         {
-            //MainActivity.SendAudioCommand(StreamingBackgroundService.ActionPlay);
             var context = Forms.Context.ApplicationContext;
             var intent = new Intent(context, typeof(StreamingBackgroundService));
             intent.SetAction(StreamingBackgroundService.ActionPlay);
             intent.PutExtra("source", source.AbsoluteUri);
             Forms.Context.StartService(intent);
-            IsPlaying = true;
         }
 
         public void Stop()
@@ -34,23 +33,13 @@ namespace XFStreamingAudio.Droid
             var intent = new Intent(context, typeof(StreamingBackgroundService));
             intent.SetAction(StreamingBackgroundService.ActionStop);
             Forms.Context.StartService(intent);
-            IsPlaying = false;
         }
-
-        private bool _isPlaying;
 
         public bool IsPlaying
         { 
             get
             {
-                Debug.WriteLine("IsPlaying = {0}", _isPlaying);
-                return _isPlaying;
-            }
-
-            set
-            {
-                _isPlaying = value;
-                Debug.WriteLine("Set IsPlaying = {0}", _isPlaying);
+                return ((MainActivity)Forms.Context).IsPlaying;
             }
         }
 
@@ -81,4 +70,3 @@ namespace XFStreamingAudio.Droid
         #endregion
     }
 }
-

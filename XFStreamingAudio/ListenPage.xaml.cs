@@ -59,17 +59,11 @@ namespace XFStreamingAudio
             launchSettingsImage.GestureRecognizers.Add(launchSettingsImageTGR);
 
             audioPlayer = DependencyService.Get<IAudioPlayer>();
-            if (audioPlayer.IsPlaying)  // Required for Android, since playback is in background service
-            {
-                playStopBtn.Text = stopIcon;
-            }
-            else
-            {
-                playStopBtn.Text = playIcon;
-            }
 
             MessagingCenter.Subscribe<AudioBeginInterruptionMessage>(this, "AudioBeginInterruption", 
                 OnAudioBeginInterruption);
+            MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
+                OnHeadphonesUnplugged);
             if (Device.OS == TargetPlatform.iOS)
             {
                 MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption",
@@ -80,13 +74,24 @@ namespace XFStreamingAudio
                     OnRemoteControlPauseOrStop);
                 MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack",
                     OnRemoteControlPlayOrPreviousTrackOrNextTrack);
-                MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
-                    OnHeadphonesUnplugged);
                 MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
                     OnBandwidthSwitchToggled);
             }
             else if (Device.OS == TargetPlatform.Android)
             {
+            }
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (audioPlayer.IsPlaying)  // Required for Android, since playback is in background service
+            {
+                playStopBtn.Text = stopIcon;
+            }
+            else
+            {
+                playStopBtn.Text = playIcon;
             }
         }
 
@@ -191,7 +196,7 @@ namespace XFStreamingAudio
         void OnHeadphonesUnplugged(object sender)
         {
             Debug.WriteLine("OnHeadphonesUnplugged()");
-            audioPlayer.Stop();
+            //audioPlayer.Stop();
             Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
         }
 

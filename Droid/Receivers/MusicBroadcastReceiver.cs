@@ -21,9 +21,12 @@ namespace XFStreamingAudio.Droid
                 return;
 
             // Signal the service to stop
-            var ctx = Forms.Context.ApplicationContext;
-            var stopIntent = new Intent(ctx, typeof(StreamingBackgroundService));
-            Forms.Context.StopService(stopIntent);
+            var stopIntent = new Intent(context, typeof(StreamingBackgroundService));
+            stopIntent.SetAction(StreamingBackgroundService.ActionStop);
+            Forms.Context.StartService(stopIntent);
+            Page mp = Xamarin.Forms.Application.Current.MainPage;
+            var currentPage = ((TabbedPage)mp).CurrentPage;
+            MessagingCenter.Send<Page>((Page)currentPage, "HeadphonesUnplugged");
         }
     }
 }
