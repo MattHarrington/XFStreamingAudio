@@ -5,6 +5,7 @@ using Android.Media;
 using Android.Net;
 using Android.Net.Wifi;
 using Android.OS;
+using Xamarin.Forms;
 
 namespace XFStreamingAudio.Droid.Services
 {
@@ -48,7 +49,7 @@ namespace XFStreamingAudio.Droid.Services
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            string source = intent.GetStringExtra("source");
+            string source = intent.GetStringExtra("source") ?? String.Empty;
             switch (intent.Action) {
                 case ActionPlay: Play(source); break;
                 case ActionStop: Stop(); break;
@@ -198,7 +199,7 @@ namespace XFStreamingAudio.Droid.Services
         public override void OnDestroy()
         {
             base.OnDestroy();
-            Stop();
+            //Stop();
             if (player != null)
             {
                 player.Release();
@@ -218,6 +219,7 @@ namespace XFStreamingAudio.Droid.Services
             switch (focusChange)
             {
                 case AudioFocus.Gain:
+                    System.Diagnostics.Debug.WriteLine("AudioFocus.Gain");
                     if (player == null)
                         IntializePlayer();
 
@@ -227,22 +229,25 @@ namespace XFStreamingAudio.Droid.Services
                         paused = false;
                     }
 
-                    player.SetVolume(1.0f, 1.0f);//Turn it up!
+                    player.SetVolume(1.0f, 1.0f);  // Turn it up!
                     break;
                 case AudioFocus.Loss:
-                    //We have lost focus stop!
+                    var message = new AudioBeginInterruptionMessage();
+                    MessagingCenter.Send(message, "AudioBeginInterruption");
+                    System.Diagnostics.Debug.WriteLine("AudioFocus.Loss");
                     Stop();
                     break;
                 case AudioFocus.LossTransient:
                     //We have lost focus for a short time, but likely to resume so pause
+                    System.Diagnostics.Debug.WriteLine("AudioFocus.LossTransient");
                     Pause();
                     break;
                 case AudioFocus.LossTransientCanDuck:
                     //We have lost focus but should till play at a muted 10% volume
+                    System.Diagnostics.Debug.WriteLine("AudioFocus.LossTransientCanDuck");
                     if(player.IsPlaying)
                         player.SetVolume(.1f, .1f);//turn it down!
                     break;
-
             }
         }
     }

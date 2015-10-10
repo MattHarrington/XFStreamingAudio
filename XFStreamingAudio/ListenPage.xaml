@@ -41,6 +41,7 @@
 					HorizontalOptions="Center" />
 				<Label
 					Text="Nevada City"
+					x:Name="nevadaCityLabel"
 					FontSize="24"
 					FontFamily="Futura-Medium"
 					HorizontalOptions="Center">

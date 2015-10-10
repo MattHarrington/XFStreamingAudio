@@ -22,6 +22,10 @@ namespace XFStreamingAudio
         {
             InitializeComponent();
 
+            #if DEBUG
+            nevadaCityLabel.Text = "DEBUG";
+            #endif
+
             if (Device.OS == TargetPlatform.iOS)
             {
                 #if DEBUG
@@ -55,7 +59,7 @@ namespace XFStreamingAudio
             launchSettingsImage.GestureRecognizers.Add(launchSettingsImageTGR);
 
             audioPlayer = DependencyService.Get<IAudioPlayer>();
-            if (audioPlayer.IsPlaying)
+            if (audioPlayer.IsPlaying)  // Required for Android, since playback is in background service
             {
                 playStopBtn.Text = stopIcon;
             }
@@ -64,10 +68,10 @@ namespace XFStreamingAudio
                 playStopBtn.Text = playIcon;
             }
 
+            MessagingCenter.Subscribe<AudioBeginInterruptionMessage>(this, "AudioBeginInterruption", 
+                OnAudioBeginInterruption);
             if (Device.OS == TargetPlatform.iOS)
             {
-                MessagingCenter.Subscribe<Page>(this, "AudioBeginInterruption",
-                    OnAudioBeginInterruption);
                 MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption",
                     OnAudioEndInterruption);
                 MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause",
@@ -80,6 +84,9 @@ namespace XFStreamingAudio
                     OnHeadphonesUnplugged);
                 MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
                     OnBandwidthSwitchToggled);
+            }
+            else if (Device.OS == TargetPlatform.Android)
+            {
             }
         }
 

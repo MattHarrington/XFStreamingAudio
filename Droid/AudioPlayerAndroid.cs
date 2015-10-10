@@ -32,7 +32,8 @@ namespace XFStreamingAudio.Droid
         {
             var context = Forms.Context.ApplicationContext;
             var intent = new Intent(context, typeof(StreamingBackgroundService));
-            Forms.Context.StopService(intent);
+            intent.SetAction(StreamingBackgroundService.ActionStop);
+            Forms.Context.StartService(intent);
             IsPlaying = false;
         }
 
