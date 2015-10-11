@@ -74,13 +74,16 @@ namespace XFStreamingAudio.Droid
 			public const int SettingsIcon = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int TwitterIcon = 2130837513;
+			public const int splash = 2130837513;
 			
 			// aapt resource value: 0x7f02000a
-			public const int WebsiteIcon = 2130837514;
+			public const int TwitterIcon = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int WhiteTower = 2130837515;
+			public const int WebsiteIcon = 2130837515;
+			
+			// aapt resource value: 0x7f02000c
+			public const int WhiteTower = 2130837516;
 			
 			static Drawable()
 			{
@@ -107,6 +110,22 @@ namespace XFStreamingAudio.Droid
 			}
 			
 			private String()
+			{
+			}
+		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int Theme_Splash = 2130968576;
+			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Style()
 			{
 			}
 		}
