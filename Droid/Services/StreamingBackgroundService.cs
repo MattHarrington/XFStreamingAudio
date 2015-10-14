@@ -70,7 +70,7 @@ namespace XFStreamingAudio.Droid.Services
             }
 
             //Set sticky as we are a long running operation
-            return StartCommandResult.Sticky;
+            return StartCommandResult.NotSticky;
         }
 
         private void IntializePlayer()
@@ -120,6 +120,11 @@ namespace XFStreamingAudio.Droid.Services
 
                 var focusResult = audioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
                 Log.Debug(TAG, "StreamingBackgroundService.Play() focusResult = " + focusResult);
+                if (focusResult != AudioFocusRequest.Granted)
+                {
+                    // TODO: Revert UI back to "Play", because not granted audio focus
+                    return;
+                }
 
                 player.PrepareAsync();
                 RegisterReceiver(headphonesUnpluggedReceiver, new IntentFilter(AudioManager.ActionAudioBecomingNoisy));
@@ -179,7 +184,6 @@ namespace XFStreamingAudio.Droid.Services
             Log.Debug(TAG, "StreamingBackgroundService.Stop() focusResult = " + focusResult);
             if (focusResult != AudioFocusRequest.Granted)
             {
-                //could not abandon audio focus
                 Log.Debug(TAG, "Could not abandon audio focus");
             }
 
@@ -188,7 +192,6 @@ namespace XFStreamingAudio.Droid.Services
             paused = false;
             StopForeground(true);
             ReleaseWifiLock();
-            //StopSelf();
         }
 
         /// <summary>
