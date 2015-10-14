@@ -53,7 +53,7 @@ namespace XFStreamingAudio
 
         async void OnDisplayInfo(object sender, EventArgs e)
         {
-            await DisplayAlert("About", "Version: 1.0 (3)", "OK");
+            await DisplayAlert("About", "Version: 1.0 (3)\nBuilt with: Xamarin", "OK");
         }
 
         void OnLaunchTwitter(object sender, EventArgs e)
@@ -95,7 +95,7 @@ namespace XFStreamingAudio
         {
             if (await DisplayAlert(
                     "Call Studio",
-                    "Call live broadcaster at\n +1 (530) 265-9555?",
+                    "Call live broadcaster at\n+1 (530) 265-9555?",
                     "Yes",
                     "No"))
             {
