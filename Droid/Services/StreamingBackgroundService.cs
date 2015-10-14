@@ -6,6 +6,7 @@ using Android.Net;
 using Android.Net.Wifi;
 using Android.OS;
 using Xamarin.Forms;
+using Android.Util;
 
 namespace XFStreamingAudio.Droid.Services
 {
@@ -13,6 +14,8 @@ namespace XFStreamingAudio.Droid.Services
     [IntentFilter(new[] { ActionPlay, ActionPause, ActionStop })]
     public class StreamingBackgroundService : Service, AudioManager.IOnAudioFocusChangeListener
     {
+        const string TAG = "KVMR";
+
         //Actions
         public const string ActionPlay = "com.xamarin.action.PLAY";
         public const string ActionPause = "com.xamarin.action.PAUSE";
@@ -24,6 +27,7 @@ namespace XFStreamingAudio.Droid.Services
         private WifiManager wifiManager;
         private WifiManager.WifiLock wifiLock;
         private bool paused;
+        private MusicBroadcastReceiver headphonesUnpluggedReceiver;
 
         private const int NotificationId = 1;
 
@@ -36,6 +40,7 @@ namespace XFStreamingAudio.Droid.Services
             //Find our audio and notificaton managers
             audioManager = (AudioManager)GetSystemService(AudioService);
             wifiManager = (WifiManager)GetSystemService(WifiService);
+            headphonesUnpluggedReceiver = new MusicBroadcastReceiver();
         }
 
         /// <summary>
@@ -94,7 +99,7 @@ namespace XFStreamingAudio.Droid.Services
 
         private async void Play(string source)
         {
-
+            Log.Debug(TAG, "StreamingBackgroundService.Play()");
             if (paused && player != null) {
                 paused = false;
                 //We are simply paused so just start again
@@ -114,13 +119,10 @@ namespace XFStreamingAudio.Droid.Services
                 await player.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(source));
 
                 var focusResult = audioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
-                if (focusResult != AudioFocusRequest.Granted)
-                {
-                    //could not get audio focus
-                    Console.WriteLine("Could not get audio focus");
-                }
+                Log.Debug(TAG, "StreamingBackgroundService.Play() focusResult = " + focusResult);
 
                 player.PrepareAsync();
+                RegisterReceiver(headphonesUnpluggedReceiver, new IntentFilter(AudioManager.ActionAudioBecomingNoisy));
                 AquireWifiLock();
                 StartForeground();
             }
@@ -166,16 +168,27 @@ namespace XFStreamingAudio.Droid.Services
 
         private void Stop()
         {
+            Log.Debug(TAG, "StreamingBackgroundService.Stop()");
             if (player == null)
                 return;
 
             if(player.IsPlaying)
                 player.Stop();
+            
+            var focusResult = audioManager.AbandonAudioFocus(this);
+            Log.Debug(TAG, "StreamingBackgroundService.Stop() focusResult = " + focusResult);
+            if (focusResult != AudioFocusRequest.Granted)
+            {
+                //could not abandon audio focus
+                Log.Debug(TAG, "Could not abandon audio focus");
+            }
 
             player.Reset();
+            UnregisterReceiver(headphonesUnpluggedReceiver);
             paused = false;
             StopForeground(true);
             ReleaseWifiLock();
+            //StopSelf();
         }
 
         /// <summary>
@@ -207,6 +220,7 @@ namespace XFStreamingAudio.Droid.Services
         public override void OnDestroy()
         {
             base.OnDestroy();
+            Log.Debug(TAG, "StreamingBackgroundService.OnDestroy()");
             //Stop();
             if (player != null)
             {
@@ -224,10 +238,11 @@ namespace XFStreamingAudio.Droid.Services
         /// <param name="focusChange"></param>
         public void OnAudioFocusChange(AudioFocus focusChange)
         {
+            Log.Debug(TAG, "StreamingBackgroundService.OnAudioFocusChange() focusChange = " + focusChange);
             switch (focusChange)
             {
                 case AudioFocus.Gain:
-                    System.Diagnostics.Debug.WriteLine("AudioFocus.Gain");
+                    Log.Debug(TAG, "AudioFocus.Gain");
                     if (player == null)
                         IntializePlayer();
 
@@ -240,19 +255,21 @@ namespace XFStreamingAudio.Droid.Services
                     player.SetVolume(1.0f, 1.0f);  // Turn it up!
                     break;
                 case AudioFocus.Loss:
+                    Log.Debug(TAG, "AudioFocus.Loss");
                     var message = new AudioBeginInterruptionMessage();
                     MessagingCenter.Send(message, "AudioBeginInterruption");
                     System.Diagnostics.Debug.WriteLine("AudioFocus.Loss");
                     Stop();
                     break;
                 case AudioFocus.LossTransient:
+                    Log.Debug(TAG, "AudioFocus.LossTransient");
                     //We have lost focus for a short time, but likely to resume so pause
                     System.Diagnostics.Debug.WriteLine("AudioFocus.LossTransient");
                     Pause();
                     break;
                 case AudioFocus.LossTransientCanDuck:
                     //We have lost focus but should till play at a muted 10% volume
-                    System.Diagnostics.Debug.WriteLine("AudioFocus.LossTransientCanDuck");
+                    Log.Debug(TAG, "AudioFocus.LossTransientCanDuck");
                     if(player.IsPlaying)
                         player.SetVolume(.1f, .1f);//turn it down!
                     break;

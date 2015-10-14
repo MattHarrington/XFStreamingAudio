@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Media;
 using XFStreamingAudio.Droid.Services;
 using Xamarin.Forms;
+using Android.Util;
 
 namespace XFStreamingAudio.Droid
 {
@@ -11,12 +12,11 @@ namespace XFStreamingAudio.Droid
     /// This is a simple intent receiver that is used to stop playback
     /// when audio become noisy, such as the user unplugged headphones
     /// </summary>
-    [BroadcastReceiver]
-    [IntentFilter(new []{ AudioManager.ActionAudioBecomingNoisy })]
     public class MusicBroadcastReceiver : BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
         {
+            Log.Debug("KVMR", "MusicBroadcastReceiver.OnReceive() intent.Action = " + intent.Action);
             if (intent.Action != AudioManager.ActionAudioBecomingNoisy)
                 return;
 
