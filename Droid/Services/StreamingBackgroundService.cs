@@ -63,10 +63,17 @@ namespace XFStreamingAudio.Droid.Services
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             string source = intent.GetStringExtra("source") ?? String.Empty;
-            switch (intent.Action) {
-                case ActionPlay: Play(source); break;
-                case ActionStop: Stop(); break;
-                case ActionPause: Pause(); break;
+            switch (intent.Action)
+            {
+                case ActionPlay:
+                    Play(source);
+                    break;
+                case ActionStop:
+                    Stop();
+                    break;
+                case ActionPause:
+                    Pause();
+                    break;
             }
 
             //Set sticky as we are a long running operation
@@ -90,17 +97,18 @@ namespace XFStreamingAudio.Droid.Services
             player.Completion += (sender, args) => Stop();
 
             player.Error += (sender, args) =>
-                {
-                    //playback error
-                    Console.WriteLine("Error in playback resetting: " + args.What);
-                    Stop();//this will clean up and reset properly.
-                };
+            {
+                //playback error
+                Console.WriteLine("Error in playback resetting: " + args.What);
+                Stop();//this will clean up and reset properly.
+            };
         }
 
         private async void Play(string source)
         {
             Log.Debug(TAG, "StreamingBackgroundService.Play()");
-            if (paused && player != null) {
+            if (paused && player != null)
+            {
                 paused = false;
                 //We are simply paused so just start again
                 player.Start();
@@ -108,14 +116,16 @@ namespace XFStreamingAudio.Droid.Services
                 return;
             }
 
-            if (player == null) {
+            if (player == null)
+            {
                 IntializePlayer();
             }
 
             if (player.IsPlaying)
                 return;
 
-            try {
+            try
+            {
                 await player.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(source));
 
                 var focusResult = audioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
@@ -131,7 +141,8 @@ namespace XFStreamingAudio.Droid.Services
                 AquireWifiLock();
                 StartForeground();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 //unable to start playback log error
                 Console.WriteLine("Unable to start playback: " + ex);
             }
@@ -145,14 +156,14 @@ namespace XFStreamingAudio.Droid.Services
         {
 
             var pendingIntent = PendingIntent.GetActivity(ApplicationContext, 0,
-                new Intent(ApplicationContext, typeof(MainActivity)),
-                PendingIntentFlags.UpdateCurrent);
+                                    new Intent(ApplicationContext, typeof(MainActivity)),
+                                    PendingIntentFlags.UpdateCurrent);
 
             var notification = new Notification
-                {
-                    TickerText = new Java.Lang.String("KVMR streaming started"),
-                    Icon = Resource.Drawable.AndroidNotificationIcon
-                };
+            {
+                TickerText = new Java.Lang.String("KVMR streaming started"),
+                Icon = Resource.Drawable.AndroidNotificationIcon
+            };
             notification.Flags |= NotificationFlags.OngoingEvent;
             notification.SetLatestEventInfo(ApplicationContext, "KVMR",
                 "Nevada City, California", pendingIntent);
@@ -164,7 +175,7 @@ namespace XFStreamingAudio.Droid.Services
             if (player == null)
                 return;
 
-            if(player.IsPlaying)
+            if (player.IsPlaying)
                 player.Pause();
 
             StopForeground(true);
@@ -177,7 +188,7 @@ namespace XFStreamingAudio.Droid.Services
             if (player == null)
                 return;
 
-            if(player.IsPlaying)
+            if (player.IsPlaying)
                 player.Stop();
             
             var focusResult = audioManager.AbandonAudioFocus(this);
@@ -199,7 +210,8 @@ namespace XFStreamingAudio.Droid.Services
         /// </summary>
         private void AquireWifiLock()
         {
-            if (wifiLock == null){
+            if (wifiLock == null)
+            {
                 wifiLock = wifiManager.CreateWifiLock(WifiMode.Full, "kvmr_wifi_lock");
             } 
             wifiLock.Acquire();
@@ -273,7 +285,7 @@ namespace XFStreamingAudio.Droid.Services
                 case AudioFocus.LossTransientCanDuck:
                     //We have lost focus but should till play at a muted 10% volume
                     Log.Debug(TAG, "AudioFocus.LossTransientCanDuck");
-                    if(player.IsPlaying)
+                    if (player.IsPlaying)
                         player.SetVolume(.1f, .1f);//turn it down!
                     break;
             }
