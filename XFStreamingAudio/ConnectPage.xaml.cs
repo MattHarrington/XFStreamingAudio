@@ -44,6 +44,16 @@ namespace XFStreamingAudio
             twitterIconTGR.Tapped += OnLaunchTwitter;
             twitterIcon.GestureRecognizers.Add(twitterIconTGR);
             twitterBtn.Clicked += OnLaunchTwitter;
+
+            TapGestureRecognizer infoIconTGR = new TapGestureRecognizer();
+            infoIconTGR.Tapped += OnDisplayInfo;
+            infoIcon.GestureRecognizers.Add(infoIconTGR);
+            infoBtn.Clicked += OnDisplayInfo;
+        }
+
+        async void OnDisplayInfo(object sender, EventArgs e)
+        {
+            await DisplayAlert("About", "Version: 1.0 (3)", "OK");
         }
 
         void OnLaunchTwitter(object sender, EventArgs e)

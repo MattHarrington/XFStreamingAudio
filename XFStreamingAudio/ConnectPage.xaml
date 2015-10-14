@@ -95,6 +95,24 @@
 					Orientation="Horizontal">
 					<StackLayout
 						HorizontalOptions="CenterAndExpand">
+						<StackLayout.IsVisible>
+							<OnPlatform
+								x:TypeArguments="x:Boolean"
+								iOS="false"
+								Android="true"
+								WinPhone="false" />
+						</StackLayout.IsVisible>
+						<Image
+							x:Name="infoIcon"
+							Source="InfoIcon.png" />
+						<Button
+							x:Name="infoBtn"
+							Text="About"
+							FontSize="18"
+							BackgroundColor="Transparent" />
+					</StackLayout>
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
 						<Image
 							x:Name="websiteIcon"
 							Source="WebsiteIcon.png" />
