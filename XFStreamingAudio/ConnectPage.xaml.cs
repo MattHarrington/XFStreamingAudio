@@ -53,7 +53,7 @@ namespace XFStreamingAudio
 
         async void OnDisplayInfo(object sender, EventArgs e)
         {
-            await DisplayAlert("About", "Version: 1.0 (3)\nBuilt with: Xamarin", "OK");
+            await DisplayAlert("About", "Version: 1.0 (beta 327684)\nBuilt with: Xamarin", "OK");
         }
 
         void OnLaunchTwitter(object sender, EventArgs e)

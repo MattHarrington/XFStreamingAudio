@@ -189,8 +189,11 @@ namespace XFStreamingAudio.Droid.Services
                 return;
 
             if (player.IsPlaying)
+            {
                 player.Stop();
-            
+                UnregisterReceiver(headphonesUnpluggedReceiver);
+            }
+
             var focusResult = audioManager.AbandonAudioFocus(this);
             Log.Debug(TAG, "StreamingBackgroundService.Stop() focusResult = " + focusResult);
             if (focusResult != AudioFocusRequest.Granted)
@@ -199,7 +202,6 @@ namespace XFStreamingAudio.Droid.Services
             }
 
             player.Reset();
-            UnregisterReceiver(headphonesUnpluggedReceiver);
             paused = false;
             StopForeground(true);
             ReleaseWifiLock();
@@ -273,13 +275,11 @@ namespace XFStreamingAudio.Droid.Services
                     Log.Debug(TAG, "AudioFocus.Loss");
                     var message = new AudioBeginInterruptionMessage();
                     MessagingCenter.Send(message, "AudioBeginInterruption");
-                    System.Diagnostics.Debug.WriteLine("AudioFocus.Loss");
                     Stop();
                     break;
                 case AudioFocus.LossTransient:
                     Log.Debug(TAG, "AudioFocus.LossTransient");
                     //We have lost focus for a short time, but likely to resume so pause
-                    System.Diagnostics.Debug.WriteLine("AudioFocus.LossTransient");
                     Pause();
                     break;
                 case AudioFocus.LossTransientCanDuck:
