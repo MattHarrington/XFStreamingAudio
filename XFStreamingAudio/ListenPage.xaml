@@ -32,29 +32,12 @@
 					Source="SettingsIcon"
 					x:Name="launchSettingsImage"
 					HorizontalOptions="End" />
-				<Label
-					Text="KVMR"
-					FontSize="60"
-					FontFamily="Futura-Medium"
-					TextColor="#7AC143"
-					VerticalOptions="EndAndExpand"
-					HorizontalOptions="Center" />
-				<Label
-					Text="Nevada City"
-					x:Name="nevadaCityLabel"
-					FontSize="24"
-					FontFamily="Futura-Medium"
-					HorizontalOptions="Center">
-					<Label.TextColor>
-						<OnPlatform
-							x:TypeArguments="Color"
-							iOS="Purple"
-							Android="#FEE000"
-							WinPhone="#FEE000" />
-					</Label.TextColor>
-				</Label>
+				<Image
+					Source="ListenPageLogo"
+					HorizontalOptions="Center"
+					VerticalOptions="EndAndExpand" />
 				<Frame
-					Padding="0,80,0,60"
+					Padding="0,20,0,30"
 					HasShadow="false">
 					<Button
 						x:Name="playStopBtn"
@@ -71,13 +54,6 @@
 						x:Name="bufferingIndicator"
 						HorizontalOptions="Center" />
 				</Frame>
-				<Button
-					x:Name="diagnosticsBtn"
-					BackgroundColor="Transparent"
-					Text="Diagnostics"
-					HorizontalOptions="EndAndExpand"
-					VerticalOptions="Center"
-					IsVisible="false" />
 			</StackLayout>
 		</StackLayout>
 	</ContentPage.Content>

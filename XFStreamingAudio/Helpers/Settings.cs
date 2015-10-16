@@ -24,7 +24,7 @@ namespace XFStreamingAudio.Helpers
         private const string SettingsKey = "settings_key";
         private static readonly string SettingsDefault = string.Empty;
         private const string bandwidthSwitchStateKey = "bandwidthSwitchState";
-        private static readonly bool bandwidthSwitchStateDefault = false;
+        private static readonly bool bandwidthSwitchStateDefault = true;
 
         #endregion
 

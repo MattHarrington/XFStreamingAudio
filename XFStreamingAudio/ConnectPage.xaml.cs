@@ -54,6 +54,9 @@ namespace XFStreamingAudio
         async void OnDisplayInfo(object sender, EventArgs e)
         {
             await DisplayAlert("About", 
+                #if DEBUG
+                "Debug Build\n" +
+                #endif
                 "Version: 1.0 alpha\n" +
                 "Built on: 15-Oct-2015 16:50 PDT\n" +
                 "Built with: Xamarin", 

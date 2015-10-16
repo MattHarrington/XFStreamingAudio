@@ -22,10 +22,6 @@ namespace XFStreamingAudio
         {
             InitializeComponent();
 
-            #if DEBUG
-            nevadaCityLabel.Text = "DEBUG";
-            #endif
-
             if (Device.OS == TargetPlatform.iOS)
             {
                 #if DEBUG
@@ -52,7 +48,6 @@ namespace XFStreamingAudio
                 source = sourceLowBandwidth;
             }
             playStopBtn.Clicked += OnPlayStopBtnClicked;
-            diagnosticsBtn.Clicked += DiagnosticsBtn_Clicked;
 
             TapGestureRecognizer launchSettingsImageTGR = new TapGestureRecognizer();
             launchSettingsImageTGR.Tapped += DisplaySettings;
