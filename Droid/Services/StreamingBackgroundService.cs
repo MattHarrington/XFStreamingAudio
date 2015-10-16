@@ -16,7 +16,7 @@ namespace XFStreamingAudio.Droid.Services
     {
         const string TAG = "KVMR";
 
-        //Actions
+        // Actions
         public const string ActionPlay = "com.xamarin.action.PLAY";
         public const string ActionPause = "com.xamarin.action.PAUSE";
         public const string ActionStop = "com.xamarin.action.STOP";
@@ -60,7 +60,7 @@ namespace XFStreamingAudio.Droid.Services
             }
         }
 
-        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        public override int OnStartCommand(Intent intent, int startCommandflags, int startId)
         {
             string source = intent.GetStringExtra("source") ?? String.Empty;
             switch (intent.Action)
@@ -76,31 +76,52 @@ namespace XFStreamingAudio.Droid.Services
                     break;
             }
 
-            //Set sticky as we are a long running operation
-            return StartCommandResult.NotSticky;
+            return (int)StartCommandResult.NotSticky;
         }
 
         private void IntializePlayer()
         {
             player = new MediaPlayer();
 
-            //Tell our player to sream music
+            // Tell our player to stream music
             player.SetAudioStreamType(Stream.Music);
 
-            //Wake mode will be partial to keep the CPU still running under lock screen
+            // Wake mode will be partial to keep the CPU still running under lock screen
             player.SetWakeMode(ApplicationContext, WakeLockFlags.Partial);
 
-            //When we have prepared the song start playback
+            // When we have prepared the song start playback
             player.Prepared += (sender, args) => player.Start();
 
-            //When we have reached the end of the song stop ourselves, however you could signal next track here.
-            player.Completion += (sender, args) => Stop();
+            // When we have reached the end of the song stop ourselves, 
+            // however you could signal next track here.
+            player.Completion += (sender, args) =>
+            {
+                Log.Debug(TAG, "MediaPlayer.Completion");
+                Stop();
+            };
 
             player.Error += (sender, args) =>
             {
-                //playback error
-                Console.WriteLine("Error in playback resetting: " + args.What);
-                Stop();//this will clean up and reset properly.
+                // Playback error
+                Log.Debug(TAG, "MediaPlayer.Error - What: " + args.What + ", Extra: " + args.Extra);
+                var message = new AudioBeginInterruptionMessage();
+                MessagingCenter.Send(message, "AudioBeginInterruption");
+                Stop();  // This will clean up and reset properly.
+            };
+
+            player.Info += (sender, e) =>
+            {
+                Log.Debug(TAG, "MediaPlayback.Info - What: " + e.What + ", Extra: " + e.Extra);
+                if (e.What == MediaInfo.BufferingStart)
+                {
+                    var message = new BufferingStart();
+                    MessagingCenter.Send(message, "BufferingStart");
+                }
+                else if (e.What == MediaInfo.BufferingEnd)
+                {
+                    var message = new BufferingEnd();
+                    MessagingCenter.Send(message, "BufferingEnd");
+                }
             };
         }
 
@@ -110,7 +131,7 @@ namespace XFStreamingAudio.Droid.Services
             if (paused && player != null)
             {
                 paused = false;
-                //We are simply paused so just start again
+                // We are simply paused so just start again
                 player.Start();
                 StartForeground();
                 return;
@@ -122,14 +143,16 @@ namespace XFStreamingAudio.Droid.Services
             }
 
             if (player.IsPlaying)
+            {
                 return;
+            }
 
             try
             {
                 await player.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(source));
 
                 var focusResult = audioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
-                Log.Debug(TAG, "StreamingBackgroundService.Play() focusResult = " + focusResult);
+                Log.Debug(TAG, "StreamingBackgroundService.Play() RequestAudioFocus result: " + focusResult);
                 if (focusResult != AudioFocusRequest.Granted)
                 {
                     // TODO: Revert UI back to "Play", because not granted audio focus
@@ -143,8 +166,8 @@ namespace XFStreamingAudio.Droid.Services
             }
             catch (Exception ex)
             {
-                //unable to start playback log error
-                Console.WriteLine("Unable to start playback: " + ex);
+                // Unable to start playback. Log error.
+                Log.Debug(TAG, "Unable to start playback: " + ex);
             }
         }
 
@@ -154,7 +177,6 @@ namespace XFStreamingAudio.Droid.Services
         /// </summary>
         private void StartForeground()
         {
-
             var pendingIntent = PendingIntent.GetActivity(ApplicationContext, 0,
                                     new Intent(ApplicationContext, typeof(MainActivity)),
                                     PendingIntentFlags.UpdateCurrent);
@@ -173,10 +195,14 @@ namespace XFStreamingAudio.Droid.Services
         private void Pause()
         {
             if (player == null)
+            {
                 return;
+            }
 
             if (player.IsPlaying)
+            {
                 player.Pause();
+            }
 
             StopForeground(true);
             paused = true;
@@ -186,7 +212,9 @@ namespace XFStreamingAudio.Droid.Services
         {
             Log.Debug(TAG, "StreamingBackgroundService.Stop()");
             if (player == null)
+            {
                 return;
+            }
 
             if (player.IsPlaying)
             {
@@ -195,7 +223,7 @@ namespace XFStreamingAudio.Droid.Services
             }
 
             var focusResult = audioManager.AbandonAudioFocus(this);
-            Log.Debug(TAG, "StreamingBackgroundService.Stop() focusResult = " + focusResult);
+            Log.Debug(TAG, "StreamingBackgroundService.Stop() AbandonAudioFocus result: " + focusResult);
             if (focusResult != AudioFocusRequest.Granted)
             {
                 Log.Debug(TAG, "Could not abandon audio focus");
@@ -225,8 +253,9 @@ namespace XFStreamingAudio.Droid.Services
         private void ReleaseWifiLock()
         {
             if (wifiLock == null)
+            {
                 return;
-
+            }
             wifiLock.Release();
             wifiLock = null;
         }
@@ -238,7 +267,6 @@ namespace XFStreamingAudio.Droid.Services
         {
             base.OnDestroy();
             Log.Debug(TAG, "StreamingBackgroundService.OnDestroy()");
-            //Stop();
             if (player != null)
             {
                 player.Release();
@@ -261,7 +289,9 @@ namespace XFStreamingAudio.Droid.Services
                 case AudioFocus.Gain:
                     Log.Debug(TAG, "AudioFocus.Gain");
                     if (player == null)
+                    {
                         IntializePlayer();
+                    }
 
                     if (!player.IsPlaying)
                     {

@@ -27,11 +27,12 @@ namespace XFStreamingAudio
             refreshIcon.GestureRecognizers.Add(refreshIconTGR);
         }
 
-        void OnRefresh(object sender, EventArgs e)
+        async void OnRefresh(object sender, EventArgs e)
         {
-            if (!CrossConnectivity.Current.IsConnected)
+            var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(url);
+            if (!sourceReachable)
             {
-                DisplayAlert("Network Unreachable", "Check your network connection", "OK");
+                await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
                 return;
             }
             browser.Source = url;

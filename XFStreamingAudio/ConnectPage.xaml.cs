@@ -53,7 +53,11 @@ namespace XFStreamingAudio
 
         async void OnDisplayInfo(object sender, EventArgs e)
         {
-            await DisplayAlert("About", "Version: 1.0 (beta 327684)\nBuilt with: Xamarin", "OK");
+            await DisplayAlert("About", 
+                "Version: 1.0 alpha\n" +
+                "Built on: 15-Oct-2015 16:50 PDT\n" +
+                "Built with: Xamarin", 
+                "OK");
         }
 
         void OnLaunchTwitter(object sender, EventArgs e)
@@ -107,10 +111,10 @@ namespace XFStreamingAudio
         async void OnCallOffice(object sender, EventArgs e)
         {
             if (await DisplayAlert(
-                "Call Office",
-                "Call KVMR office at\n +1 (530) 265-9073?",
-                "Yes",
-                "No"))
+                    "Call Office",
+                    "Call KVMR office at\n+1 (530) 265-9073?",
+                    "Yes",
+                    "No"))
             {
                 // Dial the phone
                 Device.OpenUri(new Uri("tel:+1 (530) 265-9073"));

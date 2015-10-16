@@ -38,8 +38,8 @@ namespace XFStreamingAudio
             }
             else if (Device.OS == TargetPlatform.Android)
             {
-                sourceHighBandwidth = new Uri("http://173.195.185.6:8190/kvmr");
-                sourceLowBandwidth = new Uri("http://173.195.185.6:8000/dial");
+                sourceHighBandwidth = new Uri("http://live.kvmr.org:8190/kvmr");
+                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/dial");
             }
 
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
@@ -79,7 +79,21 @@ namespace XFStreamingAudio
             }
             else if (Device.OS == TargetPlatform.Android)
             {
+                MessagingCenter.Subscribe<BufferingStart>(this, "BufferingStart", 
+                    OnBufferingStart);
+                MessagingCenter.Subscribe<BufferingEnd>(this, "BufferingEnd", 
+                    OnBufferingEnd);
             }
+        }
+
+        void OnBufferingStart(BufferingStart obj)
+        {
+            bufferingLbl.IsVisible = true;
+        }
+
+        void OnBufferingEnd(BufferingEnd obj)
+        {
+            bufferingLbl.IsVisible = false;
         }
 
         protected override void OnAppearing()

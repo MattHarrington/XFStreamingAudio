@@ -54,7 +54,7 @@
 					</Label.TextColor>
 				</Label>
 				<Frame
-					Padding="0,100,0,100"
+					Padding="0,80,0,60"
 					HasShadow="false">
 					<Button
 						x:Name="playStopBtn"
@@ -62,6 +62,17 @@
 						TextColor="#007AFF"
 						FontSize="48"
 						BackgroundColor="Transparent" />
+				</Frame>
+				<Frame
+					Padding="0,0,0,40"
+					HasShadow="false">
+					<Label
+						IsVisible="false"
+						x:Name="bufferingLbl"
+						Text="Buffering..."
+						HorizontalOptions="Center"
+						FontSize="24"
+						TextColor="Red" />
 				</Frame>
 				<Button
 					x:Name="diagnosticsBtn"
