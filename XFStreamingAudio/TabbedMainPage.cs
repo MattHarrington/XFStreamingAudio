@@ -12,6 +12,13 @@ namespace XFStreamingAudio
             Children.Add(new SchedulePage());
             Children.Add(new PledgePage());
             Children.Add(new ConnectPage());
+
+            MessagingCenter.Subscribe<LostStreamMessage>(this, "LostStream", OnLostStream);
+        }
+
+        async void OnLostStream(LostStreamMessage obj)
+        {
+            await DisplayAlert("Lost Stream", "Check network.", "OK");
         }
     }
 }

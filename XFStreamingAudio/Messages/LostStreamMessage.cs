@@ -2,9 +2,9 @@
 
 namespace XFStreamingAudio
 {
-    public class BufferingStart
+    public class LostStreamMessage
     {
-        public BufferingStart()
+        public LostStreamMessage()
         {
         }
     }

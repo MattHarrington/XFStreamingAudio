@@ -2,9 +2,9 @@
 
 namespace XFStreamingAudio
 {
-    public class BufferingEnd
+    public class BufferingStartMessage
     {
-        public BufferingEnd()
+        public BufferingStartMessage()
         {
         }
     }

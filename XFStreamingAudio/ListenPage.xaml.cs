@@ -79,21 +79,21 @@ namespace XFStreamingAudio
             }
             else if (Device.OS == TargetPlatform.Android)
             {
-                MessagingCenter.Subscribe<BufferingStart>(this, "BufferingStart", 
+                MessagingCenter.Subscribe<BufferingStartMessage>(this, "BufferingStart", 
                     OnBufferingStart);
-                MessagingCenter.Subscribe<BufferingEnd>(this, "BufferingEnd", 
+                MessagingCenter.Subscribe<BufferingEndMessage>(this, "BufferingEnd", 
                     OnBufferingEnd);
             }
         }
 
-        void OnBufferingStart(BufferingStart obj)
+        void OnBufferingStart(BufferingStartMessage obj)
         {
-            bufferingLbl.IsVisible = true;
+            bufferingIndicator.IsRunning = true;
         }
 
-        void OnBufferingEnd(BufferingEnd obj)
+        void OnBufferingEnd(BufferingEndMessage obj)
         {
-            bufferingLbl.IsVisible = false;
+            bufferingIndicator.IsRunning = false;
         }
 
         protected override void OnAppearing()

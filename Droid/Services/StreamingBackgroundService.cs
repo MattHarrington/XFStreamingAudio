@@ -60,7 +60,7 @@ namespace XFStreamingAudio.Droid.Services
             }
         }
 
-        public override int OnStartCommand(Intent intent, int startCommandflags, int startId)
+        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             string source = intent.GetStringExtra("source") ?? String.Empty;
             switch (intent.Action)
@@ -76,7 +76,7 @@ namespace XFStreamingAudio.Droid.Services
                     break;
             }
 
-            return (int)StartCommandResult.NotSticky;
+            return StartCommandResult.NotSticky;
         }
 
         private void IntializePlayer()
@@ -92,20 +92,19 @@ namespace XFStreamingAudio.Droid.Services
             // When we have prepared the song start playback
             player.Prepared += (sender, args) => player.Start();
 
-            // When we have reached the end of the song stop ourselves, 
-            // however you could signal next track here.
+            // Apparently called if network stalls for too long
             player.Completion += (sender, args) =>
             {
                 Log.Debug(TAG, "MediaPlayer.Completion");
                 Stop();
+                var message = new LostStreamMessage();
+                MessagingCenter.Send(message, "LostStream");
             };
 
             player.Error += (sender, args) =>
             {
                 // Playback error
                 Log.Debug(TAG, "MediaPlayer.Error - What: " + args.What + ", Extra: " + args.Extra);
-                var message = new AudioBeginInterruptionMessage();
-                MessagingCenter.Send(message, "AudioBeginInterruption");
                 Stop();  // This will clean up and reset properly.
             };
 
@@ -114,12 +113,12 @@ namespace XFStreamingAudio.Droid.Services
                 Log.Debug(TAG, "MediaPlayback.Info - What: " + e.What + ", Extra: " + e.Extra);
                 if (e.What == MediaInfo.BufferingStart)
                 {
-                    var message = new BufferingStart();
+                    var message = new BufferingStartMessage();
                     MessagingCenter.Send(message, "BufferingStart");
                 }
                 else if (e.What == MediaInfo.BufferingEnd)
                 {
-                    var message = new BufferingEnd();
+                    var message = new BufferingEndMessage();
                     MessagingCenter.Send(message, "BufferingEnd");
                 }
             };
@@ -233,6 +232,8 @@ namespace XFStreamingAudio.Droid.Services
             paused = false;
             StopForeground(true);
             ReleaseWifiLock();
+            var message = new AudioBeginInterruptionMessage();
+            MessagingCenter.Send(message, "AudioBeginInterruption");
         }
 
         /// <summary>
@@ -303,8 +304,6 @@ namespace XFStreamingAudio.Droid.Services
                     break;
                 case AudioFocus.Loss:
                     Log.Debug(TAG, "AudioFocus.Loss");
-                    var message = new AudioBeginInterruptionMessage();
-                    MessagingCenter.Send(message, "AudioBeginInterruption");
                     Stop();
                     break;
                 case AudioFocus.LossTransient:

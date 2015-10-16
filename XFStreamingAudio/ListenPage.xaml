@@ -66,13 +66,10 @@
 				<Frame
 					Padding="0,0,0,40"
 					HasShadow="false">
-					<Label
-						IsVisible="false"
-						x:Name="bufferingLbl"
-						Text="Buffering..."
-						HorizontalOptions="Center"
-						FontSize="24"
-						TextColor="Red" />
+					<ActivityIndicator
+						IsRunning="false"
+						x:Name="bufferingIndicator"
+						HorizontalOptions="Center" />
 				</Frame>
 				<Button
 					x:Name="diagnosticsBtn"
