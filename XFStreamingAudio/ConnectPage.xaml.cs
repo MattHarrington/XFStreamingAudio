@@ -57,7 +57,7 @@ namespace XFStreamingAudio
                 #if DEBUG
                 "Debug Build\n" +
                 #endif
-                "Version: 1.0 alpha\n" +
+                "Version: 1.0.0.3 alpha\n" +
                 "Built on: 16-Oct-2015 00:07 PDT\n" +
                 "Built with: Xamarin", 
                 "OK");

@@ -162,7 +162,7 @@ namespace XFStreamingAudio.Droid.Services
                 RegisterReceiver(headphonesUnpluggedReceiver, new IntentFilter(AudioManager.ActionAudioBecomingNoisy));
                 AquireWifiLock();
                 StartForeground();
-            }
+            }/
             catch (Exception ex)
             {
                 // Unable to start playback. Log error.
@@ -232,8 +232,10 @@ namespace XFStreamingAudio.Droid.Services
             paused = false;
             StopForeground(true);
             ReleaseWifiLock();
-            var message = new AudioBeginInterruptionMessage();
-            MessagingCenter.Send(message, "AudioBeginInterruption");
+            var audioBeginInterruptionMessage = new AudioBeginInterruptionMessage();
+            MessagingCenter.Send(audioBeginInterruptionMessage, "AudioBeginInterruption");
+            var bufferingEndMessage = new BufferingEndMessage();
+            MessagingCenter.Send(bufferingEndMessage, "BufferingEnd");
         }
 
         /// <summary>
