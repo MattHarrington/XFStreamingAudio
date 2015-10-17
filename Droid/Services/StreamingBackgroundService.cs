@@ -162,7 +162,7 @@ namespace XFStreamingAudio.Droid.Services
                 RegisterReceiver(headphonesUnpluggedReceiver, new IntentFilter(AudioManager.ActionAudioBecomingNoisy));
                 AquireWifiLock();
                 StartForeground();
-            }/
+            }
             catch (Exception ex)
             {
                 // Unable to start playback. Log error.
