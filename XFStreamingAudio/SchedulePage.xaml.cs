@@ -14,13 +14,15 @@ namespace XFStreamingAudio
             "&mode=AGENDA&height=" + height + "&wkst=1&bgcolor=%23FFFFFF" +
             "&src=p8smcuo4jo50sthdad6cfq3cko%40group.calendar.google.com" +
             "&color=%235229A3&ctz=America%2FLos_Angeles";
+        readonly Uri calendarUri;
 
         public SchedulePage()
         {
             InitializeComponent();
             browser.Navigated += OnBrowserNavigated;
             backBtn.Clicked += backClicked;
-            browser.Source = url;
+            calendarUri = new Uri(url);
+            browser.Source = calendarUri.AbsoluteUri;
 
             TapGestureRecognizer refreshIconTGR = new TapGestureRecognizer();
             refreshIconTGR.Tapped += OnRefresh;
@@ -29,13 +31,13 @@ namespace XFStreamingAudio
 
         async void OnRefresh(object sender, EventArgs e)
         {
-            var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(url);
+            var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(calendarUri.Host);
             if (!sourceReachable)
             {
                 await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
                 return;
             }
-            browser.Source = url;
+            browser.Source = calendarUri.AbsoluteUri;
         }
 
         void OnBrowserNavigated(object sender, WebNavigatedEventArgs e)
@@ -43,7 +45,7 @@ namespace XFStreamingAudio
             // Hide and display the Back button by comparing current location vs. initial URL because
             // using CanGoBack was not working as expected.
             var currentSource = browser.Source as UrlWebViewSource;
-            if (currentSource.Url != url)
+            if (currentSource.Url != calendarUri.AbsoluteUri)
             {
                 backBtn.IsEnabled = true;
             }

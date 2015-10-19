@@ -82,6 +82,10 @@
       <Project>{D3623EBE-0E58-4408-9067-6ACE3ED208E1}</Project>
       <Name>XFStreamingAudio</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AACDecoderAndroidXamarinBindings\AACDecoderAndroidXamarinBindings.csproj">
+      <Project>{3FBB5FEF-88AC-4459-8924-B9085980BCCB}</Project>
+      <Name>AACDecoderAndroidXamarinBindings</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -110,6 +114,10 @@
     <Folder Include="Receivers\" />
     <Folder Include="Resources\drawable-mdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
+    <Folder Include="lib\" />
+    <Folder Include="lib\x86\" />
+    <Folder Include="lib\armeabi-v7a\" />
+    <Folder Include="lib\armeabi\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\WebsiteIcon.png" />
@@ -174,4 +182,9 @@
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.1.5.0.6447\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.5.0.6447\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Import Project="..\packages\Xamarin.Insights.1.11.1\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.1\build\MonoAndroid10\Xamarin.Insights.targets')" />
+  <ItemGroup>
+    <AndroidNativeLibrary Include="lib\x86\libaacdecoder.so" />
+    <AndroidNativeLibrary Include="lib\armeabi-v7a\libaacdecoder.so" />
+    <AndroidNativeLibrary Include="lib\armeabi\libaacdecoder.so" />
+  </ItemGroup>
 </Project>

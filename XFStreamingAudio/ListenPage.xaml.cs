@@ -34,8 +34,8 @@ namespace XFStreamingAudio
             }
             else if (Device.OS == TargetPlatform.Android)
             {
-                sourceHighBandwidth = new Uri("http://live.kvmr.org:8190/kvmr");
-                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/dial");
+                sourceHighBandwidth = new Uri("http://live.kvmr.org:8000/aac96");
+                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/aac32");
             }
 
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
@@ -47,6 +47,7 @@ namespace XFStreamingAudio
             {
                 source = sourceLowBandwidth;
             }
+
             playStopBtn.Clicked += OnPlayStopBtnClicked;
 
             TapGestureRecognizer launchSettingsImageTGR = new TapGestureRecognizer();
@@ -134,7 +135,8 @@ namespace XFStreamingAudio
                     if (audioPlayer.IsPlaying)
                     {
                         audioPlayer.Stop();
-                        audioPlayer.Play(source);
+//                        audioPlayer.Play(source);
+//                        playStopBtn.Text = stopIcon;
                     }
                 }
                 else if (action == lowBandwidthChoice && source == sourceHighBandwidth)
@@ -144,7 +146,8 @@ namespace XFStreamingAudio
                     if (audioPlayer.IsPlaying)
                     {
                         audioPlayer.Stop();
-                        audioPlayer.Play(source);
+//                        audioPlayer.Play(source);
+//                        playStopBtn.Text = stopIcon;
                     }
                 }
             }
@@ -255,6 +258,7 @@ namespace XFStreamingAudio
 
         async void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
+            playStopBtn.IsEnabled = false;
             if (!audioPlayer.IsPlaying)
             {
                 Debug.WriteLine("Start playing");
@@ -266,12 +270,14 @@ namespace XFStreamingAudio
                 }
                 audioPlayer.Play(source);
                 playStopBtn.Text = stopIcon;
+                playStopBtn.IsEnabled = true;
             }
             else
             {
                 Debug.WriteLine("Stop playing");
                 audioPlayer.Stop();
                 playStopBtn.Text = playIcon;
+                playStopBtn.IsEnabled = true;
             }
         }
     }

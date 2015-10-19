@@ -1,0 +1,44 @@
+﻿<metadata>
+	<!--
+  This sample removes the class: android.support.v4.content.AsyncTaskLoader.LoadTask:
+  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='AsyncTaskLoader.LoadTask']" />
+  
+  This sample removes the method: android.support.v4.content.CursorLoader.loadInBackground:
+  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
+  -->
+	<!--	<attr
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='Decoder']/field[@name='decoder']"
+		name="name">Decoder2</attr>-->
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='Decoder']/field[@name='decoder']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='AACPlayer']/field[@name='decoder']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='AACPlayer']/field[@name='decodeBufferCapacityMs']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='AACPlayer']/field[@name='audioBufferCapacityMs']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='AACPlayer']/field[@name='metadataEnabled']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='AACPlayer']/field[@name='playerCallback']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='AACPlayer']/field[@name='declaredBitRate']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='AACPlayer']/field[@name='responseCodeCheckEnabled']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='Decoder']/field[@name='info']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='IcyInputStream']/field[@name='characterEncoding']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='IcyURLConnection']/field[@name='inputStream']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='IcyURLConnection']/field[@name='outputStream']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='PCMFeed']/field[@name='bufferSizeInBytes']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='PCMFeed']/field[@name='bufferSizeInMs']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='PCMFeed']/field[@name='channels']" />
+	<remove-node
+		path="/api/package[@name='com.spoledge.aacdecoder']/class[@name='PCMFeed']/field[@name='sampleRate']" />
+</metadata>
