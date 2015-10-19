@@ -124,8 +124,8 @@ namespace XFStreamingAudio.Droid.Services
         {
             Log.Debug(TAG, "StreamingBackgroundService.Play()");
 
-//            AACPlayerCallback playerCallback = new AACPlayerCallback();
-            player = new AACPlayer();
+            AACPlayerCallback playerCallback = new AACPlayerCallback();
+            player = new AACPlayer(playerCallback);
 
             player.PlayAsync(source);
             isPlaying = true;

@@ -79,7 +79,21 @@ namespace XFStreamingAudio
                     OnBufferingStart);
                 MessagingCenter.Subscribe<BufferingEndMessage>(this, "BufferingEnd", 
                     OnBufferingEnd);
+                MessagingCenter.Subscribe<PlayerStartedMessage>(this, "PlayerStarted", 
+                    OnPlayerStarted);
+                MessagingCenter.Subscribe<PlayerStoppedMessage>(this, "PlayerStopped", 
+                    OnPlayerStopped);
             }
+        }
+
+        void OnPlayerStarted(PlayerStartedMessage obj)
+        {
+            Device.BeginInvokeOnMainThread(() => playStopBtn.IsEnabled = true);
+        }
+
+        void OnPlayerStopped(PlayerStoppedMessage obj)
+        {
+            Device.BeginInvokeOnMainThread(() => playStopBtn.IsEnabled = true);
         }
 
         void OnBufferingStart(BufferingStartMessage obj)
@@ -197,7 +211,7 @@ namespace XFStreamingAudio
         void OnAudioBeginInterruption(object sender)
         {
             Debug.WriteLine("Begin audio interruption");
-            playStopBtn.Text = playIcon;
+            playStopBtn.Text = playIcon;  // TODO: Invoke on main thread?
         }
 
         void OnAudioEndInterruption(object sender)
@@ -258,7 +272,7 @@ namespace XFStreamingAudio
 
         async void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
-            playStopBtn.IsEnabled = false;
+            playStopBtn.IsEnabled = false;  // reenabled in callbacks
             if (!audioPlayer.IsPlaying)
             {
                 Debug.WriteLine("Start playing");
@@ -270,14 +284,12 @@ namespace XFStreamingAudio
                 }
                 audioPlayer.Play(source);
                 playStopBtn.Text = stopIcon;
-                playStopBtn.IsEnabled = true;
             }
             else
             {
                 Debug.WriteLine("Stop playing");
                 audioPlayer.Stop();
                 playStopBtn.Text = playIcon;
-                playStopBtn.IsEnabled = true;
             }
         }
     }
