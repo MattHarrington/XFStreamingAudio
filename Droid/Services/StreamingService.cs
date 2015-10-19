@@ -17,8 +17,8 @@ namespace XFStreamingAudio.Droid.Services
     {
         const string TAG = "KVMR";
 
-        public const string ActionPlay = "com.xamarin.action.PLAY";
-        public const string ActionStop = "com.xamarin.action.STOP";
+        public const string ActionPlay = "org.kvmr.player.action.PLAY";
+        public const string ActionStop = "org.kvmr.player.action.STOP";
 
         public bool IsPlaying { get; private set; }
 
@@ -43,7 +43,7 @@ namespace XFStreamingAudio.Droid.Services
         }
 
         /// <summary>
-        /// Allows activities to bind to StreamingBackgroundService
+        /// Allows activities to bind to StreamingService
         /// </summary>
         public override IBinder OnBind(Intent intent)
         {
@@ -122,6 +122,7 @@ namespace XFStreamingAudio.Droid.Services
             Log.Debug(TAG, "AACPlayerCallback.PlayerStopped(). perf: " + perf + "%");
             player = null;
             IsPlaying = false;
+            StopForeground(true);
             UnregisterReceiver(headphonesUnpluggedReceiver);
             ReleaseWifiLock();
             var bufferingEndMessage = new BufferingEndMessage();
@@ -183,8 +184,6 @@ namespace XFStreamingAudio.Droid.Services
             {
                 Log.Debug(TAG, "Could not abandon audio focus");
             }
-         
-            StopForeground(true);
         }
 
         /// <summary>
@@ -227,7 +226,7 @@ namespace XFStreamingAudio.Droid.Services
 
         /// <summary>
         /// For a good user experience we should account for when audio focus has changed.
-        /// There is only 1 audio output there may be several media services trying to use it so
+        /// There is only one audio output there may be several media services trying to use it so
         /// we should act correctly based on this.  "duck" to be quiet and when we gain go full.
         /// All applications are encouraged to follow this, but are not enforced.
         /// </summary>
