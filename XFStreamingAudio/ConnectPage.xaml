@@ -26,6 +26,7 @@
 						<Button
 							x:Name="feedbackBtn"
 							Text="App Feedback"
+							TextColor="White"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>
@@ -37,6 +38,7 @@
 						<Button
 							x:Name="callStudioBtn"
 							Text="Call Studio"
+							TextColor="White"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>
@@ -51,6 +53,7 @@
 						<Button
 							x:Name="emailOfficeBtn"
 							Text="Email Office"
+							TextColor="White"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>
@@ -62,6 +65,7 @@
 						<Button
 							x:Name="callOfficeBtn"
 							Text="Call Office"
+							TextColor="White"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>
@@ -76,6 +80,7 @@
 						<Button
 							x:Name="facebookBtn"
 							Text="Facebook"
+							TextColor="White"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>
@@ -87,6 +92,7 @@
 						<Button
 							x:Name="twitterBtn"
 							Text="Twitter"
+							TextColor="White"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>
@@ -108,6 +114,7 @@
 						<Button
 							x:Name="infoBtn"
 							Text="About"
+							TextColor="White"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>
@@ -119,6 +126,7 @@
 						<Button
 							x:Name="websiteBtn"
 							Text="Website"
+							TextColor="White"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>

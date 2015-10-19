@@ -18,7 +18,7 @@ namespace XFStreamingAudio.Droid
     {
         bool isBound = false;
         bool isConfigurationChange = false;
-        StreamingBackgroundServiceBinder binder;
+        StreamingServiceBinder binder;
         StreamingBackgroundServiceConnection streamingBackgroundServiceConnection;
 
         public bool IsPlaying
@@ -55,7 +55,7 @@ namespace XFStreamingAudio.Droid
         {
             base.OnStart();
 
-            var intent = new Intent(this, typeof(StreamingBackgroundService));
+            var intent = new Intent(this, typeof(StreamingService));
             streamingBackgroundServiceConnection = new StreamingBackgroundServiceConnection(this);
             BindService(intent, streamingBackgroundServiceConnection, Bind.None);
         }
@@ -75,9 +75,9 @@ namespace XFStreamingAudio.Droid
         class StreamingBackgroundServiceConnection : Java.Lang.Object, IServiceConnection
         {
             MainActivity activity;
-            StreamingBackgroundServiceBinder binder;
+            StreamingServiceBinder binder;
 
-            public StreamingBackgroundServiceBinder Binder
+            public StreamingServiceBinder Binder
             {
                 get
                 {
@@ -92,7 +92,7 @@ namespace XFStreamingAudio.Droid
 
             public void OnServiceConnected(ComponentName name, IBinder service)
             {
-                var streamingBackgroundServiceBinder = service as StreamingBackgroundServiceBinder;
+                var streamingBackgroundServiceBinder = service as StreamingServiceBinder;
 
                 if (streamingBackgroundServiceBinder != null)
                 {

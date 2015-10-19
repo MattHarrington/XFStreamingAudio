@@ -13,22 +13,21 @@ namespace XFStreamingAudio.Droid.Services
 {
     [Service]
     [IntentFilter(new[] { ActionPlay, ActionStop })]
-    public class StreamingBackgroundService : Service, AudioManager.IOnAudioFocusChangeListener
+    public class StreamingService : Service, AudioManager.IOnAudioFocusChangeListener, IPlayerCallback
     {
         const string TAG = "KVMR";
 
-        // Actions
         public const string ActionPlay = "com.xamarin.action.PLAY";
         public const string ActionStop = "com.xamarin.action.STOP";
 
-        private StreamingBackgroundServiceBinder binder;
+        public bool IsPlaying { get; private set; }
+
+        private StreamingServiceBinder binder;
         private AACPlayer player;
         private AudioManager audioManager;
         private WifiManager wifiManager;
         private WifiManager.WifiLock wifiLock;
         private MusicBroadcastReceiver headphonesUnpluggedReceiver;
-        bool isPlaying;
-
         private const int NotificationId = 1;
 
         /// <summary>
@@ -48,18 +47,10 @@ namespace XFStreamingAudio.Droid.Services
         /// </summary>
         public override IBinder OnBind(Intent intent)
         {
-            binder = new StreamingBackgroundServiceBinder(this);
+            binder = new StreamingServiceBinder(this);
             return binder;
         }
-
-        public bool IsPlaying
-        {
-            get
-            {
-                return isPlaying;
-            }
-        }
-
+            
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             string source = intent.GetStringExtra("source") ?? String.Empty;
@@ -76,74 +67,87 @@ namespace XFStreamingAudio.Droid.Services
             return StartCommandResult.NotSticky;
         }
 
-        //        private void IntializePlayer()
-        //        {
+        #region IPlayerCallback implementation
 
-        //            // Tell our player to stream music
-        //            player.SetAudioStreamType(Stream.Music);
-        //
-        //            // Wake mode will be partial to keep the CPU still running under lock screen
-        //            player.SetWakeMode(ApplicationContext, WakeLockFlags.Partial);
-        //
-        //            // When we have prepared the song start playback
-        //            player.Prepared += (sender, args) => player.Start();
-        //
-        //            // Apparently called if network stalls for too long
-        //            player.Completion += (sender, args) =>
-        //            {
-        //                Log.Debug(TAG, "MediaPlayer.Completion");
-        //                Stop();
-        //                var message = new LostStreamMessage();
-        //                MessagingCenter.Send(message, "LostStream");
-        //            };
-        //
-        //            player.Error += (sender, args) =>
-        //            {
-        //                // Playback error
-        //                Log.Debug(TAG, "MediaPlayer.Error - What: " + args.What + ", Extra: " + args.Extra);
-        //                Stop();  // This will clean up and reset properly.
-        //            };
-        //
-        //            player.Info += (sender, e) =>
-        //            {
-        //                Log.Debug(TAG, "MediaPlayback.Info - What: " + e.What + ", Extra: " + e.Extra);
-        //                if (e.What == MediaInfo.BufferingStart)
-        //                {
-        //                    var message = new BufferingStartMessage();
-        //                    MessagingCenter.Send(message, "BufferingStart");
-        //                }
-        //                else if (e.What == MediaInfo.BufferingEnd)
-        //                {
-        //                    var message = new BufferingEndMessage();
-        //                    MessagingCenter.Send(message, "BufferingEnd");
-        //                }
-        //            };
-        //        }
+        public void PlayerAudioTrackCreated(Android.Media.AudioTrack track)
+        {
+        }
+
+        public void PlayerException(Java.Lang.Throwable ex)
+        {
+            Log.Debug(TAG, "AACPlayerCallback.PlayerException: " + ex);  
+        }
+
+        public void PlayerMetadata(string key, string value)
+        {
+        }
+
+        /**
+        * This method is called periodically by PCMFeed.
+        *
+        * @param isPlaying false means that the PCM data are being buffered,
+        *          but the audio is not playing yet
+        *
+        * @param audioBufferSizeMs the buffered audio data expressed in milliseconds of playing
+        * @param audioBufferCapacityMs the total capacity of audio buffer expressed in milliseconds of playing
+        */
+        public void PlayerPCMFeedBuffer(bool isPlaying, int audioBufferSizeMs, int audioBufferCapacityMs)
+        {
+//            Log.Debug(TAG, "AACPlayerCallback.PlayerPCMFeedBuffer() isPlaying = " + isPlaying +
+//                ", audioBufferSizeMs = " + audioBufferSizeMs + ", audioBufferCapacityMs = " + audioBufferCapacityMs);
+//            if (!isPlaying)
+//            {
+//                var message = new BufferingStartMessage();
+//                MessagingCenter.Send(message, "BufferingStart");
+//            }
+//            else
+//            {
+//                var message = new BufferingEndMessage();
+//                MessagingCenter.Send(message, "BufferingEnd");
+//            }
+        }
+
+        public void PlayerStarted()
+        {
+            Log.Debug(TAG, "AACPlayerCallback.PlayerStarted()");    
+            IsPlaying = true;
+            RegisterReceiver(headphonesUnpluggedReceiver, new IntentFilter(AudioManager.ActionAudioBecomingNoisy));
+            Log.Debug(TAG, "RegisterReceiver for headphones unplugged");
+            var playerStartedMessage = new PlayerStartedMessage();
+            MessagingCenter.Send(playerStartedMessage, "PlayerStarted");
+        }
+
+        public void PlayerStopped(int perf)
+        {
+            Log.Debug(TAG, "AACPlayerCallback.PlayerStopped(). perf: " + perf + "%");
+            player = null;
+            IsPlaying = false;
+            UnregisterReceiver(headphonesUnpluggedReceiver);
+            ReleaseWifiLock();
+            var bufferingEndMessage = new BufferingEndMessage();
+            MessagingCenter.Send(bufferingEndMessage, "BufferingEnd");
+            Log.Debug(TAG, "UnregisterReceiver for headphones unplugged");
+            var playerStoppedMessage = new PlayerStoppedMessage();
+            MessagingCenter.Send(playerStoppedMessage, "PlayerStopped");
+            var audioBeginInterruptionMessage = new AudioBeginInterruptionMessage();
+            MessagingCenter.Send(audioBeginInterruptionMessage, "AudioBeginInterruption");
+        }
+
+        #endregion
 
         private void Play(string source)
         {
             Log.Debug(TAG, "StreamingBackgroundService.Play()");
 
-            AACPlayerCallback playerCallback = new AACPlayerCallback();
-            player = new AACPlayer(playerCallback);
-
-            player.PlayAsync(source);
-            isPlaying = true;
-
             var focusResult = audioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
             Log.Debug(TAG, "StreamingBackgroundService.Play() RequestAudioFocus result: " + focusResult);
-            if (focusResult != AudioFocusRequest.Granted)
+            if (focusResult == AudioFocusRequest.Granted)
             {
-                // TODO: Revert UI back to "Play", because not granted audio focus
-                // TODO: Don't play if not granted focus.  (Is it possible to play on Android if not given focus?)
-                return;
+                player = new AACPlayer(this);
+                player.PlayAsync(source);
+                AquireWifiLock();
+                StartForeground();
             }
-                    
-            RegisterReceiver(headphonesUnpluggedReceiver, new IntentFilter(AudioManager.ActionAudioBecomingNoisy));
-            Log.Debug(TAG, "RegisterReceiver for headphones unplugged");
-
-            AquireWifiLock();
-            StartForeground();
         }
 
         /// <summary>
@@ -172,11 +176,6 @@ namespace XFStreamingAudio.Droid.Services
             Log.Debug(TAG, "StreamingBackgroundService.Stop()");
 
             player.Stop();
-            player = null;
-            isPlaying = false;
-
-            UnregisterReceiver(headphonesUnpluggedReceiver);
-            Log.Debug(TAG, "UnregisterReceiver for headphones unplugged");
 
             var focusResult = audioManager.AbandonAudioFocus(this);
             Log.Debug(TAG, "StreamingBackgroundService.Stop() AbandonAudioFocus result: " + focusResult);
@@ -186,11 +185,6 @@ namespace XFStreamingAudio.Droid.Services
             }
          
             StopForeground(true);
-            ReleaseWifiLock();
-            var audioBeginInterruptionMessage = new AudioBeginInterruptionMessage();
-            MessagingCenter.Send(audioBeginInterruptionMessage, "AudioBeginInterruption");
-            var bufferingEndMessage = new BufferingEndMessage();
-            MessagingCenter.Send(bufferingEndMessage, "BufferingEnd");
         }
 
         /// <summary>
@@ -250,7 +244,7 @@ namespace XFStreamingAudio.Droid.Services
                        
                     }
 
-                    if (!isPlaying)
+                    if (!IsPlaying)
                     {
                         
                     }
@@ -269,7 +263,7 @@ namespace XFStreamingAudio.Droid.Services
                 case AudioFocus.LossTransientCanDuck:
                     //We have lost focus but should till play at a muted 10% volume
                     Log.Debug(TAG, "AudioFocus.LossTransientCanDuck");
-                    if (isPlaying)
+                    if (IsPlaying)
                     {
 //                        player.SetVolume(.1f, .1f);//turn it down!
                     }

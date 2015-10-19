@@ -21,8 +21,8 @@ namespace XFStreamingAudio.Droid
         public void Play(Uri source)
         {
             var context = Forms.Context.ApplicationContext;
-            var intent = new Intent(context, typeof(StreamingBackgroundService));
-            intent.SetAction(StreamingBackgroundService.ActionPlay);
+            var intent = new Intent(context, typeof(StreamingService));
+            intent.SetAction(StreamingService.ActionPlay);
             intent.PutExtra("source", source.AbsoluteUri);
             Forms.Context.StartService(intent);
         }
@@ -30,8 +30,8 @@ namespace XFStreamingAudio.Droid
         public void Stop()
         {
             var context = Forms.Context.ApplicationContext;
-            var intent = new Intent(context, typeof(StreamingBackgroundService));
-            intent.SetAction(StreamingBackgroundService.ActionStop);
+            var intent = new Intent(context, typeof(StreamingService));
+            intent.SetAction(StreamingService.ActionStop);
             Forms.Context.StartService(intent);
         }
 

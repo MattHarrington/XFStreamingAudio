@@ -94,11 +94,10 @@
     <Compile Include="AudioPlayerAndroid.cs" />
     <Compile Include="DeviceExtensionAndroid.cs" />
     <Compile Include="ListenPageRenderer.cs" />
-    <Compile Include="Services\StreamingBackgroundService.cs" />
     <Compile Include="Receivers\MusicBroadcastReceiver.cs" />
-    <Compile Include="Services\StreamingBackgroundServiceBinder.cs" />
     <Compile Include="SplashActivity.cs" />
-    <Compile Include="AACPlayerCallback.cs" />
+    <Compile Include="Services\StreamingService.cs" />
+    <Compile Include="Services\StreamingServiceBinder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

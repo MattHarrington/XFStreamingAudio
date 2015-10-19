@@ -98,12 +98,12 @@ namespace XFStreamingAudio
 
         void OnBufferingStart(BufferingStartMessage obj)
         {
-            bufferingIndicator.IsRunning = true;
+            Device.BeginInvokeOnMainThread(() => bufferingIndicator.IsRunning = true);
         }
 
         void OnBufferingEnd(BufferingEndMessage obj)
         {
-            bufferingIndicator.IsRunning = false;
+            Device.BeginInvokeOnMainThread(() => bufferingIndicator.IsRunning = false);
         }
 
         protected override void OnAppearing()
@@ -131,16 +131,16 @@ namespace XFStreamingAudio
                 string lowBandwidthChoice;
                 if (source == sourceHighBandwidth)
                 {
-                    highBandwidthChoice = "Yes (currently selected)";
-                    lowBandwidthChoice = "No";
+                    highBandwidthChoice = "High (currently selected)";
+                    lowBandwidthChoice = "Low";
                 }
                 else
                 {
-                    highBandwidthChoice = "Yes";
-                    lowBandwidthChoice = "No (currently selected)";
+                    highBandwidthChoice = "High";
+                    lowBandwidthChoice = "Low (currently selected)";
                 }
 
-                var action = await DisplayActionSheet("High Fidelity", "Cancel", null, 
+                var action = await DisplayActionSheet("Fidelity", "Cancel", null, 
                                  highBandwidthChoice, lowBandwidthChoice);
                 if (action == highBandwidthChoice && source == sourceLowBandwidth)
                 {
@@ -211,7 +211,7 @@ namespace XFStreamingAudio
         void OnAudioBeginInterruption(object sender)
         {
             Debug.WriteLine("Begin audio interruption");
-            playStopBtn.Text = playIcon;  // TODO: Invoke on main thread?
+            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
         }
 
         void OnAudioEndInterruption(object sender)
@@ -280,6 +280,7 @@ namespace XFStreamingAudio
                 if (!sourceReachable)
                 {
                     await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
+                    playStopBtn.IsEnabled = true;
                     return;
                 }
                 audioPlayer.Play(source);
