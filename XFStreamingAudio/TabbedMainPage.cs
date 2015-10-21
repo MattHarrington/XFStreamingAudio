@@ -16,9 +16,9 @@ namespace XFStreamingAudio
             MessagingCenter.Subscribe<LostStreamMessage>(this, "LostStream", OnLostStream);
         }
 
-        async void OnLostStream(LostStreamMessage obj)
+        void OnLostStream(LostStreamMessage obj)
         {
-            await DisplayAlert("Lost Stream", "Check network.", "OK");
+            Device.BeginInvokeOnMainThread(async () => await DisplayAlert("Lost Stream", "Check network.", "OK"));
         }
     }
 }

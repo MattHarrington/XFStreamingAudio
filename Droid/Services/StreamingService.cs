@@ -8,6 +8,7 @@ using Android.OS;
 using Xamarin.Forms;
 using Android.Util;
 using Com.Spoledge.Aacdecoder;
+using Android.Media.Session;
 
 namespace XFStreamingAudio.Droid.Services
 {
@@ -22,13 +23,17 @@ namespace XFStreamingAudio.Droid.Services
 
         public bool IsPlaying { get; private set; }
 
-        private StreamingServiceBinder binder;
-        private AACPlayer player;
-        private AudioManager audioManager;
-        private WifiManager wifiManager;
-        private WifiManager.WifiLock wifiLock;
-        private MusicBroadcastReceiver headphonesUnpluggedReceiver;
-        private const int NotificationId = 1;
+        StreamingServiceBinder binder;
+        AACPlayer player;
+        AudioManager audioManager;
+        WifiManager wifiManager;
+        WifiManager.WifiLock wifiLock;
+        MusicBroadcastReceiver headphonesUnpluggedReceiver;
+        const int NotificationId = 1;
+        bool stopBtnWasClicked;
+        MediaSession mediaSession;
+        MediaSessionCallback mediaCallback;
+        string source;
 
         /// <summary>
         /// OnCreate() detects some of our managers
@@ -36,10 +41,39 @@ namespace XFStreamingAudio.Droid.Services
         public override void OnCreate()
         {
             base.OnCreate();
-            //Find our audio and notificaton managers
+
             audioManager = (AudioManager)GetSystemService(AudioService);
             wifiManager = (WifiManager)GetSystemService(WifiService);
             headphonesUnpluggedReceiver = new MusicBroadcastReceiver();
+            mediaSession = new MediaSession(this, "KVMRMediaSession");
+
+            mediaCallback = new MediaSessionCallback();
+            mediaCallback.OnPlayImpl = () =>
+            {
+                if (IsPlaying)
+                {
+                    Log.Debug(TAG, "MediaCallback stop playing");
+                    Stop();
+                }
+                else
+                {
+                    Log.Debug(TAG, "MediaCallback start playing");
+                    Play(source);
+                    var message = new RemoteControlPlayMessage();
+                    MessagingCenter.Send(message, "RemoteControlPlay");
+                }
+            };
+
+            mediaSession.SetCallback(mediaCallback);
+            mediaSession.SetFlags(MediaSessionFlags.HandlesMediaButtons |
+                MediaSessionFlags.HandlesTransportControls);
+
+            PlaybackState state = new PlaybackState.Builder()
+                .SetActions(PlaybackState.ActionPlay | PlaybackState.ActionPlayPause
+                                      | PlaybackState.ActionPause | PlaybackState.ActionStop)
+                .Build();
+            mediaSession.SetPlaybackState(state);
+            mediaSession.Active = true;
         }
 
         /// <summary>
@@ -50,10 +84,11 @@ namespace XFStreamingAudio.Droid.Services
             binder = new StreamingServiceBinder(this);
             return binder;
         }
-            
+
+        [Obsolete]
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            string source = intent.GetStringExtra("source") ?? String.Empty;
+            source = intent.GetStringExtra("source") ?? String.Empty;
             switch (intent.Action)
             {
                 case ActionPlay:
@@ -123,15 +158,40 @@ namespace XFStreamingAudio.Droid.Services
             player = null;
             IsPlaying = false;
             StopForeground(true);
+
+            // Unregister receiver for headphones unplugged
+            Log.Debug(TAG, "UnregisterReceiver for headphones unplugged");
             UnregisterReceiver(headphonesUnpluggedReceiver);
+
             ReleaseWifiLock();
+
+            // Hides ActivityIndicator on ListenPage
             var bufferingEndMessage = new BufferingEndMessage();
             MessagingCenter.Send(bufferingEndMessage, "BufferingEnd");
-            Log.Debug(TAG, "UnregisterReceiver for headphones unplugged");
+
+            // Abandon audio focus
+            var focusResult = audioManager.AbandonAudioFocus(this);
+            Log.Debug(TAG, "StreamingBackgroundService.Stop() AbandonAudioFocus result: " + focusResult);
+            if (focusResult != AudioFocusRequest.Granted)
+            {
+                Log.Debug(TAG, "Could not abandon audio focus");
+            }
+
+            // Enables playStopBtn on ListenPage
             var playerStoppedMessage = new PlayerStoppedMessage();
             MessagingCenter.Send(playerStoppedMessage, "PlayerStopped");
+
+            // Sets playStopBtn to play icon
             var audioBeginInterruptionMessage = new AudioBeginInterruptionMessage();
             MessagingCenter.Send(audioBeginInterruptionMessage, "AudioBeginInterruption");
+
+            if (!stopBtnWasClicked)
+            {
+                // Stop button was not clicked.  Callback called because stream was lost.
+                Log.Debug(TAG, "Send LostStream message");
+                var lostStreamMessage = new LostStreamMessage();
+                MessagingCenter.Send(lostStreamMessage, "LostStream");
+            }
         }
 
         #endregion
@@ -144,6 +204,7 @@ namespace XFStreamingAudio.Droid.Services
             Log.Debug(TAG, "StreamingBackgroundService.Play() RequestAudioFocus result: " + focusResult);
             if (focusResult == AudioFocusRequest.Granted)
             {
+                stopBtnWasClicked = false;
                 player = new AACPlayer(this);
                 player.PlayAsync(source);
                 AquireWifiLock();
@@ -175,15 +236,8 @@ namespace XFStreamingAudio.Droid.Services
         private void Stop()
         {
             Log.Debug(TAG, "StreamingBackgroundService.Stop()");
-
+            stopBtnWasClicked = true;
             player.Stop();
-
-            var focusResult = audioManager.AbandonAudioFocus(this);
-            Log.Debug(TAG, "StreamingBackgroundService.Stop() AbandonAudioFocus result: " + focusResult);
-            if (focusResult != AudioFocusRequest.Granted)
-            {
-                Log.Debug(TAG, "Could not abandon audio focus");
-            }
         }
 
         /// <summary>
@@ -252,12 +306,12 @@ namespace XFStreamingAudio.Droid.Services
                     break;
                 case AudioFocus.Loss:
                     Log.Debug(TAG, "AudioFocus.Loss");
-                    Stop();
+                    player.Stop();
                     break;
                 case AudioFocus.LossTransient:
                     Log.Debug(TAG, "AudioFocus.LossTransient");
                     //We have lost focus for a short time, but likely to resume so pause
-                    Stop();
+                    player.Stop();
                     break;
                 case AudioFocus.LossTransientCanDuck:
                     //We have lost focus but should till play at a muted 10% volume
@@ -265,8 +319,27 @@ namespace XFStreamingAudio.Droid.Services
                     if (IsPlaying)
                     {
 //                        player.SetVolume(.1f, .1f);//turn it down!
+
                     }
                     break;
+            }
+        }
+
+        class MediaSessionCallback : MediaSession.Callback
+        {
+            public Action OnPlayImpl { get; set; }
+
+            public override void OnPlay()
+            {
+//                base.OnPlay();
+                Log.Debug(TAG, "MediaSessionCallback.OnPlay()");
+                OnPlayImpl();
+            }
+
+            public override void OnCommand(string command, Bundle args, ResultReceiver cb)
+            {
+                base.OnCommand(command, args, cb);
+                Log.Debug(TAG, "MediaSessionCallback OnCommand");
             }
         }
     }

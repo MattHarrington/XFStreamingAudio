@@ -83,7 +83,14 @@ namespace XFStreamingAudio
                     OnPlayerStarted);
                 MessagingCenter.Subscribe<PlayerStoppedMessage>(this, "PlayerStopped", 
                     OnPlayerStopped);
+                MessagingCenter.Subscribe<RemoteControlPlayMessage>(this, "RemoteControlPlay", 
+                    OnRemoteControlPlay);
             }
+        }
+
+        void OnRemoteControlPlay(RemoteControlPlayMessage obj)
+        {
+            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = stopIcon);
         }
 
         void OnPlayerStarted(PlayerStartedMessage obj)
