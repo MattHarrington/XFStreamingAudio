@@ -58,7 +58,7 @@ namespace XFStreamingAudio
                 "Debug Build\n" +
                 #endif
                 "Version: 1.0.0.5 alpha\n" +
-                "Built on: 20-Oct-2015 17:09 PDT\n" +
+                "Built on: 21-Oct-2015 17:09 PDT\n" +
                 "Built with: Xamarin", 
                 "OK");
         }

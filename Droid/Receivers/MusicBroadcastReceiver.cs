@@ -22,7 +22,7 @@ namespace XFStreamingAudio.Droid
 
             // Signal the service to stop
             var stopIntent = new Intent(context, typeof(StreamingService));
-            stopIntent.SetAction(StreamingService.ActionStop);
+            stopIntent.SetAction(StreamingService.ActionHeadphonesUnplugged);
             Forms.Context.StartService(stopIntent);
             Page mp = Xamarin.Forms.Application.Current.MainPage;
             var currentPage = ((TabbedPage)mp).CurrentPage;
