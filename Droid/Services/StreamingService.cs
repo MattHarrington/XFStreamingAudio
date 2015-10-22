@@ -121,6 +121,7 @@ namespace XFStreamingAudio.Droid.Services
 
         public void PlayerAudioTrackCreated(Android.Media.AudioTrack track)
         {
+            Log.Debug(TAG, "PlayerAudioTrackCreated()");
         }
 
         public void PlayerException(Java.Lang.Throwable ex)
