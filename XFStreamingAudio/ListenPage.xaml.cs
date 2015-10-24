@@ -24,13 +24,8 @@ namespace XFStreamingAudio
 
             if (Device.OS == TargetPlatform.iOS)
             {
-                #if DEBUG
-                sourceHighBandwidth = new Uri("http://moonat.cloudapp.net:8000/kvmr-96.aac");
-                sourceLowBandwidth = new Uri("http://moonat.cloudapp.net:8000/kvmr-32.aac");
-                #else
                 sourceHighBandwidth = new Uri("https://www.kvmr.org/aac96.m3u");
                 sourceLowBandwidth = new Uri("https://www.kvmr.org/aac32.m3u");
-                #endif
             }
             else if (Device.OS == TargetPlatform.Android)
             {

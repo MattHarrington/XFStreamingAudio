@@ -213,6 +213,10 @@
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-Small-40%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-Small-40%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-Small-40.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ListenPageLogo.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\ListenPageLogo.imageset\ListenPageLogo%401x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ListenPageLogo.imageset\ListenPageLogo%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\ListenPageLogo.imageset\ListenPageLogo%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Images.xcassets\AppIcon.appiconset\" />
