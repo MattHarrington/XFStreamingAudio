@@ -210,6 +210,9 @@
     <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\WhiteTower.png" />
     <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\WhiteTower%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\WhiteTower%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-Small-40%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-Small-40%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-Small-40.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Images.xcassets\AppIcon.appiconset\" />
