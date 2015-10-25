@@ -14,12 +14,16 @@
 	</ContentPage.Padding>
 	<ContentPage.Content>
 		<StackLayout
+			Spacing="0"
 			Orientation="Horizontal"
 			Padding="20,0,0,0">
 			<Image
+			BackgroundColor="Fuchsia"
 				Source="WhiteTower"
 				Aspect="AspectFill" />
 			<StackLayout
+				Spacing="0"
+				HorizontalOptions="CenterAndExpand"
 				Orientation="Vertical">
 				<StackLayout.Padding>
 					<OnPlatform
@@ -28,13 +32,16 @@
 						Android="0,20,0,0"
 						WinPhone="0" />
 				</StackLayout.Padding>
-				<Image
-					Source="SettingsIcon"
-					x:Name="launchSettingsImage"
-					HorizontalOptions="End" />
+				<Frame
+					Padding="0,10,10,0"
+					HasShadow="false">
+					<Image
+						Source="SettingsIcon"
+						x:Name="launchSettingsImage"
+						HorizontalOptions="End" />
+				</Frame>
 				<Image
 					Source="ListenPageLogo"
-					HorizontalOptions="Center"
 					VerticalOptions="EndAndExpand" />
 				<Frame
 					Padding="0,20,0,30"
@@ -50,9 +57,8 @@
 					Padding="0,0,0,40"
 					HasShadow="false">
 					<ActivityIndicator
-						IsRunning="false"
-						x:Name="bufferingIndicator"
-						HorizontalOptions="Center" />
+						IsRunning="true"
+						x:Name="bufferingIndicator" />
 				</Frame>
 			</StackLayout>
 		</StackLayout>
