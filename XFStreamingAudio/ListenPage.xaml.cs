@@ -74,12 +74,12 @@ namespace XFStreamingAudio
                     OnBufferingStart);
                 MessagingCenter.Subscribe<BufferingEndMessage>(this, "BufferingEnd", 
                     OnBufferingEnd);
+                MessagingCenter.Subscribe<RemoteControlPlayMessage>(this, "RemoteControlPlay", 
+                    OnRemoteControlPlay);
                 MessagingCenter.Subscribe<PlayerStartedMessage>(this, "PlayerStarted", 
                     OnPlayerStarted);
                 MessagingCenter.Subscribe<PlayerStoppedMessage>(this, "PlayerStopped", 
                     OnPlayerStopped);
-                MessagingCenter.Subscribe<RemoteControlPlayMessage>(this, "RemoteControlPlay", 
-                    OnRemoteControlPlay);
             }
         }
 
@@ -274,7 +274,6 @@ namespace XFStreamingAudio
 
         async void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
-            playStopBtn.IsEnabled = false;  // reenabled in callbacks
             if (!audioPlayer.IsPlaying)
             {
                 Debug.WriteLine("Start playing");
@@ -282,7 +281,6 @@ namespace XFStreamingAudio
                 if (!sourceReachable)
                 {
                     await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
-                    playStopBtn.IsEnabled = true;
                     return;
                 }
                 audioPlayer.Play(source);

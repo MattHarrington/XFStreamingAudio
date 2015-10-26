@@ -28,7 +28,7 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>FooterText</key>
-			<string>Email apps@kvmr.org to be a beta tester.</string>
+			<string>Email apps@kvmr.org to become a beta tester.</string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -38,7 +38,7 @@
 			<key>Key</key>
 			<string>versionNumber</string>
 			<key>DefaultValue</key>
-			<string>1.0.2 (1)</string>
+			<string>1.0.2</string>
 		</dict>
 		<dict>
 			<key>Type</key>

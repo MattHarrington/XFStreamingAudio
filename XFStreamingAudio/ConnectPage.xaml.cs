@@ -10,6 +10,13 @@ namespace XFStreamingAudio
         {
             InitializeComponent();
 
+            if (Device.OS == TargetPlatform.Android)
+            {
+                callStudioBtn.TextColor = callOfficeBtn.TextColor = emailOfficeBtn.TextColor = 
+                    feedbackBtn.TextColor = websiteBtn.TextColor = twitterBtn.TextColor = 
+                        facebookBtn.TextColor = infoBtn.TextColor = Color.White;
+            }
+
             TapGestureRecognizer callStudioIconTGR = new TapGestureRecognizer();
             callStudioIconTGR.Tapped += OnCallStudio;
             callStudioIcon.GestureRecognizers.Add(callStudioIconTGR);

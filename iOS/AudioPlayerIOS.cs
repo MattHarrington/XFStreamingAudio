@@ -19,10 +19,9 @@ namespace XFStreamingAudio.iOS
         public AudioPlayerIOS()
         {
             AVAudioSession audioSession = AVAudioSession.SharedInstance();
-//            audioSession.SetPreferredIOBufferDuration(0.1f, out error);
             audioSession.SetCategory(AVAudioSessionCategory.Playback);
-            audioSession.BeginInterruption += AudioSession_BeginInterruption;
-            audioSession.EndInterruption += AudioSession_EndInterruption;
+            audioSession.BeginInterruption += OnAudioSessionBeginInterruption;
+            audioSession.EndInterruption += OnAudioSessionEndInterruption;
             audioSession.SetActive(true);
 
             MPNowPlayingInfo nowPlayingInfo = new MPNowPlayingInfo();
@@ -50,15 +49,14 @@ namespace XFStreamingAudio.iOS
                 });
         }
 
-        void AudioSession_BeginInterruption(object sender, EventArgs e)
+        void OnAudioSessionBeginInterruption(object sender, EventArgs e)
         {
-            Page mp = Xamarin.Forms.Application.Current.MainPage;
-            var currentPage = ((TabbedPage)mp).CurrentPage;
-            MessagingCenter.Send<Page>((Page)currentPage, "AudioBeginInterruption");
+            MessagingCenter.Send<AudioBeginInterruptionMessage>(new AudioBeginInterruptionMessage(),
+                "AudioBeginInterruption");
             avPlayer?.Dispose();  // will be null if other audio source starts before user has hit play
         }
 
-        void AudioSession_EndInterruption(object sender, EventArgs e)
+        void OnAudioSessionEndInterruption(object sender, EventArgs e)
         {
             Page mp = Xamarin.Forms.Application.Current.MainPage;
             var currentPage = ((TabbedPage)mp).CurrentPage;
@@ -89,6 +87,7 @@ namespace XFStreamingAudio.iOS
             Debug.WriteLine("Start playing");
             AVAsset asset = AVAsset.FromUrl(source);
             AVPlayerItem playerItem = new AVPlayerItem(asset);
+
             #if DEBUG
             playerItem.AddObserver(observer: this,
                 keyPath: new NSString("playbackBufferEmpty"),
@@ -98,7 +97,12 @@ namespace XFStreamingAudio.iOS
                 keyPath: new NSString("playbackLikelyToKeepUp"),
                 options: NSKeyValueObservingOptions.New,
                 context: IntPtr.Zero);
+            playerItem.AddObserver(observer: this,
+                keyPath: new NSString("status"),
+                options: NSKeyValueObservingOptions.New,
+                context: IntPtr.Zero);
             #endif
+
             avPlayer = new AVPlayer(playerItem);
             avPlayer.Play();
 
@@ -119,18 +123,27 @@ namespace XFStreamingAudio.iOS
                     if (change.ValueForKeyPath(new NSString("new")).Description == "1")
                     {
                         Debug.WriteLine("playbackBufferEmpty == {0}", true);
-                        Insights.Track("PlaybackBufferEmpty", new Dictionary <string, string> { 
-                            {"track-local-time", DateTime.Now.ToString()}
-                        });
+                        Insights.Track("PlaybackBufferEmpty", new Dictionary <string, string>
+                            { 
+                                { "track-local-time", DateTime.Now.ToString() }
+                            });
                     }
                     break;
                 case "playbackLikelyToKeepUp":
                     if (change.ValueForKeyPath(new NSString("new")).Description == "0")
                     {
                         Debug.WriteLine("playbackLikelyToKeepUp == {0}", false);
-                        Insights.Track("PlaybackNotLikelyToKeepUp", new Dictionary <string, string> { 
-                            {"track-local-time", DateTime.Now.ToString()}
-                        });
+                        Insights.Track("PlaybackNotLikelyToKeepUp", new Dictionary <string, string>
+                            { 
+                                { "track-local-time", DateTime.Now.ToString() }
+                            });
+                    }
+                    break;
+                case "status":
+                    if (change.ValueForKeyPath(new NSString("new")).Description ==
+                        ((int)AVPlayerItemStatus.ReadyToPlay).ToString())
+                    {
+                        MessagingCenter.Send(new PlayerStartedMessage(), "PlayerStarted");
                     }
                     break;
                 default:
@@ -141,14 +154,19 @@ namespace XFStreamingAudio.iOS
         public void Stop()
         {
             Debug.WriteLine("Stop playing");
+
             #if DEBUG
             avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("playbackBufferEmpty"));
             avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("playbackLikelyToKeepUp"));
+            avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("status"));
             #endif
+
             avPlayer?.Pause();
             avPlayer?.Dispose();
+            var playerStoppedMessage = new PlayerStoppedMessage();
+            MessagingCenter.Send(playerStoppedMessage, "PlayerStopped");
         }
-            
+
         public double DurationLoaded
         {
             get
