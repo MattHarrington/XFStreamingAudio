@@ -18,7 +18,6 @@
 			Orientation="Horizontal"
 			Padding="20,0,0,0">
 			<Image
-			BackgroundColor="Fuchsia"
 				Source="WhiteTower"
 				Aspect="AspectFill" />
 			<StackLayout
@@ -33,7 +32,7 @@
 						WinPhone="0" />
 				</StackLayout.Padding>
 				<Frame
-					Padding="0,10,10,0"
+					Padding="0,10,0,0"
 					HasShadow="false">
 					<Image
 						Source="SettingsIcon"
@@ -42,7 +41,7 @@
 				</Frame>
 				<Image
 					Source="ListenPageLogo"
-					VerticalOptions="EndAndExpand" />
+					VerticalOptions="CenterAndExpand" />
 				<Frame
 					Padding="0,20,0,30"
 					HasShadow="false">
@@ -57,7 +56,7 @@
 					Padding="0,0,0,40"
 					HasShadow="false">
 					<ActivityIndicator
-						IsRunning="true"
+						IsRunning="false"
 						x:Name="bufferingIndicator" />
 				</Frame>
 			</StackLayout>
