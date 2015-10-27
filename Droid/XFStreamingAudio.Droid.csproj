@@ -36,7 +36,6 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <ConsolePause>false</ConsolePause>
-    <EnableProguard>true</EnableProguard>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -82,9 +81,9 @@
       <Project>{D3623EBE-0E58-4408-9067-6ACE3ED208E1}</Project>
       <Name>XFStreamingAudio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AACDecoderAndroidXamarinBindings\AACDecoderAndroidXamarinBindings.csproj">
-      <Project>{3FBB5FEF-88AC-4459-8924-B9085980BCCB}</Project>
-      <Name>AACDecoderAndroidXamarinBindings</Name>
+    <ProjectReference Include="..\..\ExoPlayerXamarin\ExoPlayer\ExoPlayer.csproj">
+      <Project>{0B871C50-6D5D-45D0-B32D-84E25ADB869A}</Project>
+      <Name>ExoPlayer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -147,11 +146,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\RefreshIcon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\RefreshIcon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\RefreshIcon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\AndroidNotificationIcon.png" />
     <AndroidResource Include="Resources\drawable-mdpi\AndroidNotificationIcon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\AndroidNotificationIcon.png" />
@@ -178,6 +172,11 @@
     <AndroidResource Include="Resources\drawable-xhdpi\WhiteTower.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\WhiteTower.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\WhiteTower.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.1.5.0.6447\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.5.0.6447\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

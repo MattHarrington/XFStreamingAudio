@@ -65,8 +65,8 @@ namespace XFStreamingAudio
                 "Debug Build\n" +
                 #endif
                 "Version: 1.0.0.5 alpha\n" +
-                "Built on: 21-Oct-2015 17:09 PDT\n" +
-                "Built with: Xamarin", 
+                "Built with: Xamarin\n\n" +
+                "Email apps@kvmr.org to become a beta tester.",
                 "OK");
         }
 

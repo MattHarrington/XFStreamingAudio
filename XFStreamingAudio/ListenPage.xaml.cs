@@ -29,8 +29,8 @@ namespace XFStreamingAudio
             }
             else if (Device.OS == TargetPlatform.Android)
             {
-                sourceHighBandwidth = new Uri("http://live.kvmr.org:8000/aac96");
-                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/aac32");
+                sourceHighBandwidth = new Uri("http://live2.kvmr.org:8190/kvmr");
+                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/dial");
             }
 
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
@@ -151,8 +151,8 @@ namespace XFStreamingAudio
                     if (audioPlayer.IsPlaying)
                     {
                         audioPlayer.Stop();
-//                        audioPlayer.Play(source);
-//                        playStopBtn.Text = stopIcon;
+                        audioPlayer.Play(source);
+                        playStopBtn.Text = stopIcon;
                     }
                 }
                 else if (action == lowBandwidthChoice && source == sourceHighBandwidth)
@@ -162,8 +162,8 @@ namespace XFStreamingAudio
                     if (audioPlayer.IsPlaying)
                     {
                         audioPlayer.Stop();
-//                        audioPlayer.Play(source);
-//                        playStopBtn.Text = stopIcon;
+                        audioPlayer.Play(source);
+                        playStopBtn.Text = stopIcon;
                     }
                 }
             }
@@ -283,6 +283,7 @@ namespace XFStreamingAudio
                     await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
                     return;
                 }
+
                 audioPlayer.Play(source);
                 playStopBtn.Text = stopIcon;
             }
