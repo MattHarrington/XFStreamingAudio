@@ -52,6 +52,11 @@ namespace XFStreamingAudio
             twitterIcon.GestureRecognizers.Add(twitterIconTGR);
             twitterBtn.Clicked += OnLaunchTwitter;
 
+            TapGestureRecognizer archiveIconTGR = new TapGestureRecognizer();
+            archiveIconTGR.Tapped += OnLaunchArchive;
+            archiveIcon.GestureRecognizers.Add(archiveIconTGR);
+            archiveBtn.Clicked += OnLaunchArchive;
+
             TapGestureRecognizer infoIconTGR = new TapGestureRecognizer();
             infoIconTGR.Tapped += OnDisplayInfo;
             infoIcon.GestureRecognizers.Add(infoIconTGR);
@@ -64,7 +69,7 @@ namespace XFStreamingAudio
                 #if DEBUG
                 "Debug Build\n" +
                 #endif
-                "Version: 1.0.0.5 alpha\n" +
+                "Version: 1.0.0.6\n" +
                 "Built with: Xamarin\n\n" +
                 "Email apps@kvmr.org to become a beta tester.",
                 "OK");
@@ -103,6 +108,11 @@ namespace XFStreamingAudio
         void OnVisitWebsite(object sender, EventArgs e)
         {
             Device.OpenUri(new Uri("https://www.kvmr.org/"));
+        }
+
+        void OnLaunchArchive(object sender, EventArgs e)
+        {
+            Device.OpenUri(new Uri("http://archive.kvmr.org/"));
         }
 
         async void OnCallStudio(object sender, System.EventArgs e)

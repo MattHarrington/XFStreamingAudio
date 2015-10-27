@@ -90,12 +90,12 @@ namespace XFStreamingAudio
 
         void OnPlayerStarted(PlayerStartedMessage obj)
         {
-            Device.BeginInvokeOnMainThread(() => playStopBtn.IsEnabled = true);
+            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = stopIcon);
         }
 
         void OnPlayerStopped(PlayerStoppedMessage obj)
         {
-            Device.BeginInvokeOnMainThread(() => playStopBtn.IsEnabled = true);
+            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
         }
 
         void OnBufferingStart(BufferingStartMessage obj)

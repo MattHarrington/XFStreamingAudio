@@ -95,6 +95,31 @@
 					Orientation="Horizontal">
 					<StackLayout
 						HorizontalOptions="CenterAndExpand">
+						<Image
+							x:Name="archiveIcon"
+							Source="ArchiveIcon.png" />
+						<Button
+							x:Name="archiveBtn"
+							Text="Archive"
+							FontSize="18"
+							BackgroundColor="Transparent" />
+					</StackLayout>
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
+						<Image
+							x:Name="websiteIcon"
+							Source="WebsiteIcon.png" />
+						<Button
+							x:Name="websiteBtn"
+							Text="Website"
+							FontSize="18"
+							BackgroundColor="Transparent" />
+					</StackLayout>
+				</StackLayout>
+				<StackLayout
+					Orientation="Horizontal">
+					<StackLayout
+						HorizontalOptions="CenterAndExpand">
 						<StackLayout.IsVisible>
 							<OnPlatform
 								x:TypeArguments="x:Boolean"
@@ -108,17 +133,6 @@
 						<Button
 							x:Name="infoBtn"
 							Text="About"
-							FontSize="18"
-							BackgroundColor="Transparent" />
-					</StackLayout>
-					<StackLayout
-						HorizontalOptions="CenterAndExpand">
-						<Image
-							x:Name="websiteIcon"
-							Source="WebsiteIcon.png" />
-						<Button
-							x:Name="websiteBtn"
-							Text="Website"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>

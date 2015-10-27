@@ -31,6 +31,7 @@ namespace XFStreamingAudio.Droid.Services
         public bool IsPlaying { get; private set; }
 
         IExoPlayer mediaPlayer;
+        MediaCodecAudioTrackRenderer audioRenderer;
         StreamingServiceBinder binder;
         AudioManager audioManager;
         WifiManager wifiManager;
@@ -53,38 +54,38 @@ namespace XFStreamingAudio.Droid.Services
             audioManager = (AudioManager)GetSystemService(AudioService);
             wifiManager = (WifiManager)GetSystemService(WifiService);
             headphonesUnpluggedReceiver = new MusicBroadcastReceiver();
-//            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-//            {
-//                mediaSession = new MediaSession(this, "KVMRMediaSession");
-//
-//                mediaCallback = new MediaSessionCallback();
-//                mediaCallback.OnPlayImpl = () =>
-//                {
-//                    if (IsPlaying)
-//                    {
-//                        Log.Debug(TAG, "MediaCallback stop playing");
-//                        Stop();
-//                    }
-//                    else
-//                    {
-//                        Log.Debug(TAG, "MediaCallback start playing. source: " + source ?? "null");
-//                        Play(source);
-//                        var message = new RemoteControlPlayMessage();
-//                        MessagingCenter.Send(message, "RemoteControlPlay");
-//                    }
-//                };
-//
-//                mediaSession.SetCallback(mediaCallback);
-//                mediaSession.SetFlags(MediaSessionFlags.HandlesMediaButtons |
-//                    MediaSessionFlags.HandlesTransportControls);
-//
-//                PlaybackState state = new PlaybackState.Builder()
-//                .SetActions(PlaybackState.ActionPlay | PlaybackState.ActionPlayPause
-//                                          | PlaybackState.ActionPause | PlaybackState.ActionStop)
-//                .Build();
-//                mediaSession.SetPlaybackState(state);
-//                mediaSession.Active = true;
-//            }
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            {
+                mediaSession = new MediaSession(this, "KVMRMediaSession");
+
+                mediaCallback = new MediaSessionCallback();
+                mediaCallback.OnPlayImpl = () =>
+                {
+                    if (IsPlaying)
+                    {
+                        Log.Debug(TAG, "MediaCallback stop playing");
+                        Stop();
+                        MessagingCenter.Send<PlayerStoppedMessage>(new PlayerStoppedMessage(), "PlayerStopped");
+                    }
+                    else
+                    {
+                        Log.Debug(TAG, "MediaCallback start playing. source: " + source ?? "null");
+                        Play(source);
+                        MessagingCenter.Send(new RemoteControlPlayMessage(), "RemoteControlPlay");
+                    }
+                };
+
+                mediaSession.SetCallback(mediaCallback);
+                mediaSession.SetFlags(MediaSessionFlags.HandlesMediaButtons |
+                    MediaSessionFlags.HandlesTransportControls);
+
+                PlaybackState state = new PlaybackState.Builder()
+                .SetActions(PlaybackState.ActionPlay | PlaybackState.ActionPlayPause
+                                          | PlaybackState.ActionPause | PlaybackState.ActionStop)
+                .Build();
+                mediaSession.SetPlaybackState(state);
+                mediaSession.Active = true;
+            }
         }
 
         /// <summary>
@@ -101,11 +102,7 @@ namespace XFStreamingAudio.Droid.Services
         {
             Log.Debug(TAG, "OnStartCommand() intent: " + intent.Action ?? "null");
             // "source" not included in this intent, and already set
-            if (intent.Action == ActionHeadphonesUnplugged)
-            {
-                Log.Debug(TAG, "Headphones unplugged.  source: " + source);
-            }
-            else
+            if (String.IsNullOrEmpty(source))
             {
                 source = intent.GetStringExtra("source");
             }
@@ -133,7 +130,7 @@ namespace XFStreamingAudio.Droid.Services
             {
                 if (mediaPlayer == null)
                 { 
-                    mediaPlayer = Com.Google.Android.Exoplayer.ExoPlayerFactory.NewInstance(1);
+                    mediaPlayer = ExoPlayerFactory.NewInstance(1);
                 }
 
                 RegisterReceiver(headphonesUnpluggedReceiver, new IntentFilter(AudioManager.ActionAudioBecomingNoisy));
@@ -145,17 +142,8 @@ namespace XFStreamingAudio.Droid.Services
                 var dataSource = new DefaultUriDataSource(this, userAgent);
                 ExtractorSampleSource sampleSource = new ExtractorSampleSource(soundString, dataSource, allocator,
                                                          BUFFER_SEGMENT_COUNT * BUFFER_SEGMENT_SIZE);
-                MediaCodecAudioTrackRenderer audioRenderer = new MediaCodecAudioTrackRenderer(sampleSource);
-//                try
-//                {
-                    mediaPlayer.Prepare(audioRenderer);
-                    
-//                }
-//                catch (Exception ex)
-//                {
-//                    Log.Debug(TAG, "StreamingService.Play() caught exception: " + ex);
-//                }
-                Log.Debug(TAG, "Right after Prepare");
+                audioRenderer = new MediaCodecAudioTrackRenderer(sampleSource);
+                mediaPlayer.Prepare(audioRenderer);
                 mediaPlayer.PlayWhenReady = true;
                 IsPlaying = true;
                 AquireWifiLock();
@@ -252,33 +240,33 @@ namespace XFStreamingAudio.Droid.Services
                 case AudioFocus.Gain:
                     Log.Debug(TAG, "AudioFocus.Gain");
                     if (mediaPlayer == null)
-                    {
-                       
+                    { 
+                        mediaPlayer = ExoPlayerFactory.NewInstance(1);
                     }
-
                     if (!IsPlaying)
                     {
-                        
+                        Play(source);
+                        MessagingCenter.Send<PlayerStartedMessage>(new PlayerStartedMessage(), "PlayerStarted");
                     }
-
-//                    player.SetVolume(1.0f, 1.0f);  // Turn it up!
+                    mediaPlayer.SendMessage(audioRenderer, MediaCodecAudioTrackRenderer.MsgSetVolume, 1.0f);
                     break;
                 case AudioFocus.Loss:
                     Log.Debug(TAG, "AudioFocus.Loss");
-                    mediaPlayer.Stop();
+                    Stop();
+                    MessagingCenter.Send<PlayerStoppedMessage>(new PlayerStoppedMessage(), "PlayerStopped");
                     break;
                 case AudioFocus.LossTransient:
                     Log.Debug(TAG, "AudioFocus.LossTransient");
-                    //We have lost focus for a short time, but likely to resume so pause
-                    mediaPlayer.Stop();
+                    // We have lost focus for a short time, but likely to resume
+                    Stop();
+                    MessagingCenter.Send<PlayerStoppedMessage>(new PlayerStoppedMessage(), "PlayerStopped");
                     break;
                 case AudioFocus.LossTransientCanDuck:
-                    //We have lost focus but should till play at a muted 10% volume
+                    // We have lost focus but should till play at a muted 10% volume
                     Log.Debug(TAG, "AudioFocus.LossTransientCanDuck");
                     if (IsPlaying)
                     {
-//                        player.SetVolume(.1f, .1f);//turn it down!
-
+                        mediaPlayer.SendMessage(audioRenderer, MediaCodecAudioTrackRenderer.MsgSetVolume, 0.1f);
                     }
                     break;
             }
@@ -293,12 +281,6 @@ namespace XFStreamingAudio.Droid.Services
 //                base.OnPlay();
                 Log.Debug(TAG, "MediaSessionCallback.OnPlay()");
                 OnPlayImpl();
-            }
-
-            public override void OnCommand(string command, Bundle args, ResultReceiver cb)
-            {
-                base.OnCommand(command, args, cb);
-                Log.Debug(TAG, "MediaSessionCallback OnCommand");
             }
         }
     }
