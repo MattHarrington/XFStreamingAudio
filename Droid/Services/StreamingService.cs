@@ -183,6 +183,14 @@ namespace XFStreamingAudio.Droid.Services
             Log.Debug(TAG, "UnregisterReceiver for headphones unplugged");
             UnregisterReceiver(headphonesUnpluggedReceiver);
 
+            // Abandon audio focus
+            var focusResult = audioManager.AbandonAudioFocus(this);
+            Log.Debug(TAG, "StreamingBackgroundService.Stop() AbandonAudioFocus result: " + focusResult);
+            if (focusResult != AudioFocusRequest.Granted)
+            {
+                Log.Debug(TAG, "Could not abandon audio focus");
+            }
+
             ReleaseWifiLock();
         }
 
