@@ -9,7 +9,7 @@ namespace XFStreamingAudio
     {
         const string height = "500";
         const string url = 
-            "https://www.google.com/calendar/embed" +
+            "https://calendar.google.com/calendar/embed" +
             "?showNav=0&showTitle=0&showPrint=0&showTabs=0&showCalendars=0" +
             "&mode=AGENDA&height=" + height + "&wkst=1&bgcolor=%23FFFFFF" +
             "&src=p8smcuo4jo50sthdad6cfq3cko%40group.calendar.google.com" +

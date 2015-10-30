@@ -38,7 +38,6 @@ namespace XFStreamingAudio.Droid.Services
         WifiManager.WifiLock wifiLock;
         MusicBroadcastReceiver headphonesUnpluggedReceiver;
         const int NotificationId = 1;
-        bool stopBtnWasClicked;
         string source;
         MediaSession mediaSession;
         MediaSessionCallback mediaCallback;
@@ -101,7 +100,6 @@ namespace XFStreamingAudio.Droid.Services
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             Log.Debug(TAG, "OnStartCommand() intent: " + intent.Action ?? "null");
-            // "source" not included in this intent, and already set
             if (String.IsNullOrEmpty(source))
             {
                 source = intent.GetStringExtra("source");
