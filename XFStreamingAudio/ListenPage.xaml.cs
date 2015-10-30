@@ -5,6 +5,10 @@ using System.Linq;
 using Connectivity.Plugin;
 using Xamarin.Forms;
 using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace XFStreamingAudio
 {
@@ -24,8 +28,8 @@ namespace XFStreamingAudio
 
             if (Device.OS == TargetPlatform.iOS)
             {
-                sourceHighBandwidth = new Uri("https://www.kvmr.org/aac96.m3u");
-                sourceLowBandwidth = new Uri("https://www.kvmr.org/aac32.m3u");
+                sourceHighBandwidth = new Uri("http://live.kvmr.org:8000/aac96");
+                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/aac32");
             }
             else if (Device.OS == TargetPlatform.Android)
             {
@@ -81,6 +85,16 @@ namespace XFStreamingAudio
                 MessagingCenter.Subscribe<PlayerStoppedMessage>(this, "PlayerStopped", 
                     OnPlayerStopped);
             }
+        }
+
+        async Task<Uri> GetStreamingServerUri(Uri jspfSource)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string text = await client.GetStringAsync(jspfSource);
+            Playlist playlist = JsonConvert.DeserializeObject<Playlist>(text);
+            string url = playlist.track.FirstOrDefault().location.FirstOrDefault();
+            return new Uri(url);
         }
 
         void OnRemoteControlPlay(RemoteControlPlayMessage obj)
