@@ -1,4 +1,5 @@
 ﻿using Xamarin.Forms;
+using System.Reflection;
 
 namespace XFStreamingAudio
 {
@@ -6,6 +7,9 @@ namespace XFStreamingAudio
     {
         public App()
         {
+            var assembly = typeof (App).GetTypeInfo().Assembly;
+            XamSvg.Shared.Config.ResourceAssembly = assembly;
+
             // The root page of your application
             MainPage = new TabbedMainPage();
         }

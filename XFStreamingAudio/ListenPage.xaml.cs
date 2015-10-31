@@ -5,10 +5,6 @@ using System.Linq;
 using Connectivity.Plugin;
 using Xamarin.Forms;
 using System.Text;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Newtonsoft.Json;
 
 namespace XFStreamingAudio
 {
@@ -85,16 +81,6 @@ namespace XFStreamingAudio
                 MessagingCenter.Subscribe<PlayerStoppedMessage>(this, "PlayerStopped", 
                     OnPlayerStopped);
             }
-        }
-
-        async Task<Uri> GetStreamingServerUri(Uri jspfSource)
-        {
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            string text = await client.GetStringAsync(jspfSource);
-            Playlist playlist = JsonConvert.DeserializeObject<Playlist>(text);
-            string url = playlist.track.FirstOrDefault().location.FirstOrDefault();
-            return new Uri(url);
         }
 
         void OnRemoteControlPlay(RemoteControlPlayMessage obj)

@@ -2,6 +2,7 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:svg="clr-namespace:XamSvg.XamForms;assembly=XamSvg.XamForms"
 	x:Class="XFStreamingAudio.ListenPage"
 	Icon="ListenIcon.png"
 	Title="Listen">
@@ -17,9 +18,9 @@
 			Spacing="0"
 			Orientation="Horizontal"
 			Padding="20,0,0,0">
-			<Image
-				Source="WhiteTower"
-				Aspect="AspectFill" />
+			<svg:SvgImage
+				Svg="res:images.WhiteTower"
+				/>
 			<StackLayout
 				Spacing="0"
 				HorizontalOptions="CenterAndExpand"

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Foundation;
 using UIKit;
 using Xamarin;
+using XamSvg.XamForms.iOS;
 
 namespace XFStreamingAudio.iOS
 {
@@ -13,6 +14,7 @@ namespace XFStreamingAudio.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            SvgImageRenderer.InitializeForms();
             global::Xamarin.Forms.Forms.Init();
 
             // Code for starting up the Xamarin Test Cloud Agent

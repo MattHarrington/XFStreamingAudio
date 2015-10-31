@@ -9,6 +9,7 @@ using Android.Widget;
 using Android.OS;
 using Xamarin;
 using XFStreamingAudio.Droid.Services;
+using XamSvg.XamForms.Droid;
 
 namespace XFStreamingAudio.Droid
 {
@@ -46,6 +47,7 @@ namespace XFStreamingAudio.Droid
             Insights.Initialize("6177fa9abb40234e5363a7143c5ee7b9cf7a70a9", this);
             #endif
 
+            SvgImageRenderer.InitializeForms();
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             LoadApplication(new App());
