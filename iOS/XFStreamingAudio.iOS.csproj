@@ -91,12 +91,6 @@
     <Reference Include="Refractored.Xam.Settings.Abstractions">
       <HintPath>..\packages\Xam.Plugins.Settings.1.5.2\lib\Xamarin.iOS10\Refractored.Xam.Settings.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.11.1\lib\Xamarin.iOS10\Xamarin.Insights.dll</HintPath>
-    </Reference>
-    <Reference Include="PLCrashReporterUnifiedBinding">
-      <HintPath>..\packages\Xamarin.Insights.1.11.1\lib\Xamarin.iOS10\PLCrashReporterUnifiedBinding.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -126,6 +120,12 @@
     </Reference>
     <Reference Include="Calabash">
       <HintPath>..\packages\Xamarin.TestCloud.Agent.0.16.2\lib\Xamarin.iOS10\Calabash.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Insights">
+      <HintPath>..\packages\Xamarin.Insights.1.11.2\lib\Xamarin.iOS10\Xamarin.Insights.dll</HintPath>
+    </Reference>
+    <Reference Include="PLCrashReporterUnifiedBinding">
+      <HintPath>..\packages\Xamarin.Insights.1.11.2\lib\Xamarin.iOS10\PLCrashReporterUnifiedBinding.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -192,8 +192,8 @@
     <ITunesArtwork Include="ITunesArtwork%402x" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Import Project="..\packages\Xamarin.Insights.1.11.1\build\Xamarin.iOS10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.1\build\Xamarin.iOS10\Xamarin.Insights.targets')" />
   <Import Project="..\packages\Xamarin.Forms.1.5.1.6471\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.5.1.6471\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <Import Project="..\packages\Xamarin.Insights.1.11.2\build\Xamarin.iOS10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.11.2\build\Xamarin.iOS10\Xamarin.Insights.targets')" />
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default.png" />
@@ -221,10 +221,6 @@
     <ImageAsset Include="Resources\Images.xcassets\CallOfficeIcon.imageset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\CallOfficeIcon.imageset\CallOfficeIcon.png" />
     <ImageAsset Include="Resources\Images.xcassets\CallOfficeIcon.imageset\CallOfficeIcon%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\WhiteTower.png" />
-    <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\WhiteTower%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\WhiteTower.imageset\WhiteTower%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-Small-40%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-Small-40%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-Small-40.png" />

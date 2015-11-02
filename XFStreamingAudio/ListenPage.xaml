@@ -16,22 +16,20 @@
 	<ContentPage.Content>
 		<StackLayout
 			Spacing="0"
-			Orientation="Horizontal"
-			Padding="20,0,0,0">
+			Orientation="Horizontal">
+			<StackLayout.Padding>
+				<OnPlatform
+					x:TypeArguments="Thickness"
+					iOS="20,0,0,0"
+					Android="20,20,0,0"
+					WinPhone="0" />
+			</StackLayout.Padding>
 			<svg:SvgImage
-				Svg="res:images.WhiteTower"
-				/>
+				Svg="res:images.WhiteTower" />
 			<StackLayout
 				Spacing="0"
 				HorizontalOptions="CenterAndExpand"
 				Orientation="Vertical">
-				<StackLayout.Padding>
-					<OnPlatform
-						x:TypeArguments="Thickness"
-						iOS="0"
-						Android="0,20,0,0"
-						WinPhone="0" />
-				</StackLayout.Padding>
 				<Frame
 					Padding="0,10,0,0"
 					HasShadow="false">
