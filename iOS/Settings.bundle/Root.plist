@@ -10,11 +10,11 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>FooterText</key>
-			<string>High fidelity uses 43.2 Megabytes/hour. Low fidelity uses 14.4 Megabytes/hour. Be careful when streaming on your cellular network to avoid data charges.</string>
+			<string>High Fidelity uses 43.2 Megabytes/hour. Low Fidelity uses 14.4 Megabytes/hour. Be careful when streaming on your cellular network to avoid data charges.</string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<false/>
+			<true/>
 			<key>Key</key>
 			<string>bandwidthSwitchState</string>
 			<key>Title</key>
