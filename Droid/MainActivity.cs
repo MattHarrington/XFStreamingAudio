@@ -10,6 +10,8 @@ using Android.OS;
 using Xamarin;
 using XFStreamingAudio.Droid.Services;
 using XamSvg.XamForms.Droid;
+using Android.Util;
+using Xamarin.Forms;
 
 namespace XFStreamingAudio.Droid
 {
@@ -17,6 +19,7 @@ namespace XFStreamingAudio.Droid
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
     {
+        const string TAG = "KVMR";
         bool isBound = false;
         bool isConfigurationChange = false;
         StreamingServiceBinder binder;
@@ -39,6 +42,7 @@ namespace XFStreamingAudio.Droid
 
         protected override void OnCreate(Bundle bundle)
         {
+            Log.Debug(TAG, "MainActivity.OnCreate()");
             base.OnCreate(bundle);
 
             #if DEBUG
@@ -55,6 +59,7 @@ namespace XFStreamingAudio.Droid
 
         protected override void OnStart()
         {
+            Log.Debug(TAG, "MainActivity.OnStart()");
             base.OnStart();
 
             var intent = new Intent(this, typeof(StreamingService));
@@ -62,12 +67,15 @@ namespace XFStreamingAudio.Droid
             BindService(intent, streamingBackgroundServiceConnection, Bind.None);
         }
 
-        protected override void OnDestroy ()
+        protected override void OnDestroy()
         {
-            base.OnDestroy ();
+            Log.Debug(TAG, "MainActivity.OnDestroy()");
+            base.OnDestroy();
 
-            if (!isConfigurationChange) {
-                if (isBound) {
+            if (!isConfigurationChange)
+            {
+                if (isBound)
+                {
                     UnbindService(streamingBackgroundServiceConnection);
                     isBound = false;
                 }
@@ -94,6 +102,7 @@ namespace XFStreamingAudio.Droid
 
             public void OnServiceConnected(ComponentName name, IBinder service)
             {
+                Log.Debug(TAG, "OnServiceConnected()");
                 var streamingBackgroundServiceBinder = service as StreamingServiceBinder;
 
                 if (streamingBackgroundServiceBinder != null)
@@ -103,6 +112,10 @@ namespace XFStreamingAudio.Droid
 
                     // keep instance for preservation across configuration changes
                     this.binder = streamingBackgroundServiceBinder;
+                    if (binder.GetStreamingBackgroundService().IsPlaying)
+                    {
+                        MessagingCenter.Send<PlayerStartedMessage>(new PlayerStartedMessage(), "PlayerStarted");
+                    }
                 }
             }
 

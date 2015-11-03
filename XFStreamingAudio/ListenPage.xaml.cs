@@ -108,19 +108,6 @@ namespace XFStreamingAudio
             Device.BeginInvokeOnMainThread(() => bufferingIndicator.IsRunning = false);
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            if (audioPlayer.IsPlaying)  // Required for Android, since playback is in background service
-            {
-                playStopBtn.Text = stopIcon;
-            }
-            else
-            {
-                playStopBtn.Text = playIcon;
-            }
-        }
-
         async void DisplaySettings(object sender, EventArgs e)
         {
             if (Device.OS == TargetPlatform.iOS)
