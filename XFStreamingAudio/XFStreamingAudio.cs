@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using System.Reflection;
+using AI.XamarinSDK.Abstractions;
 
 namespace XFStreamingAudio
 {
@@ -16,7 +17,8 @@ namespace XFStreamingAudio
 
         protected override void OnStart()
         {
-            // Handle when your app starts
+            ApplicationInsights.Setup ("ac4e2cf9-3f15-4cf1-b1dd-26aebb28cf63");
+            ApplicationInsights.Start ();
         }
 
         protected override void OnSleep()

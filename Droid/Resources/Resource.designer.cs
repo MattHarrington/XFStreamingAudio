@@ -1493,6 +1493,9 @@ namespace XFStreamingAudio.Droid
 			global::Xamarin.Forms.Platform.Resource.Styleable.ViewStubCompat_android_id = global::XFStreamingAudio.Droid.Resource.Styleable.ViewStubCompat_android_id;
 			global::Xamarin.Forms.Platform.Resource.Styleable.ViewStubCompat_android_inflatedId = global::XFStreamingAudio.Droid.Resource.Styleable.ViewStubCompat_android_inflatedId;
 			global::Xamarin.Forms.Platform.Resource.Styleable.ViewStubCompat_android_layout = global::XFStreamingAudio.Droid.Resource.Styleable.ViewStubCompat_android_layout;
+			global::AI.XamarinSDK.Android.Resource.String.ApplicationName = global::XFStreamingAudio.Droid.Resource.String.ApplicationName;
+			global::AI.XamarinSDK.Android.Resource.String.Hello = global::XFStreamingAudio.Droid.Resource.String.Hello;
+			global::AI.XamarinSDK.Android.Resource.String.library_name = global::XFStreamingAudio.Droid.Resource.String.library_name;
 		}
 		
 		public partial class Animation
@@ -3976,11 +3979,11 @@ namespace XFStreamingAudio.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f0a001f
-			public const int ApplicationName = 2131361823;
-			
 			// aapt resource value: 0x7f0a001e
-			public const int Hello = 2131361822;
+			public const int ApplicationName = 2131361822;
+			
+			// aapt resource value: 0x7f0a001f
+			public const int Hello = 2131361823;
 			
 			// aapt resource value: 0x7f0a000c
 			public const int abc_action_bar_home_description = 2131361804;
@@ -4035,6 +4038,9 @@ namespace XFStreamingAudio.Droid
 			
 			// aapt resource value: 0x7f0a0000
 			public const int appbar_scrolling_view_behavior = 2131361792;
+			
+			// aapt resource value: 0x7f0a0020
+			public const int library_name = 2131361824;
 			
 			// aapt resource value: 0x7f0a0001
 			public const int mr_media_route_button_content_description = 2131361793;

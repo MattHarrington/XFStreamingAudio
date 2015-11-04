@@ -45,12 +45,6 @@ namespace XFStreamingAudio.Droid
             Log.Debug(TAG, "MainActivity.OnCreate()");
             base.OnCreate(bundle);
 
-            #if DEBUG
-            Insights.Initialize(Insights.DebugModeKey, this);
-            #else
-            Insights.Initialize("6177fa9abb40234e5363a7143c5ee7b9cf7a70a9", this);
-            #endif
-
             SvgImageRenderer.InitializeForms();
             global::Xamarin.Forms.Forms.Init(this, bundle);
 

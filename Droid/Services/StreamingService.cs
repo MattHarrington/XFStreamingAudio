@@ -79,9 +79,9 @@ namespace XFStreamingAudio.Droid.Services
                     MediaSessionFlags.HandlesTransportControls);
 
                 PlaybackState state = new PlaybackState.Builder()
-                .SetActions(PlaybackState.ActionPlay | PlaybackState.ActionPlayPause
+                    .SetActions(PlaybackState.ActionPlay | PlaybackState.ActionPlayPause
                                           | PlaybackState.ActionPause | PlaybackState.ActionStop)
-                .Build();
+                    .Build();
                 mediaSession.SetPlaybackState(state);
                 mediaSession.Active = true;
             }

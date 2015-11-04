@@ -6,6 +6,7 @@ using Foundation;
 using UIKit;
 using Xamarin;
 using XamSvg.XamForms.iOS;
+using AI.XamarinSDK.Abstractions;
 
 namespace XFStreamingAudio.iOS
 {
@@ -16,6 +17,8 @@ namespace XFStreamingAudio.iOS
         {
             SvgImageRenderer.InitializeForms();
             global::Xamarin.Forms.Forms.Init();
+
+            AI.XamarinSDK.iOS.ApplicationInsights.Init();
 
             // Code for starting up the Xamarin Test Cloud Agent
             #if ENABLE_TEST_CLOUD
@@ -39,9 +42,9 @@ namespace XFStreamingAudio.iOS
         public override void ReceiveMemoryWarning(UIApplication application)
         {
             Debug.WriteLine("ReceiveMemoryWarning()");
-            Insights.Track("ReceiveMemoryWarning", new Dictionary <string, string> { 
-                {"track-local-time", DateTime.Now.ToString()}
-            });
+            Dictionary<string, string> memoryWarningProperties = new Dictionary<string, string> ();
+            memoryWarningProperties.Add ("DateTime.UtcNow", DateTime.UtcNow.ToString());
+            TelemetryManager.TrackEvent("ReceiveMemoryWarning", memoryWarningProperties);
         }
     }
 }

@@ -7,6 +7,7 @@ using MediaPlayer;
 using Foundation;
 using System.Collections.Generic;
 using Xamarin;
+using AI.XamarinSDK.Abstractions;
 
 [assembly: Dependency(typeof(AudioPlayerIOS))]
 namespace XFStreamingAudio.iOS
@@ -88,7 +89,6 @@ namespace XFStreamingAudio.iOS
             AVAsset asset = AVAsset.FromUrl(source);
             AVPlayerItem playerItem = new AVPlayerItem(asset);
 
-            #if DEBUG
             playerItem.AddObserver(observer: this,
                 keyPath: new NSString("playbackBufferEmpty"),
                 options: NSKeyValueObservingOptions.New,
@@ -101,7 +101,10 @@ namespace XFStreamingAudio.iOS
                 keyPath: new NSString("status"),
                 options: NSKeyValueObservingOptions.New,
                 context: IntPtr.Zero);
-            #endif
+            playerItem.AddObserver(observer: this,
+                keyPath: new NSString("error"),
+                options: NSKeyValueObservingOptions.New,
+                context: IntPtr.Zero);
 
             avPlayer = new AVPlayer(playerItem);
             avPlayer.Play();
@@ -111,8 +114,7 @@ namespace XFStreamingAudio.iOS
             Debug.WriteLine("preferredIOBufferDuration = {0}", audioSession.PreferredIOBufferDuration);
         }
 
-        public override void ObserveValue(NSString keyPath, NSObject ofObject, 
-                                          NSDictionary change, IntPtr context)
+        public override void ObserveValue(NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)
         {
 //            var str = String.Format ("The {0} property on {1}, the change is: {2}", 
 //                keyPath, ofObject, change.Description);
@@ -123,28 +125,42 @@ namespace XFStreamingAudio.iOS
                     if (change.ValueForKeyPath(new NSString("new")).Description == "1")
                     {
                         Debug.WriteLine("playbackBufferEmpty == {0}", true);
-                        Insights.Track("PlaybackBufferEmpty", new Dictionary <string, string>
-                            { 
-                                { "track-local-time", DateTime.Now.ToString() }
-                            });
                     }
                     break;
                 case "playbackLikelyToKeepUp":
                     if (change.ValueForKeyPath(new NSString("new")).Description == "0")
                     {
                         Debug.WriteLine("playbackLikelyToKeepUp == {0}", false);
-                        Insights.Track("PlaybackNotLikelyToKeepUp", new Dictionary <string, string>
-                            { 
-                                { "track-local-time", DateTime.Now.ToString() }
-                            });
+                        Dictionary<string, string> playbackLikelyToKeepUpProperties = new Dictionary<string, string>();
+                        playbackLikelyToKeepUpProperties.Add("DateTime.UtcNow", DateTime.UtcNow.ToString());
+                        playbackLikelyToKeepUpProperties.Add("AVPlayer.Status", avPlayer.Status.ToString());
+                        playbackLikelyToKeepUpProperties.Add("AVPlayerItem.Status", 
+                            avPlayer.CurrentItem.Status.ToString());
+                        TelemetryManager.TrackEvent("PlaybackNotLikelyToKeepUp", playbackLikelyToKeepUpProperties);
                     }
                     break;
                 case "status":
-                    if (change.ValueForKeyPath(new NSString("new")).Description ==
-                        ((int)AVPlayerItemStatus.ReadyToPlay).ToString())
+//                    TelemetryManager.TrackEvent("Playback status: " + avPlayer.Status);
+                    if (avPlayer.Status == AVPlayerStatus.ReadyToPlay)
                     {
                         MessagingCenter.Send(new PlayerStartedMessage(), "PlayerStarted");
                     }
+                    else if (avPlayer.Status == AVPlayerStatus.Failed)
+                    {
+                        Dictionary<string, string> statusProperties = new Dictionary<string, string>();
+                        statusProperties.Add("DateTime.UtcNow", DateTime.UtcNow.ToString());
+                        statusProperties.Add("AVPlayer.Status", avPlayer.Status.ToString());
+                        statusProperties.Add("AVPlayerItem.Status", avPlayer.CurrentItem.Status.ToString());
+                        TelemetryManager.TrackEvent("PlaybackFailed", statusProperties);
+                    }
+                    break;
+                case "error":
+                    Debug.WriteLine("Playback error: {0}", avPlayer.Error);
+                    Dictionary<string, string> errorProperties = new Dictionary<string, string>();
+                    errorProperties.Add("DateTime.UtcNow", DateTime.UtcNow.ToString());
+                    errorProperties.Add("AVPlayer.Error", avPlayer.Error.ToString());
+                    errorProperties.Add("AVPlayerItem.Error", avPlayer.CurrentItem.Error.ToString());
+                    TelemetryManager.TrackEvent("PlaybackError", errorProperties);
                     break;
                 default:
                     break;
@@ -155,11 +171,10 @@ namespace XFStreamingAudio.iOS
         {
             Debug.WriteLine("Stop playing");
 
-            #if DEBUG
             avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("playbackBufferEmpty"));
             avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("playbackLikelyToKeepUp"));
             avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("status"));
-            #endif
+            avPlayer?.CurrentItem.RemoveObserver(observer: this, keyPath: new NSString("error"));
 
             avPlayer?.Pause();
             avPlayer?.Dispose();
