@@ -53,10 +53,12 @@ namespace XFStreamingAudio
 
             MessagingCenter.Subscribe<AudioBeginInterruptionMessage>(this, "AudioBeginInterruption", 
                 OnAudioBeginInterruption);
-            MessagingCenter.Subscribe<Page>(this, "HeadphonesUnplugged",
+            MessagingCenter.Subscribe<HeadphonesUnpluggedMessage>(this, "HeadphonesUnplugged", 
                 OnHeadphonesUnplugged);
             if (Device.OS == TargetPlatform.iOS)
             {
+                MessagingCenter.Subscribe<LostStreamMessage>(this, "LostStream", 
+                    OnLostStream);
                 MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption",
                     OnAudioEndInterruption);
                 MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause",
@@ -81,6 +83,12 @@ namespace XFStreamingAudio
                 MessagingCenter.Subscribe<PlayerStoppedMessage>(this, "PlayerStopped", 
                     OnPlayerStopped);
             }
+        }
+
+        void OnLostStream(LostStreamMessage obj)
+        {
+            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
+            Device.BeginInvokeOnMainThread(async () => await DisplayAlert("Lost Stream", "Check network connection", "OK"));
         }
 
         void OnRemoteControlPlay(RemoteControlPlayMessage obj)
@@ -211,7 +219,10 @@ namespace XFStreamingAudio
         void OnHeadphonesUnplugged(object sender)
         {
             Debug.WriteLine("OnHeadphonesUnplugged()");
-            //audioPlayer.Stop();
+            if (Device.OS == TargetPlatform.iOS)
+            {
+                audioPlayer.Stop();
+            }
             Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
         }
 

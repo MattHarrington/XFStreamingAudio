@@ -57,6 +57,7 @@
     <Compile Include="Messages\RemoteControlPlayMessage.cs" />
     <Compile Include="ListenPageRelativeLayout.cs" />
     <Compile Include="Models\JsonResponses.cs" />
+    <Compile Include="Messages\HeadphonesUnpluggedMessage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.1.5.1.6471\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.5.1.6471\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -113,6 +114,7 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Images\WhiteTower.svg" />
+    <EmbeddedResource Include="Images\ListenPageLogoSVG-outlined.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Messages\" />

@@ -47,9 +47,8 @@ namespace XFStreamingAudio.iOS
             if (reason.Description == "2") // Headphones were unplugged
             {
                 // player will be null if user has not hit play
-                Page mp = Xamarin.Forms.Application.Current.MainPage;
-                var currentPage = ((TabbedPage)mp).CurrentPage;
-                MessagingCenter.Send<Page>((Page)currentPage, "HeadphonesUnplugged");
+                MessagingCenter.Send<HeadphonesUnpluggedMessage>(new HeadphonesUnpluggedMessage(), 
+                    "HeadphonesUnplugged");
             }
         }
 

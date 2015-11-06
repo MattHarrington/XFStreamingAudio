@@ -135,8 +135,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\PlaylistIcon%402x.png" />
-    <BundleResource Include="Resources\ListenPage-image.jpg" />
     <BundleResource Include="Resources\EmailIcon.png" />
     <BundleResource Include="Resources\EmailIcon%402x.png" />
     <BundleResource Include="Resources\FeedbackIcon.png" />
@@ -199,9 +197,6 @@
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-568h%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-40.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-40%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-40%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-60%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-60%403x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcon.appiconset\Icon-72.png" />

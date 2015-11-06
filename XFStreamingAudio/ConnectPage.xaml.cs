@@ -69,7 +69,7 @@ namespace XFStreamingAudio
                 #if DEBUG
                 "Debug Build\n" +
                 #endif
-                "Version: 1.0.0.9\n" +
+                "Version: 1.0.0.11\n" +
                 "Built with: Xamarin\n\n" +
                 "Email apps@kvmr.org to become a beta tester.",
                 "OK");

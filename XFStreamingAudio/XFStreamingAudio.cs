@@ -8,7 +8,7 @@ namespace XFStreamingAudio
     {
         public App()
         {
-            var assembly = typeof (App).GetTypeInfo().Assembly;
+            var assembly = typeof(App).GetTypeInfo().Assembly;
             XamSvg.Shared.Config.ResourceAssembly = assembly;
 
             // The root page of your application
@@ -17,8 +17,8 @@ namespace XFStreamingAudio
 
         protected override void OnStart()
         {
-            ApplicationInsights.Setup ("ac4e2cf9-3f15-4cf1-b1dd-26aebb28cf63");
-            ApplicationInsights.Start ();
+            ApplicationInsights.Setup("ac4e2cf9-3f15-4cf1-b1dd-26aebb28cf63");
+            ApplicationInsights.Start();
         }
 
         protected override void OnSleep()

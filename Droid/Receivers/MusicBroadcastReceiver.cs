@@ -24,9 +24,8 @@ namespace XFStreamingAudio.Droid
             var stopIntent = new Intent(context, typeof(StreamingService));
             stopIntent.SetAction(StreamingService.ActionHeadphonesUnplugged);
             Forms.Context.StartService(stopIntent);
-            Page mp = Xamarin.Forms.Application.Current.MainPage;
-            var currentPage = ((TabbedPage)mp).CurrentPage;
-            MessagingCenter.Send<Page>((Page)currentPage, "HeadphonesUnplugged");
+            MessagingCenter.Send<HeadphonesUnpluggedMessage>(new HeadphonesUnpluggedMessage(),
+                "HeadphonesUnplugged");
         }
     }
 }
