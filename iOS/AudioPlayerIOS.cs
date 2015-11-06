@@ -59,8 +59,9 @@ namespace XFStreamingAudio.iOS
                     itemFailedProperties.Add("DateTime.UtcNow", DateTime.UtcNow.ToString());
                     itemFailedProperties.Add("AVPlayer.Status", avPlayer?.Status.ToString());
                     itemFailedProperties.Add("AVPlayerItem.Status", avPlayer?.CurrentItem?.Status.ToString());
-                    itemFailedProperties.Add("AVPlayer.Error", avPlayer?.Error?.ToString());
-                    itemFailedProperties.Add("AVPlayerItem.Error", avPlayer?.CurrentItem?.Error?.ToString());
+                    itemFailedProperties.Add("AVPlayer.Error", avPlayer?.Error?.ToString() ?? "isNull");
+                    itemFailedProperties.Add("AVPlayerItem.Error", 
+                        avPlayer?.CurrentItem?.Error?.ToString() ?? "isNull");
                     TelemetryManager.TrackEvent("ItemFailedToPlayToEndTime", itemFailedProperties);
                     Stop();
                     MessagingCenter.Send<LostStreamMessage>(new LostStreamMessage(), "LostStream");
@@ -73,8 +74,9 @@ namespace XFStreamingAudio.iOS
                     playbackStalledProperties.Add("DateTime.UtcNow", DateTime.UtcNow.ToString());
                     playbackStalledProperties.Add("AVPlayer.Status", avPlayer?.Status.ToString());
                     playbackStalledProperties.Add("AVPlayerItem.Status", avPlayer?.CurrentItem?.Status.ToString());
-                    playbackStalledProperties.Add("AVPlayer.Error", avPlayer?.Error?.ToString());
-                    playbackStalledProperties.Add("AVPlayerItem.Error", avPlayer?.CurrentItem?.Error?.ToString());
+                    playbackStalledProperties.Add("AVPlayer.Error", avPlayer?.Error?.ToString() ?? "isNull");
+                    playbackStalledProperties.Add("AVPlayerItem.Error", 
+                        avPlayer?.CurrentItem?.Error?.ToString() ?? "isNull");
                     TelemetryManager.TrackEvent("PlaybackStalled", playbackStalledProperties);
                 });
         }
