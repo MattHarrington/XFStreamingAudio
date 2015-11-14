@@ -5,15 +5,22 @@ namespace XFStreamingAudio
 {
     public class Track
     {
-        public IList<string> location { get; set; }
+        public List<string> location { get; set; }
+
         public string title { get; set; }
     }
 
     public class Playlist
     {
         public string title { get; set; }
+
         public string creator { get; set; }
-        public IList<Track> track { get; set; }
+
+        public List<Track> track { get; set; }
+    }
+
+    public class JSPF
+    {
+        public Playlist playlist { get; set; }
     }
 }
-

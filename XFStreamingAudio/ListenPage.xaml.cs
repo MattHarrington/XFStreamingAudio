@@ -5,6 +5,10 @@ using System.Linq;
 using Connectivity.Plugin;
 using Xamarin.Forms;
 using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace XFStreamingAudio
 {
@@ -12,7 +16,7 @@ namespace XFStreamingAudio
     {
         IAudioPlayer audioPlayer;
         Uri source;
-        bool useHighBandwidth;
+        //        bool useHighBandwidth;
         readonly Uri sourceHighBandwidth;
         readonly Uri sourceLowBandwidth;
         const string playIcon = "\u25b6\uFE0E";
@@ -29,19 +33,19 @@ namespace XFStreamingAudio
             }
             else if (Device.OS == TargetPlatform.Android)
             {
-                sourceHighBandwidth = new Uri("http://live2.kvmr.org:8190/kvmr");
-                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/dial");
+                sourceLowBandwidth = new Uri("https://www.kvmr.org/json/kvmr-32-mp3.json");
+                sourceHighBandwidth = new Uri("https://www.kvmr.org/json/kvmr-64-mp3.json");
             }
 
-            useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
-            if (useHighBandwidth)
-            {
-                source = sourceHighBandwidth;
-            }
-            else
-            {
-                source = sourceLowBandwidth;
-            }
+//            useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
+//            if (useHighBandwidth)
+//            {
+//                source = sourceHighBandwidth;
+//            }
+//            else
+//            {
+//                source = sourceLowBandwidth;
+//            }
 
             playStopBtn.Clicked += OnPlayStopBtnClicked;
 
@@ -67,8 +71,6 @@ namespace XFStreamingAudio
                     OnRemoteControlPauseOrStop);
                 MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack",
                     OnRemoteControlPlayOrPreviousTrackOrNextTrack);
-                MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
-                    OnBandwidthSwitchToggled);
             }
             else if (Device.OS == TargetPlatform.Android)
             {
@@ -83,6 +85,27 @@ namespace XFStreamingAudio
                 MessagingCenter.Subscribe<PlayerStoppedMessage>(this, "PlayerStopped", 
                     OnPlayerStopped);
             }
+        }
+
+        async Task<Uri> GetSource()
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string response;
+            Uri jspfSource;
+
+            if (Helpers.Settings.BandwidthSwitchState == true)
+            {
+                jspfSource = sourceHighBandwidth;
+            }
+            else
+            {
+                jspfSource = sourceLowBandwidth;
+            }
+            // TODO: Check network connectivity, or check if response is valid, or both
+            response = await client.GetStringAsync(jspfSource);
+            JSPF jspfResponse = JsonConvert.DeserializeObject<JSPF>(response);
+            return new Uri(jspfResponse.playlist.track.FirstOrDefault().location.FirstOrDefault());
         }
 
         void OnLostStream(LostStreamMessage obj)
@@ -126,7 +149,7 @@ namespace XFStreamingAudio
             {
                 string highBandwidthChoice;
                 string lowBandwidthChoice;
-                if (source == sourceHighBandwidth)
+                if (Helpers.Settings.BandwidthSwitchState == true)
                 {
                     highBandwidthChoice = "High (currently selected)";
                     lowBandwidthChoice = "Low";
@@ -139,10 +162,10 @@ namespace XFStreamingAudio
 
                 var action = await DisplayActionSheet("Fidelity", "Cancel", null, 
                                  highBandwidthChoice, lowBandwidthChoice);
-                if (action == highBandwidthChoice && source == sourceLowBandwidth)
+                if (action == highBandwidthChoice && Helpers.Settings.BandwidthSwitchState == false)
                 {
                     Helpers.Settings.BandwidthSwitchState = true;
-                    source = sourceHighBandwidth;
+//                    source = sourceHighBandwidth;
                     if (audioPlayer.IsPlaying)
                     {
                         audioPlayer.Stop();
@@ -150,10 +173,10 @@ namespace XFStreamingAudio
                         playStopBtn.Text = stopIcon;
                     }
                 }
-                else if (action == lowBandwidthChoice && source == sourceHighBandwidth)
+                else if (action == lowBandwidthChoice && Helpers.Settings.BandwidthSwitchState == true)
                 {
                     Helpers.Settings.BandwidthSwitchState = false;
-                    source = sourceLowBandwidth;
+//                    source = sourceLowBandwidth;
                     if (audioPlayer.IsPlaying)
                     {
                         audioPlayer.Stop();
@@ -161,24 +184,6 @@ namespace XFStreamingAudio
                         playStopBtn.Text = stopIcon;
                     }
                 }
-            }
-        }
-
-        void OnBandwidthSwitchToggled(object sender)
-        {
-            useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
-            if (useHighBandwidth)
-            {
-                source = sourceHighBandwidth;
-            }
-            else
-            {
-                source = sourceLowBandwidth;
-            }
-            if (audioPlayer.IsPlaying)
-            {
-                audioPlayer.Stop();
-                audioPlayer.Play(source);
             }
         }
 
@@ -272,6 +277,11 @@ namespace XFStreamingAudio
 
         async void OnPlayStopBtnClicked(object sender, EventArgs e)
         {
+            var watch = Stopwatch.StartNew();
+            source = await GetSource();
+            Debug.WriteLine("Source: {0}", source.AbsoluteUri);
+            watch.Stop();
+            Debug.WriteLine("ElapsedMilliseconds: {0}", watch.ElapsedMilliseconds);
             if (!audioPlayer.IsPlaying)
             {
                 Debug.WriteLine("Start playing");
