@@ -134,13 +134,15 @@ namespace XFStreamingAudio.Droid.Services
                 RegisterReceiver(headphonesUnpluggedReceiver, new IntentFilter(AudioManager.ActionAudioBecomingNoisy));
                 Log.Debug(TAG, "RegisterReceiver for headphones unplugged");
 
-                String userAgent = Util.GetUserAgent(this, "ExoPlayerDemo");
+                String userAgent = ExoPlayerUtil.GetUserAgent (this, "ExoPlayerDemo");
+
                 Android.Net.Uri soundString = Android.Net.Uri.Parse(source);
                 var allocator = new DefaultAllocator(BUFFER_SEGMENT_SIZE);
                 var dataSource = new DefaultUriDataSource(this, userAgent);
                 ExtractorSampleSource sampleSource = new ExtractorSampleSource(soundString, dataSource, allocator,
                                                          BUFFER_SEGMENT_COUNT * BUFFER_SEGMENT_SIZE);
-                audioRenderer = new MediaCodecAudioTrackRenderer(sampleSource);
+                audioRenderer = new MediaCodecAudioTrackRenderer (sampleSource, MediaCodecSelector.Default);
+                                                                 
                 mediaPlayer.Prepare(audioRenderer);
                 mediaPlayer.PlayWhenReady = true;
                 IsPlaying = true;
