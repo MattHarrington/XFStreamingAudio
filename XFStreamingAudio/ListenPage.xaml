@@ -24,9 +24,7 @@
 					Android="20,20,0,0"
 					WinPhone="0" />
 			</StackLayout.Padding>
-			<svg:SvgImage
-				Svg="res:images.WhiteTower" />
-			<StackLayout
+						<StackLayout
 				Spacing="0"
 				HorizontalOptions="CenterAndExpand"
 				Orientation="Vertical">
@@ -59,6 +57,7 @@
 						x:Name="bufferingIndicator" />
 				</Frame>
 			</StackLayout>
+
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

@@ -9,7 +9,7 @@ namespace XFStreamingAudio
         {
             Title = "KVMR Streaming";
             Children.Add(new ListenPage());
-            Children.Add(new SchedulePage());
+            //Children.Add(new SchedulePage());
             Children.Add(new PledgePage());
             Children.Add(new ConnectPage());
 

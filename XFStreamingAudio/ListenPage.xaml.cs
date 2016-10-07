@@ -29,8 +29,8 @@ namespace XFStreamingAudio
             }
             else if (Device.OS == TargetPlatform.Android)
             {
-                sourceHighBandwidth = new Uri("http://live2.kvmr.org:8190/kvmr");
-                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/dial");
+                sourceHighBandwidth = new Uri("http://icecast.media.berkeley.edu:8000/kalx-128.mp3");
+                sourceLowBandwidth = new Uri("http://icecast.media.berkeley.edu:8000/kalx-56.mp3");
             }
 
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;

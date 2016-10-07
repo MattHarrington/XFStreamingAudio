@@ -115,6 +115,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Images\WhiteTower.svg" />
     <EmbeddedResource Include="Images\ListenPageLogoSVG-outlined.svg" />
+    <EmbeddedResource Include="Images\octo.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Messages\" />

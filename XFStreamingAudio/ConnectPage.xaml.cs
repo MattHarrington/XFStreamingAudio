@@ -13,7 +13,7 @@ namespace XFStreamingAudio
             if (Device.OS == TargetPlatform.Android)
             {
                 callStudioBtn.TextColor = callOfficeBtn.TextColor = emailOfficeBtn.TextColor = 
-                    feedbackBtn.TextColor = websiteBtn.TextColor = twitterBtn.TextColor = 
+                    /*feedbackBtn.TextColor =*/ websiteBtn.TextColor = twitterBtn.TextColor = 
                         facebookBtn.TextColor = infoBtn.TextColor = Color.White;
             }
 
@@ -32,10 +32,10 @@ namespace XFStreamingAudio
             emailIcon.GestureRecognizers.Add(emailIconTGR);
             emailOfficeBtn.Clicked += OnEmailOffice;
 
-            TapGestureRecognizer feedbackIconTGR = new TapGestureRecognizer();
-            feedbackIconTGR.Tapped += OnEmailFeedback;
-            feedbackIcon.GestureRecognizers.Add(feedbackIconTGR);
-            feedbackBtn.Clicked += OnEmailFeedback;
+            //TapGestureRecognizer feedbackIconTGR = new TapGestureRecognizer();
+            //feedbackIconTGR.Tapped += OnEmailFeedback;
+            //feedbackIcon.GestureRecognizers.Add(feedbackIconTGR);
+            //feedbackBtn.Clicked += OnEmailFeedback;
 
             TapGestureRecognizer websiteIconTGR = new TapGestureRecognizer();
             websiteIconTGR.Tapped += OnVisitWebsite;
@@ -52,10 +52,10 @@ namespace XFStreamingAudio
             twitterIcon.GestureRecognizers.Add(twitterIconTGR);
             twitterBtn.Clicked += OnLaunchTwitter;
 
-            TapGestureRecognizer archiveIconTGR = new TapGestureRecognizer();
-            archiveIconTGR.Tapped += OnLaunchArchive;
-            archiveIcon.GestureRecognizers.Add(archiveIconTGR);
-            archiveBtn.Clicked += OnLaunchArchive;
+            //TapGestureRecognizer archiveIconTGR = new TapGestureRecognizer();
+            //archiveIconTGR.Tapped += OnLaunchArchive;
+            //archiveIcon.GestureRecognizers.Add(archiveIconTGR);
+            //archiveBtn.Clicked += OnLaunchArchive;
 
             TapGestureRecognizer infoIconTGR = new TapGestureRecognizer();
             infoIconTGR.Tapped += OnDisplayInfo;
@@ -70,14 +70,13 @@ namespace XFStreamingAudio
                 "Debug Build\n" +
                 #endif
                 "Version: 1.0.0.11\n" +
-                "Built with: Xamarin\n\n" +
-                "Email apps@kvmr.org to become a beta tester.",
+                "Built with: Xamarin\n\n",
                 "OK");
         }
 
         void OnLaunchTwitter(object sender, EventArgs e)
         {
-            Uri twitterUrlScheme = new Uri("twitter://user?id=2844822804");
+            Uri twitterUrlScheme = new Uri("twitter://user?id=38070896");
             IDeviceExtension deviceExtension = DependencyService.Get<IDeviceExtension>();
             bool canOpenUrl = deviceExtension.CanOpenUrl(twitterUrlScheme);
             if (canOpenUrl)
@@ -86,13 +85,13 @@ namespace XFStreamingAudio
             }
             else
             {
-                Device.OpenUri(new Uri("https://twitter.com/RadioKVMR"));
+                Device.OpenUri(new Uri("https://twitter.com/KALXradio"));
             }
         }
 
         void OnLaunchFacebook(object sender, EventArgs e)
         {
-            Uri facebookUrlScheme = new Uri("fb://profile/265131946900409");
+            Uri facebookUrlScheme = new Uri("fb://profile/8422996124");
             IDeviceExtension deviceExtension = DependencyService.Get<IDeviceExtension>();
             bool canOpenUrl = deviceExtension.CanOpenUrl(facebookUrlScheme);
             if (canOpenUrl)
@@ -101,13 +100,13 @@ namespace XFStreamingAudio
             }
             else
             {
-                Device.OpenUri(new Uri("https://www.facebook.com/KVMRFM"));
+                Device.OpenUri(new Uri("https://www.facebook.com/90.7fm"));
             }
         }
 
         void OnVisitWebsite(object sender, EventArgs e)
         {
-            Device.OpenUri(new Uri("https://www.kvmr.org/"));
+            Device.OpenUri(new Uri("https://kalx.berkeley.edu/"));
         }
 
         void OnLaunchArchive(object sender, EventArgs e)
@@ -119,12 +118,12 @@ namespace XFStreamingAudio
         {
             if (await DisplayAlert(
                     "Call Studio",
-                    "Call live broadcaster at\n+1 (530) 265-9555?",
+                    "Call live broadcaster at\n+1 (510) 642-KALX?",
                     "Yes",
                     "No"))
             {
                 // Dial the phone
-                Device.OpenUri(new Uri("tel:+1 (530) 265-9555"));
+                Device.OpenUri(new Uri("tel:+1 (510) 642-5259"));
             }
         }
 
@@ -132,18 +131,18 @@ namespace XFStreamingAudio
         {
             if (await DisplayAlert(
                     "Call Office",
-                    "Call KVMR office at\n+1 (530) 265-9073?",
+                    "Call KALX office at\n+1 (510) 642-1111?",
                     "Yes",
                     "No"))
             {
                 // Dial the phone
-                Device.OpenUri(new Uri("tel:+1 (530) 265-9073"));
+                Device.OpenUri(new Uri("tel:+1 (510) 642-1111"));
             }
         }
 
         void OnEmailOffice(object sender, EventArgs e)
         {
-            Device.OpenUri(new Uri("mailto:office@kvmr.org"));
+            Device.OpenUri(new Uri("mailto:mail@kalx.berkeley.edu"));
         }
 
         void OnEmailFeedback(object sender, EventArgs e)

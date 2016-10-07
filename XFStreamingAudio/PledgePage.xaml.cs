@@ -11,47 +11,27 @@ namespace XFStreamingAudio
         {
             InitializeComponent();
             donateBtn.Clicked += DonateBtn_Clicked;
-            buildingCampaignBtn.Clicked += BuildingCampaignBtn_Clicked;
+            //buildingCampaignBtn.Clicked += BuildingCampaignBtn_Clicked;
             volunteerBtn.Clicked += VolunteerBtn_Clicked;
-            membershipBtn.Clicked += MembershipBtn_Clicked;
-            vehicleDonationBtn.Clicked += VehicleDonationBtn_Clicked;
+            //membershipBtn.Clicked += MembershipBtn_Clicked;
+            //vehicleDonationBtn.Clicked += VehicleDonationBtn_Clicked;
             plannedGiftsBtn.Clicked += PlannedGiftsBtn_Clicked;
-            underwriterBtn.Clicked += UnderwriterBtn_Clicked;
-        }
-
-        void UnderwriterBtn_Clicked (object sender, EventArgs e)
-        {
-            Device.OpenUri(new Uri("https://www.kvmr.org/content/become-underwriter"));
+            //underwriterBtn.Clicked += UnderwriterBtn_Clicked;
         }
 
         void PlannedGiftsBtn_Clicked (object sender, EventArgs e)
         {
-            Device.OpenUri(new Uri("https://www.kvmr.org/content/planned-gifts"));
-        }
-
-        void VehicleDonationBtn_Clicked (object sender, EventArgs e)
-        {
-            Device.OpenUri(new Uri("https://www.kvmr.org/content/vehicle-donation"));
-        }
-
-        void MembershipBtn_Clicked (object sender, EventArgs e)
-        {
-            Device.OpenUri(new Uri("https://www.kvmr.org/content/membership"));
+            Device.OpenUri(new Uri("http://kalx.berkeley.edu/kind-donations"));
         }
 
         void VolunteerBtn_Clicked (object sender, EventArgs e)
         {
-            Device.OpenUri(new Uri("https://www.kvmr.org/content/volunteer"));
-        }
-
-        void BuildingCampaignBtn_Clicked (object sender, EventArgs e)
-        {
-            Device.OpenUri(new Uri("https://www.kvmr.org/content/bridge-street-project"));
+            Device.OpenUri(new Uri("http://kalx.berkeley.edu/volunteering-kalx"));
         }
 
         void DonateBtn_Clicked(object sender, EventArgs e)
         {
-            Device.OpenUri(new Uri("https://www.kvmr.org/donate"));
+            Device.OpenUri(new Uri("http://kalx.berkeley.edu/how-make-monetary-donations"));
         }
     }
 }

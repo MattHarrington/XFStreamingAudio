@@ -21,11 +21,11 @@
 					<StackLayout
 						HorizontalOptions="CenterAndExpand">
 						<Image
-							x:Name="feedbackIcon"
-							Source="FeedbackIcon.png" />
+							x:Name="websiteIcon"
+							Source="WebsiteIcon.png" />
 						<Button
-							x:Name="feedbackBtn"
-							Text="App Feedback"
+							x:Name="websiteBtn"
+							Text="Website"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>
@@ -87,31 +87,6 @@
 						<Button
 							x:Name="twitterBtn"
 							Text="Twitter"
-							FontSize="18"
-							BackgroundColor="Transparent" />
-					</StackLayout>
-				</StackLayout>
-				<StackLayout
-					Orientation="Horizontal">
-					<StackLayout
-						HorizontalOptions="CenterAndExpand">
-						<Image
-							x:Name="archiveIcon"
-							Source="ArchiveIcon.png" />
-						<Button
-							x:Name="archiveBtn"
-							Text="Archive"
-							FontSize="18"
-							BackgroundColor="Transparent" />
-					</StackLayout>
-					<StackLayout
-						HorizontalOptions="CenterAndExpand">
-						<Image
-							x:Name="websiteIcon"
-							Source="WebsiteIcon.png" />
-						<Button
-							x:Name="websiteBtn"
-							Text="Website"
 							FontSize="18"
 							BackgroundColor="Transparent" />
 					</StackLayout>

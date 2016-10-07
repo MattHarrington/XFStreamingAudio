@@ -22,36 +22,20 @@
 					XAlign="Center">
 					<Label.Text>
 Thank you for
-supporting KVMR
+supporting KALX
 				</Label.Text>
 				</Label>
 				<Button
 					x:Name="donateBtn"
-					Text="Donate"
+					Text="Give Money"
 					FontSize="18" />
-				<Button
-					x:Name="buildingCampaignBtn"
-					Text="Building Campaign"
+								<Button
+					x:Name="plannedGiftsBtn"
+					Text="Give Stuff"
 					FontSize="18" />
 				<Button
 					x:Name="volunteerBtn"
 					Text="Volunteer"
-					FontSize="18" />
-				<Button
-					x:Name="membershipBtn"
-					Text="Membership"
-					FontSize="18" />
-				<Button
-					x:Name="vehicleDonationBtn"
-					Text="Vehicle Donation"
-					FontSize="18" />
-				<Button
-					x:Name="plannedGiftsBtn"
-					Text="Planned Gifts"
-					FontSize="18" />
-				<Button
-					x:Name="underwriterBtn"
-					Text="Become an Underwriter"
 					FontSize="18" />
 			</StackLayout>
 		</ScrollView>
