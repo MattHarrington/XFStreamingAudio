@@ -19,11 +19,11 @@ namespace XFStreamingAudio.Droid.Services
     [IntentFilter(new[] { ActionPlay, ActionStop, ActionHeadphonesUnplugged })]
     public class StreamingService : Service, AudioManager.IOnAudioFocusChangeListener
     {
-        const string TAG = "KVMR";
+        const string TAG = "KALX";
 
-        public const string ActionPlay = "org.kvmr.player.action.PLAY";
-        public const string ActionStop = "org.kvmr.player.action.STOP";
-        public const string ActionHeadphonesUnplugged = "org.kvmr.player.action.HEADPHONES_UNPLUGGED";
+        public const string ActionPlay = "edu.berkeley.kalx.action.PLAY";
+        public const string ActionStop = "edu.berkeley.kalx.action.STOP";
+        public const string ActionHeadphonesUnplugged = "edu.berkeley.kalx.action.HEADPHONES_UNPLUGGED";
 
         const int BUFFER_SEGMENT_SIZE = 64 * 1024;
         const int BUFFER_SEGMENT_COUNT = 256;
@@ -55,7 +55,7 @@ namespace XFStreamingAudio.Droid.Services
             headphonesUnpluggedReceiver = new MusicBroadcastReceiver();
             if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
-                mediaSession = new MediaSession(this, "KVMRMediaSession");
+                mediaSession = new MediaSession(this, "KALXMediaSession");
 
                 mediaCallback = new MediaSessionCallback();
                 mediaCallback.OnPlayImpl = () =>
@@ -163,12 +163,12 @@ namespace XFStreamingAudio.Droid.Services
 
             var notification = new Notification
             {
-                TickerText = new Java.Lang.String("KVMR streaming started"),
+                TickerText = new Java.Lang.String("KALX streaming started"),
                 Icon = Resource.Drawable.AndroidNotificationIcon
             };
             notification.Flags |= NotificationFlags.OngoingEvent;
-            notification.SetLatestEventInfo(ApplicationContext, "KVMR",
-                "Nevada City, California", pendingIntent);
+            notification.SetLatestEventInfo(ApplicationContext, "KALX",
+                "Berkeley, California", pendingIntent);
             StartForeground(NotificationId, notification);
         }
 
@@ -201,7 +201,7 @@ namespace XFStreamingAudio.Droid.Services
         {
             if (wifiLock == null)
             {
-                wifiLock = wifiManager.CreateWifiLock(WifiMode.Full, "kvmr_wifi_lock");
+                wifiLock = wifiManager.CreateWifiLock(WifiMode.Full, "kalx_wifi_lock");
             } 
             wifiLock.Acquire();
         }

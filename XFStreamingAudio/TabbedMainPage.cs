@@ -7,7 +7,7 @@ namespace XFStreamingAudio
     {
         public TabbedMainPage()
         {
-            Title = "KVMR Streaming";
+            Title = "KALX Streaming";
             Children.Add(new ListenPage());
             //Children.Add(new SchedulePage());
             Children.Add(new PledgePage());

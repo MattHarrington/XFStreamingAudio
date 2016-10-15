@@ -15,11 +15,11 @@ using Xamarin.Forms;
 
 namespace XFStreamingAudio.Droid
 {
-    [Activity(Label = "KVMR", Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait, 
+    [Activity(Label = "KALX", Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait, 
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
     {
-        const string TAG = "KVMR";
+        const string TAG = "KALX";
         bool isBound = false;
         bool isConfigurationChange = false;
         StreamingServiceBinder binder;

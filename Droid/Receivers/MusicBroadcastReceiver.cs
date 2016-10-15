@@ -16,7 +16,7 @@ namespace XFStreamingAudio.Droid
     {
         public override void OnReceive(Context context, Intent intent)
         {
-            Log.Debug("KVMR", "MusicBroadcastReceiver.OnReceive() intent.Action = " + intent.Action);
+            Log.Debug("KALX", "MusicBroadcastReceiver.OnReceive() intent.Action = " + intent.Action);
             if (intent.Action != AudioManager.ActionAudioBecomingNoisy)
                 return;
 
