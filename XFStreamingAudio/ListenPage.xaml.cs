@@ -13,282 +13,295 @@ namespace XFStreamingAudio
         IAudioPlayer audioPlayer;
         Uri source;
         bool useHighBandwidth;
-        readonly Uri sourceHighBandwidth;
-        readonly Uri sourceLowBandwidth;
+        bool sourceIsKvmrx;
+        readonly Uri kvmrHighBandwidth;
+        readonly Uri kvmrLowBandwidth;
+        readonly Uri kvmrxHighBandwidth;
+        readonly Uri kvmrxLowBandwidth;
         const string playIcon = "\u25b6\uFE0E";
         const string stopIcon = "\u25a0";
 
-        public ListenPage()
+        public ListenPage ()
         {
-            InitializeComponent();
+            InitializeComponent ();
 
-            if (Device.OS == TargetPlatform.iOS)
-            {
-                sourceHighBandwidth = new Uri("http://live.kvmr.org:8000/aac96");
-                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/aac32");
-            }
-            else if (Device.OS == TargetPlatform.Android)
-            {
-                sourceHighBandwidth = new Uri("http://live2.kvmr.org:8190/kvmr");
-                sourceLowBandwidth = new Uri("http://live.kvmr.org:8000/dial");
+            if (Device.OS == TargetPlatform.iOS) {
+                kvmrHighBandwidth = new Uri ("http://live.kvmr.org:8000/aac96");
+                kvmrLowBandwidth = new Uri ("http://live.kvmr.org:8000/aac32");
+                kvmrxHighBandwidth = new Uri ("http://live.kvmr.org:8000/kvmr2-aac-96");
+                kvmrxLowBandwidth = new Uri ("http://live.kvmr.org:8000/kvmr2-aac-32");
+            } else if (Device.OS == TargetPlatform.Android) {
+                kvmrHighBandwidth = new Uri ("http://live2.kvmr.org:8190/kvmr");
+                kvmrLowBandwidth = new Uri ("http://live.kvmr.org:8000/dial");
             }
 
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
-            if (useHighBandwidth)
-            {
-                source = sourceHighBandwidth;
+            if (useHighBandwidth) {
+                source = kvmrHighBandwidth;
+            } else {
+                source = kvmrLowBandwidth;
             }
-            else
-            {
-                source = sourceLowBandwidth;
+
+            if (Helpers.Settings.SourceIsToggled) {
+                sourceSwitch.IsToggled = true;
+                source = kvmrxHighBandwidth;
             }
 
             playStopBtn.Clicked += OnPlayStopBtnClicked;
+            sourceSwitch.Toggled += OnSourceSwitchToggled;
 
-            TapGestureRecognizer launchSettingsImageTGR = new TapGestureRecognizer();
+            TapGestureRecognizer launchSettingsImageTGR = new TapGestureRecognizer ();
             launchSettingsImageTGR.Tapped += DisplaySettings;
-            launchSettingsImage.GestureRecognizers.Add(launchSettingsImageTGR);
+            launchSettingsImage.GestureRecognizers.Add (launchSettingsImageTGR);
 
-            audioPlayer = DependencyService.Get<IAudioPlayer>();
+            audioPlayer = DependencyService.Get<IAudioPlayer> ();
 
-            MessagingCenter.Subscribe<AudioBeginInterruptionMessage>(this, "AudioBeginInterruption", 
+            MessagingCenter.Subscribe<AudioBeginInterruptionMessage> (this, "AudioBeginInterruption",
                 OnAudioBeginInterruption);
-            MessagingCenter.Subscribe<HeadphonesUnpluggedMessage>(this, "HeadphonesUnplugged", 
+            MessagingCenter.Subscribe<HeadphonesUnpluggedMessage> (this, "HeadphonesUnplugged",
                 OnHeadphonesUnplugged);
-            if (Device.OS == TargetPlatform.iOS)
-            {
-                MessagingCenter.Subscribe<LostStreamMessage>(this, "LostStream", 
+            if (Device.OS == TargetPlatform.iOS) {
+                MessagingCenter.Subscribe<LostStreamMessage> (this, "LostStream",
                     OnLostStream);
-                MessagingCenter.Subscribe<Page>(this, "AudioEndInterruption",
+                MessagingCenter.Subscribe<Page> (this, "AudioEndInterruption",
                     OnAudioEndInterruption);
-                MessagingCenter.Subscribe<Page>(this, "RemoteControlTogglePlayPause",
+                MessagingCenter.Subscribe<Page> (this, "RemoteControlTogglePlayPause",
                     OnRemoteControlTogglePlayPause);
-                MessagingCenter.Subscribe<Page>(this, "RemoteControlPauseOrStop",
+                MessagingCenter.Subscribe<Page> (this, "RemoteControlPauseOrStop",
                     OnRemoteControlPauseOrStop);
-                MessagingCenter.Subscribe<Page>(this, "RemoteControlPlayOrPreviousTrackOrNextTrack",
+                MessagingCenter.Subscribe<Page> (this, "RemoteControlPlayOrPreviousTrackOrNextTrack",
                     OnRemoteControlPlayOrPreviousTrackOrNextTrack);
-                MessagingCenter.Subscribe<Page>(this, "BandwidthSwitchToggled",
+                MessagingCenter.Subscribe<Page> (this, "BandwidthSwitchToggled",
                     OnBandwidthSwitchToggled);
-            }
-            else if (Device.OS == TargetPlatform.Android)
-            {
-                MessagingCenter.Subscribe<BufferingStartMessage>(this, "BufferingStart", 
+            } else if (Device.OS == TargetPlatform.Android) {
+                MessagingCenter.Subscribe<BufferingStartMessage> (this, "BufferingStart",
                     OnBufferingStart);
-                MessagingCenter.Subscribe<BufferingEndMessage>(this, "BufferingEnd", 
+                MessagingCenter.Subscribe<BufferingEndMessage> (this, "BufferingEnd",
                     OnBufferingEnd);
-                MessagingCenter.Subscribe<RemoteControlPlayMessage>(this, "RemoteControlPlay", 
+                MessagingCenter.Subscribe<RemoteControlPlayMessage> (this, "RemoteControlPlay",
                     OnRemoteControlPlay);
-                MessagingCenter.Subscribe<PlayerStartedMessage>(this, "PlayerStarted", 
+                MessagingCenter.Subscribe<PlayerStartedMessage> (this, "PlayerStarted",
                     OnPlayerStarted);
-                MessagingCenter.Subscribe<PlayerStoppedMessage>(this, "PlayerStopped", 
+                MessagingCenter.Subscribe<PlayerStoppedMessage> (this, "PlayerStopped",
                     OnPlayerStopped);
             }
         }
 
-        void OnLostStream(LostStreamMessage obj)
+        void OnLostStream (LostStreamMessage obj)
         {
-            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
-            Device.BeginInvokeOnMainThread(async () => await DisplayAlert("Lost Stream", "Check network connection", "OK"));
+            Device.BeginInvokeOnMainThread (() => playStopBtn.Text = playIcon);
+            Device.BeginInvokeOnMainThread (async () => await DisplayAlert ("Lost Stream", "Check network connection", "OK"));
         }
 
-        void OnRemoteControlPlay(RemoteControlPlayMessage obj)
+        void OnRemoteControlPlay (RemoteControlPlayMessage obj)
         {
-            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = stopIcon);
+            Device.BeginInvokeOnMainThread (() => playStopBtn.Text = stopIcon);
         }
 
-        void OnPlayerStarted(PlayerStartedMessage obj)
+        void OnPlayerStarted (PlayerStartedMessage obj)
         {
-            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = stopIcon);
+            Device.BeginInvokeOnMainThread (() => playStopBtn.Text = stopIcon);
         }
 
-        void OnPlayerStopped(PlayerStoppedMessage obj)
+        void OnPlayerStopped (PlayerStoppedMessage obj)
         {
-            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
+            Device.BeginInvokeOnMainThread (() => playStopBtn.Text = playIcon);
         }
 
-        void OnBufferingStart(BufferingStartMessage obj)
+        void OnBufferingStart (BufferingStartMessage obj)
         {
-            Device.BeginInvokeOnMainThread(() => bufferingIndicator.IsRunning = true);
+            Device.BeginInvokeOnMainThread (() => bufferingIndicator.IsRunning = true);
         }
 
-        void OnBufferingEnd(BufferingEndMessage obj)
+        void OnBufferingEnd (BufferingEndMessage obj)
         {
-            Device.BeginInvokeOnMainThread(() => bufferingIndicator.IsRunning = false);
+            Device.BeginInvokeOnMainThread (() => bufferingIndicator.IsRunning = false);
         }
 
-        async void DisplaySettings(object sender, EventArgs e)
+        async void DisplaySettings (object sender, EventArgs e)
         {
-            if (Device.OS == TargetPlatform.iOS)
-            {
-                Device.OpenUri(new Uri("app-settings:"));
-            }
-            else if (Device.OS == TargetPlatform.Android)
-            {
+            if (Device.OS == TargetPlatform.iOS) {
+                Device.OpenUri (new Uri ("app-settings:"));
+            } else if (Device.OS == TargetPlatform.Android) {
                 string highBandwidthChoice;
                 string lowBandwidthChoice;
-                if (source == sourceHighBandwidth)
-                {
+                if (source == kvmrHighBandwidth) {
                     highBandwidthChoice = "High (currently selected)";
                     lowBandwidthChoice = "Low";
-                }
-                else
-                {
+                } else {
                     highBandwidthChoice = "High";
                     lowBandwidthChoice = "Low (currently selected)";
                 }
 
-                var action = await DisplayActionSheet("Fidelity", "Cancel", null, 
+                var action = await DisplayActionSheet ("Fidelity", "Cancel", null,
                                  highBandwidthChoice, lowBandwidthChoice);
-                if (action == highBandwidthChoice && source == sourceLowBandwidth)
-                {
+                if (action == highBandwidthChoice && source == kvmrLowBandwidth) {
                     Helpers.Settings.BandwidthSwitchState = true;
-                    source = sourceHighBandwidth;
-                    if (audioPlayer.IsPlaying)
-                    {
-                        audioPlayer.Stop();
-                        audioPlayer.Play(source);
+                    source = kvmrHighBandwidth;
+                    if (audioPlayer.IsPlaying) {
+                        audioPlayer.Stop ();
+                        audioPlayer.Play (source);
                         playStopBtn.Text = stopIcon;
                     }
-                }
-                else if (action == lowBandwidthChoice && source == sourceHighBandwidth)
-                {
+                } else if (action == lowBandwidthChoice && source == kvmrHighBandwidth) {
                     Helpers.Settings.BandwidthSwitchState = false;
-                    source = sourceLowBandwidth;
-                    if (audioPlayer.IsPlaying)
-                    {
-                        audioPlayer.Stop();
-                        audioPlayer.Play(source);
+                    source = kvmrLowBandwidth;
+                    if (audioPlayer.IsPlaying) {
+                        audioPlayer.Stop ();
+                        audioPlayer.Play (source);
                         playStopBtn.Text = stopIcon;
                     }
                 }
             }
         }
 
-        void OnBandwidthSwitchToggled(object sender)
+        void OnBandwidthSwitchToggled (object sender)
         {
+            //useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
+            //if (useHighBandwidth) {
+            //    source = kvmrHighBandwidth;
+            //} else {
+            //    source = kvmrLowBandwidth;
+            //}
+            //if (audioPlayer.IsPlaying) {
+            //    audioPlayer.Stop ();
+            //    audioPlayer.Play (source);
+            //}
+            playStream ();
+        }
+
+        void OnSourceSwitchToggled (object sender, EventArgs e)
+        {
+            if (Helpers.Settings.SourceIsToggled == true) {
+                Helpers.Settings.SourceIsToggled = false;
+            } else {
+                Helpers.Settings.SourceIsToggled = true;
+            }
+
+            playStream ();
+        }
+
+        void playStream ()
+        {
+            sourceIsKvmrx = Helpers.Settings.SourceIsToggled;
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
-            if (useHighBandwidth)
+
+            if (sourceIsKvmrx && useHighBandwidth) 
             {
-                source = sourceHighBandwidth;
+                source = kvmrxHighBandwidth;
+            } 
+            else if (sourceIsKvmrx && !useHighBandwidth)
+            {
+                source = kvmrxLowBandwidth;
+            } 
+            else if (!sourceIsKvmrx && useHighBandwidth)
+            {
+                source = kvmrHighBandwidth;
+            } 
+            else if (!sourceIsKvmrx && !useHighBandwidth)
+            {
+                source = kvmrLowBandwidth;
             }
-            else
-            {
-                source = sourceLowBandwidth;
-            }
-            if (audioPlayer.IsPlaying)
-            {
-                audioPlayer.Stop();
-                audioPlayer.Play(source);
+            if (audioPlayer.IsPlaying) {
+                audioPlayer.Stop ();
+                audioPlayer.Play (source);
             }
         }
 
-        void DiagnosticsBtn_Clicked(object sender, EventArgs e)
+        void DiagnosticsBtn_Clicked (object sender, EventArgs e)
         {
-            if (!audioPlayer.IsPlaying)
-            {
+            if (!audioPlayer.IsPlaying) {
                 // Avoid null reference exceptions if not playing
-                DisplayAlert("Diagnostics", "Stream not playing", "OK");
+                DisplayAlert ("Diagnostics", "Stream not playing", "OK");
                 return;
             }
-            StringBuilder alertMessage = new StringBuilder();
-            alertMessage.AppendLine(String.Format("Buffer: {0} sec", audioPlayer.DurationLoaded));
-            alertMessage.AppendLine(String.Format("ConnectionType: {0}", 
-                    CrossConnectivity.Current.ConnectionTypes.FirstOrDefault()));
-            alertMessage.AppendLine(String.Format("PlaybackLikelyToKeepUp: {0}", audioPlayer.PlaybackLikelyToKeepUp));
-            DisplayAlert("Diagnostics", alertMessage.ToString(), "OK");
-            Debug.WriteLine("AVPlayerItem.PlaybackBufferFull = {0}", audioPlayer.PlaybackBufferFull);
-            Debug.WriteLine("AVPlayerItem.PlaybackLikelyToKeepUp = {0}", audioPlayer.PlaybackLikelyToKeepUp);
-            Debug.WriteLine("AVPlayerItem loaded duration = {0}", audioPlayer.DurationLoaded);
-            foreach (var connection in CrossConnectivity.Current.ConnectionTypes)
-            {
-                Debug.WriteLine("ConnectionType: {0}", connection);
+            StringBuilder alertMessage = new StringBuilder ();
+            alertMessage.AppendLine (String.Format ("Buffer: {0} sec", audioPlayer.DurationLoaded));
+            alertMessage.AppendLine (String.Format ("ConnectionType: {0}",
+                    CrossConnectivity.Current.ConnectionTypes.FirstOrDefault ()));
+            alertMessage.AppendLine (String.Format ("PlaybackLikelyToKeepUp: {0}", audioPlayer.PlaybackLikelyToKeepUp));
+            DisplayAlert ("Diagnostics", alertMessage.ToString (), "OK");
+            Debug.WriteLine ("AVPlayerItem.PlaybackBufferFull = {0}", audioPlayer.PlaybackBufferFull);
+            Debug.WriteLine ("AVPlayerItem.PlaybackLikelyToKeepUp = {0}", audioPlayer.PlaybackLikelyToKeepUp);
+            Debug.WriteLine ("AVPlayerItem loaded duration = {0}", audioPlayer.DurationLoaded);
+            foreach (var connection in CrossConnectivity.Current.ConnectionTypes) {
+                Debug.WriteLine ("ConnectionType: {0}", connection);
             }
         }
 
-        void OnAudioBeginInterruption(object sender)
+        void OnAudioBeginInterruption (object sender)
         {
-            Debug.WriteLine("Begin audio interruption");
-            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
+            Debug.WriteLine ("Begin audio interruption");
+            Device.BeginInvokeOnMainThread (() => playStopBtn.Text = playIcon);
         }
 
-        void OnAudioEndInterruption(object sender)
+        void OnAudioEndInterruption (object sender)
         {
-            Debug.WriteLine("End audio interruption");
+            Debug.WriteLine ("End audio interruption");
         }
 
-        void OnHeadphonesUnplugged(object sender)
+        void OnHeadphonesUnplugged (object sender)
         {
-            Debug.WriteLine("OnHeadphonesUnplugged()");
-            if (Device.OS == TargetPlatform.iOS)
-            {
-                audioPlayer.Stop();
+            Debug.WriteLine ("OnHeadphonesUnplugged()");
+            if (Device.OS == TargetPlatform.iOS) {
+                audioPlayer.Stop ();
             }
-            Device.BeginInvokeOnMainThread(() => playStopBtn.Text = playIcon);
+            Device.BeginInvokeOnMainThread (() => playStopBtn.Text = playIcon);
         }
 
-        async void OnRemoteControlPlayOrPreviousTrackOrNextTrack(object sender)
+        async void OnRemoteControlPlayOrPreviousTrackOrNextTrack (object sender)
         {
-            Debug.WriteLine("OnRemoteControlPlayOrPreviousTrackOrNextTrack()");
-            var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(source.Host, source.Port);
-            if (!audioPlayer.IsPlaying)
-            {
-                if (!sourceReachable)
-                {
-                    await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
+            Debug.WriteLine ("OnRemoteControlPlayOrPreviousTrackOrNextTrack()");
+            var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable (source.Host, source.Port);
+            if (!audioPlayer.IsPlaying) {
+                if (!sourceReachable) {
+                    await DisplayAlert ("Server Unreachable", "Check your network connection", "OK");
                     return;
                 }
-                audioPlayer.Play(source);
+                audioPlayer.Play (source);
                 playStopBtn.Text = stopIcon;
             }
         }
 
-        void OnRemoteControlPauseOrStop(object sender)
+        void OnRemoteControlPauseOrStop (object sender)
         {
-            Debug.WriteLine("OnRemoteControlPauseOrStop()");
-            audioPlayer.Stop();
+            Debug.WriteLine ("OnRemoteControlPauseOrStop()");
+            audioPlayer.Stop ();
             playStopBtn.Text = playIcon;
         }
 
-        async void OnRemoteControlTogglePlayPause(object sender)
+        async void OnRemoteControlTogglePlayPause (object sender)
         {
-            Debug.WriteLine("OnRemoteControlTogglePlayPause()");
-            if (!audioPlayer.IsPlaying)
-            {
-                var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(source.Host, source.Port);
-                if (!sourceReachable)
-                {
-                    await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
+            Debug.WriteLine ("OnRemoteControlTogglePlayPause()");
+            if (!audioPlayer.IsPlaying) {
+                var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable (source.Host, source.Port);
+                if (!sourceReachable) {
+                    await DisplayAlert ("Server Unreachable", "Check your network connection", "OK");
                     return;
                 }
-                audioPlayer.Play(source);
+                audioPlayer.Play (source);
                 playStopBtn.Text = stopIcon;
-            }
-            else
-            {
-                audioPlayer.Stop();
+            } else {
+                audioPlayer.Stop ();
                 playStopBtn.Text = playIcon;
             }
         }
 
-        async void OnPlayStopBtnClicked(object sender, EventArgs e)
+        async void OnPlayStopBtnClicked (object sender, EventArgs e)
         {
-            if (!audioPlayer.IsPlaying)
-            {
-                Debug.WriteLine("Start playing");
-                var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable(source.Host, source.Port);
-                if (!sourceReachable)
-                {
-                    await DisplayAlert("Server Unreachable", "Check your network connection", "OK");
+            if (!audioPlayer.IsPlaying) {
+                Debug.WriteLine ("Start playing " + source);
+                var sourceReachable = await CrossConnectivity.Current.IsRemoteReachable (source.Host, source.Port);
+                if (!sourceReachable) {
+                    await DisplayAlert ("Server Unreachable", "Check your network connection", "OK");
                     return;
                 }
 
-                audioPlayer.Play(source);
+                audioPlayer.Play (source);
                 playStopBtn.Text = stopIcon;
-            }
-            else
-            {
-                Debug.WriteLine("Stop playing");
-                audioPlayer.Stop();
+            } else {
+                Debug.WriteLine ("Stop playing " + source);
+                audioPlayer.Stop ();
                 playStopBtn.Text = playIcon;
             }
         }

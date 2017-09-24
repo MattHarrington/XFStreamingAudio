@@ -7,7 +7,7 @@ using MediaPlayer;
 using Foundation;
 using System.Collections.Generic;
 using Xamarin;
-using AI.XamarinSDK.Abstractions;
+//using AI.XamarinSDK.Abstractions;
 
 [assembly: Dependency(typeof(AudioPlayerIOS))]
 namespace XFStreamingAudio.iOS
@@ -62,7 +62,7 @@ namespace XFStreamingAudio.iOS
                     itemFailedProperties.Add("AVPlayer.Error", avPlayer?.Error?.ToString() ?? "isNull");
                     itemFailedProperties.Add("AVPlayerItem.Error", 
                         avPlayer?.CurrentItem?.Error?.ToString() ?? "isNull");
-                    TelemetryManager.TrackEvent("ItemFailedToPlayToEndTime", itemFailedProperties);
+                    //TelemetryManager.TrackEvent("ItemFailedToPlayToEndTime", itemFailedProperties);
                     Stop();
                     MessagingCenter.Send<LostStreamMessage>(new LostStreamMessage(), "LostStream");
                 });
@@ -77,7 +77,7 @@ namespace XFStreamingAudio.iOS
                     playbackStalledProperties.Add("AVPlayer.Error", avPlayer?.Error?.ToString() ?? "isNull");
                     playbackStalledProperties.Add("AVPlayerItem.Error", 
                         avPlayer?.CurrentItem?.Error?.ToString() ?? "isNull");
-                    TelemetryManager.TrackEvent("PlaybackStalled", playbackStalledProperties);
+                    //TelemetryManager.TrackEvent("PlaybackStalled", playbackStalledProperties);
                 });
         }
 
@@ -116,7 +116,7 @@ namespace XFStreamingAudio.iOS
 
         public void Play(Uri source)
         {
-            Debug.WriteLine("Start playing");
+            Debug.WriteLine("Start playing " + source);
             AVAsset asset = AVAsset.FromUrl(source);
             AVPlayerItem playerItem = new AVPlayerItem(asset);
             avPlayer = new AVPlayer(playerItem);
@@ -150,7 +150,7 @@ namespace XFStreamingAudio.iOS
                         playbackLikelyToKeepUpProperties.Add("AVPlayer.Status", avPlayer.Status.ToString());
                         playbackLikelyToKeepUpProperties.Add("AVPlayerItem.Status", 
                             avPlayer.CurrentItem.Status.ToString());
-                        TelemetryManager.TrackEvent("PlaybackNotLikelyToKeepUp", playbackLikelyToKeepUpProperties);
+                        //TelemetryManager.TrackEvent("PlaybackNotLikelyToKeepUp", playbackLikelyToKeepUpProperties);
                     }
                     break;
                 case "status":
@@ -163,7 +163,7 @@ namespace XFStreamingAudio.iOS
                         statusProperties.Add("AVPlayerItem.Error", avPlayer.CurrentItem.Error.ToString());
                         statusProperties.Add("AVPlayer.Error", avPlayer.Error.ToString());
                         statusProperties.Add("Context", context.ToString());
-                        TelemetryManager.TrackEvent("AVPlayerStatus.Failed", statusProperties);
+                        //TelemetryManager.TrackEvent("AVPlayerStatus.Failed", statusProperties);
                     }
                     break;
                 default:

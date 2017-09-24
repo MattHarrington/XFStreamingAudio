@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.2</string>
+	<string>1.1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -41,7 +41,9 @@
 	</dict>
 	<key>MSAIInstrumentationKey</key>
 	<string>ac4e2cf9-3f15-4cf1-b1dd-26aebb28cf63</string>
+	<key>CFBundleName</key>
+	<string>KVMR</string>
 	<key>CFBundleVersion</key>
-	<string>7</string>
+	<string>1</string>
 </dict>
 </plist>

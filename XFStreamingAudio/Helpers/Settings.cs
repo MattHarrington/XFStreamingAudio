@@ -23,8 +23,12 @@ namespace XFStreamingAudio.Helpers
 
         private const string SettingsKey = "settings_key";
         private static readonly string SettingsDefault = string.Empty;
+
         private const string bandwidthSwitchStateKey = "bandwidthSwitchState";
         private static readonly bool bandwidthSwitchStateDefault = true;
+
+        private const string sourceSwitchKey = "sourceSwitchKey";
+        private static readonly bool sourceSwitchToggledDefault = false;
 
         #endregion
 
@@ -45,6 +49,11 @@ namespace XFStreamingAudio.Helpers
         {
             get { return AppSettings.GetValueOrDefault<bool>(bandwidthSwitchStateKey, bandwidthSwitchStateDefault); }
             set { AppSettings.AddOrUpdateValue<bool>(bandwidthSwitchStateKey, value); }
+        }
+
+        public static bool SourceIsToggled {
+            get { return AppSettings.GetValueOrDefault<bool>(sourceSwitchKey, sourceSwitchToggledDefault); }
+            set { AppSettings.AddOrUpdateValue<bool>(sourceSwitchKey, value); }
         }
 
     }

@@ -38,7 +38,7 @@
 			<key>Key</key>
 			<string>versionNumber</string>
 			<key>DefaultValue</key>
-			<string>1.0.2 (7)</string>
+			<string>1.1.0 (1)</string>
 		</dict>
 		<dict>
 			<key>Type</key>
