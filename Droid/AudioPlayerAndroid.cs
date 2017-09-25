@@ -20,6 +20,7 @@ namespace XFStreamingAudio.Droid
 
         public void Play(Uri source)
         {
+            System.Diagnostics.Debug.WriteLine("AudioPlayerAndroid source: {0}", source);
             var context = Forms.Context.ApplicationContext;
             var intent = new Intent(context, typeof(StreamingService));
             intent.SetAction(StreamingService.ActionPlay);

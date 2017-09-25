@@ -10,7 +10,7 @@ namespace XFStreamingAudio
         {
             InitializeComponent();
 
-            if (Device.OS == TargetPlatform.Android)
+            if (Device.RuntimePlatform == Device.Android)
             {
                 callStudioBtn.TextColor = callOfficeBtn.TextColor = emailOfficeBtn.TextColor = 
                     feedbackBtn.TextColor = websiteBtn.TextColor = twitterBtn.TextColor = 

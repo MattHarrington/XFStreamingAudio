@@ -103,6 +103,7 @@ namespace XFStreamingAudio.Droid.Services
             if (String.IsNullOrEmpty(source))
             {
                 source = intent.GetStringExtra("source");
+                System.Diagnostics.Debug.WriteLine("StreamingService source: " + source);
             }
             switch (intent.Action)
             {
