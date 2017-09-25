@@ -14,10 +14,10 @@ namespace XFStreamingAudio
         Uri source;
         bool useHighBandwidth;
         bool sourceIsKvmrx;
-        readonly Uri kvmrHighBandwidth;
-        readonly Uri kvmrLowBandwidth;
-        readonly Uri kvmrxHighBandwidth;
-        readonly Uri kvmrxLowBandwidth;
+        readonly Uri kvmrHighBandwidth = new Uri("http://live.kvmr.org:8000/aac96");
+        readonly Uri kvmrLowBandwidth = new Uri("http://live.kvmr.org:8000/aac32");
+        readonly Uri kvmrxHighBandwidth = new Uri("http://live.kvmr.org:8000/kvmr2-aac-96");
+        readonly Uri kvmrxLowBandwidth = new Uri("http://live.kvmr.org:8000/kvmr2-aac-32");
         const string playIcon = "\u25b6\uFE0E";
         const string stopIcon = "\u25a0";
 
@@ -25,34 +25,11 @@ namespace XFStreamingAudio
         {
             InitializeComponent();
 
-            if (Device.RuntimePlatform == Device.iOS)
+            if (Helpers.Settings.SourceIsToggled)
             {
-                kvmrHighBandwidth = new Uri("http://live.kvmr.org:8000/aac96");
-                kvmrLowBandwidth = new Uri("http://live.kvmr.org:8000/aac32");
-                kvmrxHighBandwidth = new Uri("http://live.kvmr.org:8000/kvmr2-aac-96");
-                kvmrxLowBandwidth = new Uri("http://live.kvmr.org:8000/kvmr2-aac-32");
-            }
-            else if (Device.RuntimePlatform == Device.Android)
-            {
-                //kvmrHighBandwidth = new Uri ("http://live2.kvmr.org:8190/kvmr");
-                kvmrHighBandwidth = new Uri("http://live.kvmr.org:8000/aac96");
-                //kvmrLowBandwidth = new Uri ("http://live.kvmr.org:8000/dial");
-                kvmrLowBandwidth = new Uri("http://live.kvmr.org:8000/aac32");
-                kvmrxHighBandwidth = new Uri("http://live.kvmr.org:8000/kvmr2-aac-96");
-                kvmrxLowBandwidth = new Uri("http://live.kvmr.org:8000/kvmr2-aac-32");
+                sourceSwitch.IsToggled = true;
             }
 
-            //useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
-            //if (useHighBandwidth) {
-            //    source = kvmrHighBandwidth;
-            //} else {
-            //    source = kvmrLowBandwidth;
-            //}
-
-            //if (Helpers.Settings.SourceIsToggled) {
-            //    sourceSwitch.IsToggled = true;
-            //    source = kvmrxHighBandwidth;
-            //}
             chooseStream();
 
             playStopBtn.Clicked += OnPlayStopBtnClicked;
@@ -139,7 +116,9 @@ namespace XFStreamingAudio
             {
                 string highBandwidthChoice;
                 string lowBandwidthChoice;
-                if (source == kvmrHighBandwidth)
+                bool choiceChanged = false;
+
+                if (source == kvmrHighBandwidth || source == kvmrxHighBandwidth)
                 {
                     highBandwidthChoice = "High (currently selected)";
                     lowBandwidthChoice = "Low";
@@ -152,43 +131,28 @@ namespace XFStreamingAudio
 
                 var action = await DisplayActionSheet("Fidelity", "Cancel", null,
                                  highBandwidthChoice, lowBandwidthChoice);
-                if (action == highBandwidthChoice && source == kvmrLowBandwidth)
+                if (action == highBandwidthChoice && (source == kvmrLowBandwidth || source == kvmrxLowBandwidth))
                 {
                     Helpers.Settings.BandwidthSwitchState = true;
-                    source = kvmrHighBandwidth;
-                    if (audioPlayer.IsPlaying)
-                    {
-                        audioPlayer.Stop();
-                        audioPlayer.Play(source);
-                        playStopBtn.Text = stopIcon;
-                    }
+                    choiceChanged = true;
                 }
-                else if (action == lowBandwidthChoice && source == kvmrHighBandwidth)
+                else if (action == lowBandwidthChoice && (source == kvmrHighBandwidth || source == kvmrxHighBandwidth))
                 {
                     Helpers.Settings.BandwidthSwitchState = false;
-                    source = kvmrLowBandwidth;
-                    if (audioPlayer.IsPlaying)
-                    {
-                        audioPlayer.Stop();
-                        audioPlayer.Play(source);
-                        playStopBtn.Text = stopIcon;
-                    }
+                    choiceChanged = true;
                 }
-            }
+                chooseStream();
+				if (audioPlayer.IsPlaying && choiceChanged == true)
+				{
+				    audioPlayer.Stop();
+				    audioPlayer.Play(source);
+				    playStopBtn.Text = stopIcon;
+				}
+			}
         }
 
         void OnBandwidthSwitchToggled(object sender)
         {
-            //useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
-            //if (useHighBandwidth) {
-            //    source = kvmrHighBandwidth;
-            //} else {
-            //    source = kvmrLowBandwidth;
-            //}
-            //if (audioPlayer.IsPlaying) {
-            //    audioPlayer.Stop ();
-            //    audioPlayer.Play (source);
-            //}
             chooseStream();
             if (audioPlayer.IsPlaying)
             {
@@ -199,7 +163,7 @@ namespace XFStreamingAudio
 
         void OnSourceSwitchToggled(object sender, EventArgs e)
         {
-            Debug.WriteLine("OnSourceSwitchToggled()");
+
             if (Helpers.Settings.SourceIsToggled == true)
             {
                 Helpers.Settings.SourceIsToggled = false;
@@ -219,7 +183,6 @@ namespace XFStreamingAudio
 
         void chooseStream()
         {
-            Debug.WriteLine("chooseStream()");
             sourceIsKvmrx = Helpers.Settings.SourceIsToggled;
             useHighBandwidth = Helpers.Settings.BandwidthSwitchState;
 
@@ -241,13 +204,8 @@ namespace XFStreamingAudio
             }
             else
             {
-                Debug.WriteLine("Something wrong with changing stream.");
+                Debug.WriteLine("Error choosing stream.");
             }
-            Debug.WriteLine("source = {0}", source);
-            //if (audioPlayer.IsPlaying) {
-            //    audioPlayer.Stop ();
-            //    audioPlayer.Play (source);
-            //}
         }
 
         void DiagnosticsBtn_Clicked(object sender, EventArgs e)

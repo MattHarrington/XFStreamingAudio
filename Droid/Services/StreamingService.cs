@@ -100,11 +100,11 @@ namespace XFStreamingAudio.Droid.Services
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             Log.Debug(TAG, "OnStartCommand() intent: " + intent.Action ?? "null");
-            if (String.IsNullOrEmpty(source))
-            {
+            //if (String.IsNullOrEmpty(source))
+            //{
                 source = intent.GetStringExtra("source");
                 System.Diagnostics.Debug.WriteLine("StreamingService source: " + source);
-            }
+            //}
             switch (intent.Action)
             {
                 case ActionPlay:
@@ -138,6 +138,7 @@ namespace XFStreamingAudio.Droid.Services
                 String userAgent = ExoPlayerUtil.GetUserAgent (this, "ExoPlayerDemo");
 
                 Android.Net.Uri soundString = Android.Net.Uri.Parse(source);
+                System.Diagnostics.Debug.WriteLine("StreamingService soundString: " + soundString);
                 var allocator = new DefaultAllocator(BUFFER_SEGMENT_SIZE);
                 var dataSource = new DefaultUriDataSource(this, userAgent);
                 ExtractorSampleSource sampleSource = new ExtractorSampleSource(soundString, dataSource, allocator,
